@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CXL Information Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        .nav-link {
+            padding: 0.75rem 1.25rem; /* Adjusted padding for more links */
+            border-radius: 0.5rem;
+            transition: background-color 0.3s, color 0.3s;
+            font-weight: 500;
+            color: #e0e7ff; /* Lighter text color for main nav links */
+            font-size: 0.9rem; /* Slightly smaller font for more links */
+        }
+        .nav-link:hover {
+            background-color: #4f46e5; /* Indigo hover */
+            color: white;
+        }
+        .nav-link.active {
+            background-color: #6366f1; /* Indigo active */
+            color: white;
+            font-weight: 600;
+        }
+        .sub-nav-link {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.3s, color 0.3s;
+            font-size: 0.875rem;
+            color: #e0e7ff; 
+        }
+        .sub-nav-link:hover {
+            background-color: #3730a3; 
+            color: white;
+        }
+        .sub-nav-link.active {
+            background-color: #4338ca; 
+            color: white;
+            font-weight: 500;
+        }
+        .content-section {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            margin-top: 1.5rem;
+        }
+        h1, h2, h3 { 
+            color: #1f2937; 
+        }
+        h1 { margin-bottom: 1.5rem; font-size: 2.25rem; font-weight: 700; }
+        h2 { margin-top: 2rem; margin-bottom: 1rem; font-size: 1.875rem; font-weight: 600; border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem;}
+        h3 { margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.5rem; font-weight: 600;}
+        
+        p { margin-bottom: 1rem; line-height: 1.6; color: #4b5563; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+        }
+        th, td {
+            border: 1px solid #e5e7eb; 
+            padding: 0.75rem;
+            text-align: left;
+        }
+        th {
+            background-color: #f9fafb; 
+            font-weight: 600;
+            color: #374151;
+        }
+        tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; color: #4b5563;}
+        li { margin-bottom: 0.5rem; }
+        .hidden { display: none; }
+        .navbar-container {
+            background-color: #312e81; 
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        }
+        .sub-navbar-container {
+            background-color: #4f46e5; 
+            padding: 0.75rem 0;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Styles for charts section table */
+        .charts-container-box { 
+            background-color: white;
+            padding: 1rem; /* Reduced padding for chart boxes */
+            border-radius: 0.75rem; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); 
+            margin-bottom: 1.5rem; /* Reduced margin */
+        }
+        .charts-container-box th, .charts-container-box td { 
+            padding: 0.5rem 0.75rem; /* Reduced padding for chart table cells */
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb; 
+        }
+        .charts-container-box th {
+            background-color: #f9fafb; 
+            font-weight: 600;
+            color: #374151; 
+        }
+        .chart-title {
+            font-size: 1.125rem; /* Slightly smaller chart titles */
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #1f2937;
+            text-align: center;
+        }
+        
+        /* Styles for Rambus Dashboard */
+        .rambus-kpi-card {
+             background-color: white; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); /* Tailwind: bg-white p-6 rounded-xl shadow-lg */
+        }
+        .rambus-kpi-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); /* Tailwind: hover:shadow-xl */
+        }
+        .rambus-kpi-title {
+            font-size: 0.875rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; /* Tailwind: text-sm font-semibold text-gray-500 uppercase tracking-wider */
+        }
+        .rambus-kpi-value {
+            font-size: 1.875rem; font-weight: 700; color: #1f2937; margin-top: 0.25rem; /* Tailwind: text-3xl font-bold text-gray-800 mt-1 */
+        }
+        .rambus-kpi-change {
+            font-size: 0.875rem; font-weight: 500; margin-top: 0.25rem; /* Tailwind: text-sm font-medium mt-1 */
+        }
+        .rambus-positive-change { color: #10b981; } /* Tailwind green-500 */
+        .rambus-negative-change { color: #ef4444; } /* Tailwind red-500 */
+        .rambus-neutral-change { color: #6b7280; } /* Tailwind gray-500 */
+        
+        .rambus-section-title { /* For titles within Rambus dashboard */
+            font-size: 1.5rem; font-weight: 700; color: #374151; margin-bottom: 1.5rem; /* Tailwind: text-2xl font-bold text-gray-700 mb-6 */
+        }
+        .rambus-header h1 { /* Specific for Rambus dashboard main title */
+             font-size: 2.5rem; font-weight: 700; color: #4f46e5; margin-bottom: 0.5rem; /* Tailwind: text-4xl font-bold text-indigo-600 */
+        }
+         .rambus-header p {
+            font-size: 1.25rem; color: #4b5563; margin-bottom: 1.5rem; /* Tailwind: text-xl text-gray-600 */
+        }
+
+
+         /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .charts-container-box .overflow-x-auto { overflow-x: auto; }
+            .charts-container-box th, .charts-container-box td { white-space: nowrap; }
+            .charts-grid { grid-template-columns: 1fr; }
+            .nav-link { padding: 0.5rem 0.75rem; font-size: 0.8rem;} /* Adjust main nav for smaller screens */
+        }
+        /* Custom scrollbar for better aesthetics if content overflows */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; } /* Tailwind gray-300 */
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; } /* Tailwind gray-400 */
+
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <nav class="navbar-container">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-center items-center space-x-1 sm:space-x-2">
+                <a href="#" class="nav-link active" onclick="showMainContent('home', this)">Home</a>
+                <a href="#" class="nav-link" onclick="showMainContent('cxl', this); showCxlSubContent('cxl-versions', document.querySelector('#cxl-sub-nav .sub-nav-link'));">CXL</a>
+                <a href="#" class="nav-link" onclick="showMainContent('astera', this)">Astera Labs</a>
+                <a href="#" class="nav-link" onclick="showMainContent('charts', this)">Important Charts</a>
+                <a href="#" class="nav-link" onclick="showMainContent('rambus', this)">Rambus</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <div id="home-content" class="main-content-pane">
+            <section class="content-section">
+                <h1>Welcome to the CXL Information Hub</h1>
+                
+                <h2>Introduction: The Evolving Landscape of Persistent Memory and the Rise of CXL</h2>
+                <p>Persistent memory (PMEM), also known as storage-class memory (SCM), serves as a bridge between volatile DRAM and slower, non-volatile storage like SSDs or HDDs. Its defining characteristic is the ability to retain data even when power is lost, similar to traditional storage, while also offering performance closer to that of DRAM, including byte-addressability and lower latency compared to SSDs. This unique combination allows persistent memory to be used as both memory and storage, providing faster data access and system restarts. For instance, an in-memory database using PMEM can restart in seconds after a crash, as the data remains in memory, unlike DRAM which would require reloading everything from slower SSDs.</p>
+                <p>The landscape of persistent memory in data centers has been dynamic. Initially, Intel Optane DC Persistent Memory was a prominent technology, offering DIMM-based solutions that plugged directly into server motherboards. However, with Intel's exit from the Optane market, the industry is now shifting towards new approaches, particularly leveraging Compute Express Link (CXL). CXL enables memory expansion and disaggregation, allowing CPUs to access external memory modules, including future persistent NVM technologies, over a high-speed PCIe bus. While direct PMEM DIMMs like Optane are no longer actively produced for new systems, the need for fast, large-capacity, and persistent memory solutions persists, especially for AI/ML workloads, in-memory databases, and real-time analytics. Data centers are now exploring CXL-based memory modules and software-defined persistent memory to fill this gap and continue optimizing performance and efficiency. This report delves into the evolution of CXL, its core protocols, device types, and its significant relevance to the past, present, and future of persistent memory. It also explores the CXL ecosystem, key industry players, adoption trends, and future forecasts.</p>
+
+                <h2>1. Persistent Memory Timeline</h2>
+                <p>The quest for persistent memory—memory that retains data even when powered off while offering performance closer to DRAM than traditional storage—has been a long-standing goal in computing.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Era</th>
+                            <th>Key Developments & Technologies</th>
+                            <th>Relevance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Pre-1980s</strong></td>
+                            <td>Volatile DRAM, Magnetic Tape, Floppy Disks, Early HDDs</td>
+                            <td>Clear distinction between fast, volatile memory and slow, persistent storage. No true byte-addressable persistent memory.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>1980s-1990s</strong></td>
+                            <td>SRAM/DRAM dominate system memory; HDDs become standard.</td>
+                            <td>The memory-storage gap persists.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2000s</strong></td>
+                            <td>R&D into Storage-Class Memory (SCM): Phase Change Memory (PCM), Ferroelectric RAM (FeRAM), MRAM, ReRAM.</td>
+                            <td>Exploration of technologies aiming to bridge the gap between DRAM speed and storage persistence.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2010s</strong></td>
+                            <td><strong>Intel 3D XPoint Technology (Optane PMem)</strong> announced (2015), Intel Optane Persistent Memory DIMMs launched (2018).</td>
+                            <td>First major commercial attempt at byte-addressable persistent memory fitting into DDR4 DIMM slots. Offered App Direct and Memory Mode.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2020-2022</strong></td>
+                            <td>Intel Optane PMem faces adoption challenges and is discontinued (2022).</td>
+                            <td>Market gap created for next-generation persistent memory solutions.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2019-Present</strong></td>
+                            <td><strong>Emergence and Evolution of CXL (1.0, 2.0, 3.0)</strong>. CXL.mem protocol enables access to device-attached memory, including persistent memory.</td>
+                            <td>CXL provides a standardized, vendor-neutral interface for attaching various memory types, including PMem, over the PCIe bus. This enables disaggregated, pooled, and tiered persistent memory architectures.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2024+</strong></td>
+                            <td>CXL-attached PMem modules (DRAM+NAND hybrids, emerging NVM technologies) from vendors like Samsung, SK Hynix, Micron. UALink formed for accelerator interconnects.</td>
+                            <td>CXL becomes the primary enabler for integrating persistent memory into data centers, offering flexibility and scalability beyond previous DIMM-based solutions. UALink complements CXL for AI workloads.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><em>Source: Adapted from information in the provided documents.</em></p>
+
+                <h2>2. CXL: What It Means</h2>
+                <p>Compute Express Link (CXL) is a high-speed, open-standard interconnect technology that builds upon the PCI Express (PCIe) physical and electrical interface. It is designed to enable efficient, cache-coherent communication between a host processor (CPU) and various devices such as accelerators (GPUs, FPGAs), memory expansion modules, and persistent memory devices.</p>
+                <p>At its core, CXL aims to:</p>
+                <ul>
+                    <li><strong>Improve Performance:</strong> By providing low-latency, high-bandwidth pathways for data.</li>
+                    <li><strong>Enable Resource Disaggregation and Pooling:</strong> Allowing memory and accelerator resources to be shared and dynamically allocated across multiple hosts.</li>
+                    <li><strong>Enhance Memory Capacity and Bandwidth:</strong> Permitting systems to access larger and more diverse memory tiers beyond what is directly attached to the CPU.</li>
+                    <li><strong>Simplify Software:</strong> By providing coherent memory access, reducing the complexity of data management for applications.</li>
+                </ul>
+                <p>CXL achieves this through three key protocols:</p>
+                <ul>
+                    <li><strong>CXL.io:</strong> Functionally equivalent to PCIe, used for device discovery, configuration, initialization, DMA, and I/O operations. It ensures backward compatibility with the PCIe ecosystem.</li>
+                    <li><strong>CXL.cache:</strong> Enables an attached device (e.g., an accelerator) to coherently cache data from the host CPU's memory with low latency. This is crucial for devices that need to process data residing in host memory.</li>
+                    <li><strong>CXL.mem:</strong> Allows the host CPU to access memory (volatile like DRAM or persistent like NVM) attached to a CXL device as if it were part of its own addressable memory space. This protocol is key for memory expansion and persistent memory solutions over CXL.</li>
+                </ul>
+                <p>CXL defines three device types based on the protocols they implement:</p>
+                <ul>
+                    <li><strong>Type 1 Devices (CXL.io + CXL.cache):</strong> Accelerators without local memory, caching host memory (e.g., SmartNICs).</li>
+                    <li><strong>Type 2 Devices (CXL.io + CXL.cache + CXL.mem):</strong> Accelerators with their own local memory (e.g., GPUs, advanced FPGAs). The host can access device memory, and the device can cache host memory.</li>
+                    <li><strong>Type 3 Devices (CXL.io + CXL.mem):</strong> Memory expansion modules or persistent memory devices, providing additional capacity and bandwidth to the host CPU.</li>
+                </ul>
+                <p>By leveraging the PCIe physical layer, CXL benefits from a mature ecosystem while introducing new protocols to address the evolving demands of modern data centers, particularly for AI/ML, HPC, and big data workloads.</p>
+            </section>
+        </div>
+
+        <div id="cxl-content" class="main-content-pane hidden">
+            <section class="content-section">
+                <h1>Understanding CXL Technology</h1>
+
+                <nav id="cxl-sub-nav" class="sub-navbar-container mb-6">
+                    <div class="container mx-auto px-2 sm:px-4">
+                        <div class="flex flex-wrap justify-center items-center gap-2">
+                            <a href="#" class="sub-nav-link active" onclick="showCxlSubContent('cxl-versions', this)">Versions</a>
+                            <a href="#" class="sub-nav-link" onclick="showCxlSubContent('cxl-pmem-relevance', this)">Relevance to PMem</a>
+                            <a href="#" class="sub-nav-link" onclick="showCxlSubContent('cxl-vs-ualink', this)">CXL vs UALink</a>
+                            <a href="#" class="sub-nav-link" onclick="showCxlSubContent('cxl-ramp-up', this)">Ramp Up</a>
+                            <a href="#" class="sub-nav-link" onclick="showCxlSubContent('cxl-bottlenecks', this)">Bottlenecks</a>
+                            <a href="#" class="sub-nav-link" onclick="showCxlSubContent('cxl-forecasts', this)">Forecasts</a>
+                        </div>
+                    </div>
+                </nav>
+
+                <div id="cxl-versions-content" class="cxl-sub-content-pane">
+                    <h2>3. CXL Versions: 1.0/1.1 vs. 2.0 vs. 3.0</h2>
+                    <p>The CXL standard has evolved rapidly, with each version introducing significant enhancements.</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature / Characteristic</th>
+                                <th>CXL 1.0/1.1</th>
+                                <th>CXL 2.0</th>
+                                <th>CXL 3.0 (and 3.x foundations)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Underlying PCIe Version</strong></td><td>PCIe 5.0</td><td>PCIe 5.0</td><td>PCIe 6.0</td></tr>
+                            <tr><td><strong>Max Data Rate per Lane</strong></td><td>32 GT/s</td><td>32 GT/s</td><td>64 GT/s</td></tr>
+                            <tr><td><strong>Max Bandwidth (x16 Bi-Dir)</strong></td><td>~64 GB/s</td><td>~64 GB/s</td><td>~128 GB/s</td></tr>
+                            <tr><td><strong>FLIT Size</strong></td><td>68 Bytes</td><td>68 Bytes</td><td>256 Bytes (standard & latency-optimized)</td></tr>
+                            <tr><td><strong>Switching Levels</strong></td><td>None (Point-to-Point)</td><td>Single-Level</td><td>Multi-Level (Fabric)</td></tr>
+                            <tr><td><strong>Max Hosts (Pooling/Sharing)</strong></td><td>1</td><td>Up to 16 (via MLDs)</td><td>Up to 4096 (Fabric Nodes)</td></tr>
+                            <tr><td><strong>Memory Pooling</strong></td><td>No</td><td>Yes (via Switch & MLDs)</td><td>Enhanced (Fabric-level, GFAM/GIM)</td></tr>
+                            <tr><td><strong>Coherent Memory Sharing (HW)</strong></td><td>Host-managed (Device-Host)</td><td>Limited (Software-assisted for Host-Host)</td><td>Yes (Hardware-managed Host-Host, Back-Invalidation)</td></tr>
+                            <tr><td><strong>Peer-to-Peer (Device-Device)</strong></td><td>No</td><td>No</td><td>Yes (CXL.io UIO, CXL.mem in 3.1)</td></tr>
+                            <tr><td><strong>Key Security Features</strong></td><td>PCIe-based</td><td>CXL IDE (Link Encryption)</td><td>CXL IDE, TSP (Confidential Computing)</td></tr>
+                            <tr><td><strong>Fabric Topologies</strong></td><td>Point-to-Point</td><td>Tree-based (Switched)</td><td>Non-Tree (Spine/Leaf, Mesh, etc.), Port-Based Routing (PBR)</td></tr>
+                            <tr><td><strong>Key Use Cases Introduced</strong></td><td>Memory Expansion, Basic Acceleration</td><td>Memory Pooling, Multi-Host Device Access, Persistent Memory Support</td><td>Fabric Disaggregation, Coherent Memory Sharing, P2P, Scalable AI/HPC</td></tr>
+                            <tr><td><strong>Release Date</strong></td><td>1.0 (Mar 2019), 1.1 (Jun/Sep 2019)</td><td>Nov 2020</td><td>Aug 2022 (3.0), 3.1 (Dec 2022)</td></tr>
+                        </tbody>
+                    </table>
+                    <p><em>Source: Adapted from "CXL Evolution: Technical Deep Dive" PDF, page 13-14, and "cxl.pdf", page 3.</em></p>
+                </div>
+
+                <div id="cxl-pmem-relevance-content" class="cxl-sub-content-pane hidden">
+                    <h2>4. How CXL is Relevant to Persistent Memory</h2>
+                    <p>CXL is highly relevant to persistent memory (PMem) and is fundamentally reshaping how PMem is integrated and utilized in computing systems, especially after the discontinuation of Intel's Optane PMem DIMMs.</p>
+                    <p>Here's how CXL plays a crucial role:</p>
+                    <ol>
+                        <li><strong>Enabling Technology for Next-Generation PMem:</strong>
+                            <ul>
+                                <li>With Intel Optane PMem (which used DDR DIMM slots) discontinued, CXL provides a new, standardized pathway for attaching persistent memory to CPUs.</li>
+                                <li>Instead of being tied to proprietary memory technologies or specific CPU sockets via DDR interfaces, PMem can now be implemented as CXL-attached modules (Type 3 devices) that connect via PCIe slots.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Flexible Media Support:</strong>
+                            <ul>
+                                <li>CXL is media-agnostic. This means various non-volatile memory technologies (e.g., NAND flash, ReRAM, MRAM, or future innovations) can be packaged into CXL PMem devices.</li>
+                                <li>This allows for diverse PMem solutions, including DRAM+NAND hybrids for tiered memory approaches.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Disaggregation and Pooling:</strong>
+                            <ul>
+                                <li>CXL 2.0 and later versions, with their switching capabilities, allow PMem resources to be disaggregated from individual CPUs and pooled.</li>
+                                <li>This means a pool of persistent memory can be shared among multiple host processors, improving utilization and allowing dynamic allocation based on workload needs. This was not possible with traditional DIMM-based PMem.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Scalability:</strong>
+                            <ul>
+                                <li>CXL enables scaling PMem capacity beyond the limitations of CPU-local DIMM slots. Systems can access much larger persistent memory tiers through CXL fabrics.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Coherent Access:</strong>
+                            <ul>
+                                <li>The CXL.mem protocol allows the host CPU to access CXL-attached PMem coherently, treating it as part of its addressable memory space. This simplifies software development and allows PMem to be used for use cases requiring low-latency, byte-addressable access, such as in-memory databases, metadata caching, and fast recovery.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Vendor-Neutral Ecosystem:</strong>
+                            <ul>
+                                <li>CXL is an open standard supported by a broad consortium of industry players. This fosters a vendor-neutral ecosystem for PMem solutions, encouraging innovation and competition, unlike the proprietary nature of earlier PMem technologies.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Tiered Memory Architectures:</strong>
+                            <ul>
+                                <li>CXL facilitates the creation of sophisticated tiered memory systems where data can be dynamically moved between different memory types (e.g., DRAM, CXL-DRAM, CXL-PMem, SSDs) based on access patterns and performance requirements. CXL-PMem can serve as a "warm" tier between fast, volatile DRAM and slower block storage.</li>
+                            </ul>
+                        </li>
+                    </ol>
+                    <p>In essence, CXL is not persistent memory itself, but it is the <strong>key enabling interconnect technology</strong> that allows for flexible, scalable, shareable, and vendor-neutral persistent memory solutions in modern data centers. It carries forward the vision of PMem by providing a more robust and adaptable platform for its deployment.</p>
+                </div>
+
+                <div id="cxl-vs-ualink-content" class="cxl-sub-content-pane hidden">
+                    <h2>5. CXL vs. UALink (Ultra Accelerator Link)</h2>
+                    <p>CXL and UALink are both modern interconnect technologies aimed at improving data center performance, but they serve different primary purposes and target different types of connections.</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Compute Express Link (CXL)</th>
+                                <th>Ultra Accelerator Link (UALink)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Primary Purpose</strong></td><td>CPU-to-Memory and CPU-to-Device interconnect. Enables memory expansion, pooling, and coherency for accelerators and memory.</td><td>Accelerator-to-Accelerator interconnect. Designed for high-speed communication between GPUs, custom AI chips, and other accelerators.</td></tr>
+                            <tr><td><strong>Key Focus</strong></td><td>Memory semantics (CXL.mem), cache coherency with CPU (CXL.cache), and I/O (CXL.io).</td><td>High-bandwidth, low-latency direct links between AI accelerators to scale out AI model training and inference.</td></tr>
+                            <tr><td><strong>Connects</strong></td><td>CPUs to memory expanders, persistent memory, GPUs, FPGAs, SmartNICs. Also enables device-to-device communication in later versions.</td><td>GPUs to GPUs, AI ASICs to AI ASICs, or other specialized accelerators to each other within a node or pod.</td></tr>
+                            <tr><td><strong>Coherency</strong></td><td>Provides cache coherency between the CPU and attached devices. CXL 3.0+ supports host-to-host coherent sharing.</td><td>Primarily focused on peer-to-peer accelerator communication. Coherency with the CPU is not its main goal; relies on host interconnects (like CXL or PCIe) for that.</td></tr>
+                            <tr><td><strong>Replaces/Complements</strong></td><td>Complements/enhances PCIe for memory-centric workloads. Aims to provide a more flexible alternative to traditional DDR DIMM slots for memory expansion and PMem.</td><td>Aims to be an open standard alternative to proprietary accelerator interconnects like NVIDIA's NVLink/NVSwitch.</td></tr>
+                            <tr><td><strong>Formation</strong></td><td>Announced March 2019. CXL Consortium manages development.</td><td>Announced May 2024. Promoted by a group including AMD, Intel, Google, Meta, Microsoft, HPE, Cisco, Broadcom.</td></tr>
+                            <tr><td><strong>Underlying Tech</strong></td><td>Builds on PCIe physical layer.</td><td>Details on physical layer are emerging, likely to be a high-speed electrical interface.</td></tr>
+                            <tr><td><strong>Analogy</strong></td><td>CXL is like a versatile highway system connecting cities (CPUs) to suburbs (memory) and industrial parks (accelerators) with shared resources.</td><td>UALink is like a high-speed dedicated train line connecting multiple factories (accelerators) within an industrial super-cluster for rapid exchange of goods.</td></tr>
+                        </tbody>
+                    </table>
+                    <p><strong>In summary:</strong></p>
+                    <ul>
+                        <li><strong>CXL</strong> is about connecting CPUs to a diverse set of devices, especially memory, with a focus on coherency and memory semantics. It's foundational for memory disaggregation and tiering.</li>
+                        <li><strong>UALink</strong> is specifically designed to create powerful, scalable clusters of AI accelerators by enabling them to communicate directly with each other at very high speeds.</li>
+                    </ul>
+                    <p>The two technologies are largely complementary. A high-performance AI server or cluster might use:</p>
+                    <ul>
+                        <li><strong>CXL</strong> to connect CPUs to large pools of shared DRAM and persistent memory, and to provide coherent access for accelerators to this memory.</li>
+                        <li><strong>UALink</strong> to interconnect multiple AI accelerators (e.g., GPUs) within the server or across servers in a pod, allowing them to work together efficiently on massive AI models.</li>
+                    </ul>
+                    <p>Together, they contribute to building more modular, scalable, and efficient data center architectures for demanding workloads.</p>
+                </div>
+
+                <div id="cxl-ramp-up-content" class="cxl-sub-content-pane hidden">
+                    <h2>6. CXL Ramp Up: Adoption and Growth</h2>
+                    <p>The adoption of CXL is progressing in phases, driven by the availability of supporting hardware (CPUs, memory devices, switches), software ecosystem maturity, and the compelling use cases it enables.</p>
+                    <h3>Early Stages (CXL 1.0/1.1):</h3>
+                    <ul>
+                        <li>Initial adoption focused on CXL 1.1, primarily supported by CPUs like Intel's Xeon Scalable "Sapphire Rapids."</li>
+                        <li>Use cases were mainly basic memory expansion (Type 3 devices) and connecting accelerators (Type 1 and Type 2 devices) in point-to-point configurations.</li>
+                        <li>This phase was crucial for hardware validation, ecosystem development, and proof-of-concept deployments.</li>
+                    </ul>
+                    <h3>Current Phase (CXL 2.0 Dominance, Early CXL 3.0):</h3>
+                    <ul>
+                        <li>As of 2024-2025, CXL 2.0 is seeing broader commercial deployments, especially in hyperscale data centers and cloud provider environments.</li>
+                        <li><strong>Key Drivers for CXL 2.0 Adoption:</strong>
+                            <ul>
+                                <li><strong>Memory Pooling and Sharing:</strong> The introduction of CXL switching allows memory resources to be pooled and shared among multiple hosts, improving utilization and flexibility. This is a major draw for hyperscalers.</li>
+                                <li><strong>Increased Memory Capacity:</strong> Demand for larger memory footprints for AI/ML, in-memory databases, and analytics is pushing the need for CXL-based memory expansion modules.</li>
+                                <li><strong>Ecosystem Maturity:</strong> More CXL 2.0 compliant CPUs (from Intel, AMD, and Arm-based vendors), memory modules (from Samsung, SK Hynix, Micron), and switch silicon (from Astera Labs, Marvell, Montage, XConn) are becoming available.</li>
+                                <li><strong>Software Support:</strong> Operating systems (Linux primarily) and hypervisors are maturing their support for CXL 2.0 features like hot-plug, fabric management, and memory tiering.</li>
+                            </ul>
+                        </li>
+                        <li><strong>CXL 3.0 Emergence:</strong>
+                            <ul>
+                                <li>CXL 3.0 products ( leveraging PCIe 6.0 for doubled bandwidth) are beginning to sample or see initial announcements.</li>
+                                <li>Full-scale CXL 3.0 adoption is expected to ramp up from 2025-2026 onwards as the hardware and software ecosystem matures further. Its advanced fabric capabilities (multi-level switching, non-tree topologies, enhanced coherency) are targeted at large-scale disaggregated infrastructure.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <h3>Adoption by Data Center Type (Estimates for 2025):</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data Center Type</th>
+                                <th>Estimated CXL Adoption for PMem/Memory Expansion</th>
+                                <th>Primary CXL Version in Focus</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Hyperscalers</strong> (AWS, Azure, GCP, Meta)</td><td>20-30% actively deploying/piloting CXL</td><td>CXL 2.0 (some 3.0 pilots)</td></tr>
+                            <tr><td><strong>Cloud Service Providers (Tier 2)</strong></td><td>5-10% experimenting or partially deployed</td><td>CXL 2.0</td></tr>
+                            <tr><td><strong>Large Enterprise DCs</strong></td><td>&lt;2% (mostly evaluation phase)</td><td>Evaluating CXL 1.1/2.0</td></tr>
+                            <tr><td><strong>Small/Midsize Enterprise</strong></td><td>&lt;1%</td><td>Limited/No CXL adoption</td></tr>
+                            <tr><td><strong>Colocation/Edge/Other</strong></td><td>&lt;1%</td><td>Limited/No CXL adoption</td></tr>
+                        </tbody>
+                    </table>
+                    <p><em>Source: Adapted from "cxl.pdf", page 21 & 32.</em></p>
+                    <h3>Market Projections:</h3>
+                    <ul>
+                        <li>Analysts project significant growth for the CXL market. For instance, some estimates suggest that over 20% of server memory expansion could use CXL-based solutions by 2026.</li>
+                        <li>The market for CXL-related silicon (controllers, switches, retimers) and memory modules is expected to grow substantially as adoption accelerates.</li>
+                        <li>Hyperscalers are leading the initial wave of CXL deployment, driven by their need for massive scale, resource efficiency, and customizability. Enterprise adoption is expected to follow as the technology becomes more mainstream and cost-effective.</li>
+                    </ul>
+                    <p>The ramp-up is a gradual process, with each CXL generation building on the last, and the ecosystem co-evolving to support new capabilities. AI and LLM workloads are significant drivers, demanding the large, shared, and tiered memory pools that CXL enables.</p>
+                </div>
+
+                <div id="cxl-bottlenecks-content" class="cxl-sub-content-pane hidden">
+                    <h2>7. CXL Bottlenecks in Technology and Adoption</h2>
+                    <p>Despite its promise, the widespread adoption of CXL faces several technological and ecosystem-related bottlenecks:</p>
+                    <ol>
+                        <li><strong>Maturity and Availability of CXL Switches (Especially for CXL 2.0+):</strong>
+                            <ul>
+                                <li><strong>Challenge:</strong> CXL 2.0 introduced switching, which is crucial for memory pooling and fabric capabilities. However, the availability of high-performance, low-latency, and feature-rich CXL switches has been a pacing item.</li>
+                                <li><strong>Impact:</strong> Delays in switch availability can slow down the deployment of true memory pooling and disaggregated architectures.</li>
+                                <li><strong>Reasons:</strong> Complex silicon design, signal integrity challenges at high speeds (PCIe 5.0/6.0), power consumption, thermal management, and foundry capacity constraints.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Memory Device Ecosystem Development:</strong>
+                            <ul>
+                                <li><strong>Challenge:</strong> While DRAM-based CXL memory expanders (Type 3 devices) are emerging, the ecosystem for diverse CXL-attached persistent memory modules and other novel memory types is still developing.</li>
+                                <li><strong>Impact:</strong> Limits the immediate options for building tiered memory systems with varied CXL-PMem characteristics.</li>
+                                <li><strong>Reasons:</strong> Development of new NVM technologies, controller IP for these memories, standardization of form factors (though EDSFF is gaining traction), and cost-effectiveness.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Software and Firmware Ecosystem Maturity:</strong>
+                           <ul>
+                                <li><strong>Challenge:</strong> Full-featured support for CXL in operating systems (Linux, Windows Server), hypervisors (VMware, KVM), and firmware (BIOS/UEFI) is critical but takes time to mature.</li>
+                                <li><strong>Impact:</strong> Hardware capabilities might be available before the software can fully exploit them. This includes areas like:
+                                    <ul>
+                                        <li>Robust fabric management for large-scale CXL deployments.</li>
+                                        <li>Efficient memory tiering algorithms.</li>
+                                        <li>Security management for shared memory resources.</li>
+                                        <li>Standardized APIs for memory pooling and device management.</li>
+                                        <li>RAS (Reliability, Availability, Serviceability) features for CXL fabrics.</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Reasons:</strong> Complexity of managing coherent, disaggregated resources; need for new OS primitives and management tools.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Standardization, Compliance, and Interoperability:</strong>
+                            <ul>
+                                <li><strong>Challenge:</strong> While CXL is an open standard, ensuring seamless interoperability between CPUs, switches, and devices from different vendors is a continuous effort.</li>
+                                <li><strong>Impact:</strong> Interoperability issues can lead to integration challenges and slow down adoption.</li>
+                                <li><strong>Reasons:</strong> The CXL specification is complex and evolving. Compliance testing programs (e.g., "Plugfests") are essential but take time to cover all scenarios and device combinations.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Cost of Adoption:</strong>
+                            <ul>
+                                <li><strong>Challenge:</strong> Initial CXL-enabled components (CPUs with CXL controllers, CXL switches, CXL memory modules) may carry a premium cost compared to traditional solutions.</li>
+                                <li><strong>Impact:</strong> Can be a barrier for cost-sensitive segments of the market, leading to a phased adoption curve starting with hyperscalers and high-performance computing.</li>
+                                <li><strong>Reasons:</strong> R&D investment, new silicon, and initial lower manufacturing volumes.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Complexity of Coherency Management in Large Fabrics (CXL 3.0+):</strong>
+                            <ul>
+                                <li><strong>Challenge:</strong> While CXL 3.0 introduces hardware-managed coherency across multiple hosts, ensuring efficiency, scalability, and correctness in very large, dynamic fabrics remains a complex engineering challenge.</li>
+                                <li><strong>Impact:</strong> May require sophisticated fabric managers and careful system design to avoid performance bottlenecks or coherency issues.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Platform Integration Challenges:</strong>
+                            <ul>
+                                <li><strong>Challenge:</strong> Integrating CXL controllers into CPUs with sufficient lanes and bandwidth, designing motherboards and systems that can handle the signal integrity and power requirements of CXL links, especially at PCIe 6.0 speeds for CXL 3.0.</li>
+                                <li><strong>Impact:</strong> System-level design complexities can affect time-to-market for CXL-enabled platforms.</li>
+                            </ul>
+                        </li>
+                    </ol>
+                    <p>Addressing these bottlenecks requires coordinated efforts across the CXL Consortium, CPU vendors, device manufacturers, switch providers, and software developers. As the ecosystem matures, many of these challenges are expected to be overcome, paving the way for broader CXL adoption.</p>
+                </div>
+
+                <div id="cxl-forecasts-content" class="cxl-sub-content-pane hidden">
+                    <h2>9. Forecast Tables and CXL Ramp Up</h2>
+                    <p>Predicting the exact adoption trajectory and market size for an emerging technology like CXL involves various factors, but industry analysts and market players have provided some forecasts.</p>
+                    <h3>A. Estimated CXL Adoption for Persistent Memory / Memory Expansion by Data Center Type (2025, 2027, 2030):</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data Center Type</th>
+                                <th>2025 (%)</th>
+                                <th>2027 (%)</th>
+                                <th>2030 (%)</th>
+                                <th>Justification for Trend</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Hyperscalers</strong></td><td>25-30</td><td>50-60</td><td>75-85</td><td>Leading adoption due to massive scale, AI/ML needs, and focus on TCO. Rapid integration of CXL 2.0/3.0.</td></tr>
+                            <tr><td><strong>Cloud Service Providers (Tier 2)</strong></td><td>5-10</td><td>20-30</td><td>50-60</td><td>Following hyperscalers, adopting CXL for competitive offerings, especially for AI and data-intensive services.</td></tr>
+                            <tr><td><strong>Large Enterprises</strong></td><td>&lt;2</td><td>10-15</td><td>30-40</td><td>Slower adoption curve, driven by specific use cases (e.g., large databases, analytics). CXL 2.0/3.0 benefits become more apparent and cost-effective over time.</td></tr>
+                            <tr><td><strong>Mid/Small Enterprises</strong></td><td>&lt;1</td><td>3-5</td><td>10-15</td><td>Adoption depends on mainstream availability, ease of use, and clear ROI. Likely to adopt CXL through solutions from major OEMs.</td></tr>
+                            <tr><td><strong>Edge / Colocation / Gov</strong></td><td>&lt;1</td><td>2-5</td><td>5-10</td><td>Niche adoption based on specific requirements for performance, density, or specialized workloads.</td></tr>
+                        </tbody>
+                    </table>
+                    <p><em>Source: Adapted from "cxl.pdf" (page 25) projections and general industry trends. These are illustrative estimates.</em></p>
+                    
+                    <h3>B. Total Addressable Market (TAM) and Serviceable Available Market (SAM) for Rambus in CXL & Next-Gen Memory (Illustrative):</h3>
+                    <p>The "cxl.pdf" provided a specific forecast for Rambus, which can serve as an example of how a component/IP provider views the market growth.</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>TAM (CXL & Next-Gen Memory)</th>
+                                <th>SAM (Serviceable by a company like Rambus)</th>
+                                <th>Key Drivers & Assumptions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>2024</td><td>~$0.5B</td><td>~$0.2B</td><td>Initial CXL 2.0 deployments. Limited vendors for switches/controllers. Rambus entering partnerships.</td></tr>
+                            <tr><td>2025</td><td>~$1.2B</td><td>~$0.45B</td><td>Pilot-scale CXL memory pooling in AI/ML. Early ramp of CXL DDR5 buffers.</td></tr>
+                            <tr><td>2026</td><td>~$2.5B</td><td>~$1.0B</td><td>Broader Tier-1 cloud adoption. CXL 3.0 sampling. Switch vendors ramp volume. More design wins for CXL IP/chips.</td></tr>
+                            <tr><td>2027</td><td>~$4.0B</td><td>~$1.8B</td><td>Large-scale disaggregated memory in cloud/enterprise. CXL for PMem replacement.</td></tr>
+                            <tr><td>2028</td><td>~$6.0B</td><td>~$2.5B</td><td>CXL mainstream in Tier-2 CSPs & enterprise. DRAM shifts to CXL form factors.</td></tr>
+                            <tr><td>2029</td><td>~$8.5B</td><td>~$3.8B</td><td>Data center architecture increasingly memory-centric and composable via CXL.</td></tr>
+                            <tr><td>2030</td><td>~$11-12B</td><td>~$5.0-6.0B</td><td>CXL as default fabric for memory expansion, pooling, PMem. Component/IP providers like Rambus target full stack.</td></tr>
+                        </tbody>
+                    </table>
+                    <p><em>Source: Adapted from "cxl.pdf", page 58. TAM includes CXL switch ICs, memory buffer chips, modules, controller/PHY IP, software. SAM is the portion a specific company can realistically target.</em></p>
+                    
+                    <h3>CXL Ramp Up - General Trends:</h3>
+                    <ul>
+                        <li><strong>Phase 1 (2020-2023 - CXL 1.1/Early 2.0):</strong> Dominated by early adopters, primarily hyperscalers. Focus on memory expansion and initial accelerator connectivity. CPU support (e.g., Intel Sapphire Rapids) was a key enabler.</li>
+                        <li><strong>Phase 2 (2024-2026 - CXL 2.0 Mainstream, Early CXL 3.0):</strong>
+                            <ul>
+                                <li>Broader CXL 2.0 adoption across cloud providers and starting in enterprises.</li>
+                                <li>Memory pooling becomes a significant use case.</li>
+                                <li>More diverse CXL memory modules (DRAM, PMem, Hybrid) and switches become available from multiple vendors (Astera Labs, Montage, Samsung, SK Hynix, Micron).</li>
+                                <li>CXL 3.0 products begin to appear, targeting high-end systems and future disaggregated architectures.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Phase 3 (2027-2030+ - CXL 3.0+ Dominance):</strong>
+                            <ul>
+                                <li>CXL 3.0 and subsequent versions become the standard for memory-centric infrastructure.</li>
+                                <li>Fully disaggregated and composable systems leveraging CXL fabrics become more common.</li>
+                                <li>The software ecosystem (OS, fabric managers, orchestration) matures to fully exploit CXL capabilities.</li>
+                                <li>Significant impact on data center TCO and efficiency.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p>The ramp-up is driven by the continuous need for more memory bandwidth and capacity, the rise of AI/ML workloads, and the industry's push towards more flexible and efficient data center architectures.</p>
+                </div>
+            </section>
+        </div>
+
+        <div id="astera-content" class="main-content-pane hidden">
+            <section class="content-section">
+                <h1>Astera Labs and CXL</h1>
+                <h2>10. Astera Labs: A Key Enabler in the CXL Ecosystem</h2>
+                <p>Astera Labs has emerged as a significant pure-play hardware company focused on purpose-built connectivity solutions for intelligent systems, with a strong emphasis on the Compute Express Link (CXL) ecosystem. Their products are critical for enabling the memory expansion, pooling, and sharing capabilities that CXL promises, particularly for data-intensive workloads in cloud and AI infrastructure.</p>
+                <h3>Role and Product Portfolio:</h3>
+                <p>Astera Labs provides essential semiconductor-based connectivity solutions that address the bottlenecks in data centers. Their CXL-focused portfolio includes:</p>
+                <ul>
+                    <li><strong>Leo CXL Smart Memory Controllers:</strong> These controllers are designed to enable robust CXL 1.1/2.0 connectivity for memory expansion and pooling. They allow CPUs to access and share vast pools of memory over CXL, overcoming traditional memory limitations. The Leo controllers facilitate the creation of CXL-attached memory modules (Type 3 devices).</li>
+                    <li><strong>Aries CXL Smart Retimers (PCIe/CXL Retimers):</strong> While not exclusively CXL switches, Aries Retimers are crucial for maintaining signal integrity over longer CXL links, which is essential for building larger and more complex CXL topologies, including those involving switches. They regenerate high-speed signals, extending the reach and reliability of PCIe and CXL connections.</li>
+                    <li><strong>Scorpio CXL Smart Fabric Switches (Conceptual/Roadmap):</strong> While the "Astera.pdf" primarily details their retimers and memory controllers with existing market share, the broader context of CXL includes switches as a key component for fabric capabilities. Astera Labs is strategically positioned to offer or enable CXL switch solutions, which are vital for CXL 2.0 memory pooling and multi-host device access. The provided document ("Astera.pdf", page 5) notes Astera Labs' Aries Smart Retimers & CXL switches with a high maturity (shipping) and an estimated market share of 35-40% in CXL switches as of 2025, highlighting them as a first-mover and dominant player in early CXL 2.0 switch silicon.</li>
+                </ul>
+                <h3>Market Position and Relevance:</h3>
+                <ul>
+                    <li><strong>First-Mover Advantage:</strong> Astera Labs has been an early and active contributor to the CXL ecosystem, allowing them to establish a strong market presence, particularly with hyperscalers and major CPU/GPU vendors.</li>
+                    <li><strong>Focus on Memory Bottlenecks:</strong> Their solutions directly target the "memory wall" by enabling CXL-based memory expansion and pooling. This is critical for AI/ML training/inference, in-memory databases, and other memory-intensive applications.</li>
+                    <li><strong>Ecosystem Collaboration:</strong> Astera Labs works closely with CPU vendors, memory module manufacturers, and system OEMs to ensure interoperability and drive CXL adoption.</li>
+                    <li><strong>Enabling Disaggregation:</strong> By providing the necessary connectivity hardware, Astera Labs plays a crucial role in the shift towards disaggregated and composable data center architectures where memory resources can be dynamically allocated.</li>
+                </ul>
+                <h3>Benefits from CXL Adoption:</h3>
+                <p>As CXL adoption grows, Astera Labs is poised to benefit significantly:</p>
+                <ul>
+                    <li><strong>Increased Demand for CXL Connectivity Solutions:</strong> The expansion of CXL into more server platforms and data centers directly drives demand for their Leo controllers and Aries retimers.</li>
+                    <li><strong>Growth in Memory Pooling and Tiering:</strong> The trend towards memory pooling and sophisticated memory tiering, enabled by CXL 2.0 and beyond, relies heavily on the types of solutions Astera Labs provides.</li>
+                    <li><strong>Leadership in a High-Growth Market:</strong> CXL is a key technology for future data centers, and Astera Labs' early leadership and focused product portfolio position them well to capture a significant share of this growing market.</li>
+                </ul>
+                <p>In summary, Astera Labs is a pivotal player in the CXL supply chain, providing the foundational hardware that makes CXL's vision of a more flexible, scalable, and efficient memory hierarchy a reality. Their focus on CXL switches and smart memory controllers makes them indispensable for realizing the benefits of memory pooling and disaggregation in modern data centers.</p>
+            </section>
+        </div>
+
+        <div id="charts-content" class="main-content-pane hidden">
+            <section class="content-section"> 
+                <header class="mb-8 text-center">
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Persistent Memory Insights</h1>
+                    <p class="text-gray-600 mt-2">Adoption Trends (2025-2030) & Global Landscape</p>
+                </header>
+            
+                <div class="charts-container-box"> 
+                    <h2 class="text-2xl font-semibold mb-6 text-gray-700 text-center">Persistent Memory Adoption (%) by Data Center Type</h2>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th rowspan="2" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky left-0 bg-gray-50 z-10">Data Center Type</th>
+                                    <th colspan="3" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Intel Optane (DCPMM/DMIM)</th>
+                                    <th colspan="3" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">CXL-Based PMem</th>
+                                    <th colspan="3" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">NVMe-over-PMem</th>
+                                    <th colspan="3" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Emerging NVM (MRAM/ReRAM)</th>
+                                    <th colspan="3" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">SSD-backed Memory Tier</th>
+                                </tr>
+                                <tr>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">2025</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">2027</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">2030</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">2025</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">2027</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">2030</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">2025</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">2027</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">2030</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">2025</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">2027</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">2030</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">2025</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">2027</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">2030</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200" id="dataTableBody">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            
+                <div class="charts-container-box"> 
+                    <h2 class="text-2xl font-semibold mb-8 text-gray-700 text-center">Visualizations</h2>
+                    <div class="grid md:grid-cols-2 gap-8 charts-grid">
+                        <div>
+                            <h3 class="chart-title">Global Data Center Market Share (2025 Est.)</h3>
+                            <canvas id="globalLandscapePieChart" style="max-height: 400px;"></canvas>
+                        </div>
+                        <div>
+                            <h3 class="chart-title">CXL Adoption Trend (Hyperscalers & Cloud Providers Tier 2)</h3>
+                            <canvas id="cxlAdoptionLineChart" style="max-height: 400px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                     <h2>Justifications</h2>
+
+  <h3>Intel Optane (DCPMM/DMIM)</h3>
+  <p><strong>2025:</strong> Still moderately used, especially in enterprises and cloud providers, but sales stopped in 2022, so adoption is declining.</p>
+  <p><strong>2027:</strong> Many data centers will phase out Optane hardware due to discontinued production and support.</p>
+  <p><strong>2030:</strong> Expected near zero usage, replaced by newer tech like CXL.</p>
+
+  <h3>CXL-Based Persistent Memory</h3>
+  <p><strong>2025:</strong> Strong adoption in hyperscalers (25–30%) due to early investment; smaller cloud and enterprise adoption (under 10%) because ecosystem is maturing.</p>
+  <p><strong>2027:</strong> Expected rapid adoption with CXL 3.0 standard and broader ecosystem support. CXL enables disaggregated, pooled memory, highly attractive for AI/ML/data-intensive apps.</p>
+  <p><strong>2030:</strong> Majority of hyperscalers and cloud data centers will have shifted to CXL PMem; large enterprises will be catching up.</p>
+
+  <h3>NVMe-over-PMem (Software PMem)</h3>
+  <p><strong>2025:</strong> Small but growing niche; software-defined PMem caching/pooling solutions like MemVerge are in pilots.</p>
+  <p><strong>2027:</strong> Increasing use for workload acceleration and caching tiers.</p>
+  <p><strong>2030:</strong> Steady growth, but still niche compared to hardware-level CXL.</p>
+
+  <h3>Emerging NVM (MRAM, ReRAM, etc.)</h3>
+  <p><strong>2025:</strong> Primarily in research labs and very early edge use.</p>
+  <p><strong>2027:</strong> Some early commercial deployments, mostly for specialized low-power or fast non-volatile cache.</p>
+  <p><strong>2030:</strong> Some penetration in edge/IoT, still rare in large data centers.</p>
+
+  <h3>SSD-backed Memory Tier</h3>
+  <p><strong>2025:</strong> Universal baseline storage tier; used as backing store for most applications.</p>
+  <p><strong>2027–2030:</strong> Slight decline as newer PMem technologies reduce dependence on slower SSDs for “near memory” tier, but still vital for bulk storage.</p>
+
+  <h2>Summary</h2>
+  <p>Intel Optane is quickly phasing out due to discontinued supply.</p>
+  <p>CXL PMem is the key emerging technology and will dominate by 2030, especially in hyperscalers and cloud providers.</p>
+  <p>Software PMem solutions will grow but stay complementary to hardware PMem.</p>
+  <p>Emerging NVM will mostly stay niche for the next 5+ years.</p>
+  <p>SSD tiers remain foundational but will gradually reduce in relative importance.</p>
+                </div>
+            
+                <footer class="mt-12 text-center text-gray-500 text-sm">
+                    <p>Data sourced from provided PDF document. Charts are illustrative.</p>
+                </footer>
+            </section>
+        </div>
+        
+        <div id="rambus-content" class="main-content-pane hidden">
+            <section class="content-section">
+                <h1>Rambus Inc.</h1>
+                <p>Rambus is a strong strategic play in the rapidly evolving data center and AI infrastructure landscape, as it sits at the intersection of next-generation memory and high-speed interconnects like CXL, DDR5, and PCIe 6.0. With hyperscalers and AI compute providers increasingly shifting to memory-intensive architectures, Rambus benefits from both chip sales (e.g., memory buffers and RCDs) and high-margin IP licensing (PHYs, controllers, and security blocks). As CXL adoption accelerates and DDR5 becomes mainstream, Rambus is uniquely positioned to capitalize due to its deep technical expertise, early ecosystem partnerships, and a proven track record in enabling high-performance, secure semiconductor designs.</p>
+                
+                <div class="rambus-dashboard-container mt-8"> <header class="mb-8 text-center rambus-header">
+                        <h1>Rambus Inc. (RMBS)</h1>
+                        <p>Performance & Strategic Dashboard</p>
+                    </header>
+            
+                    <div class="mb-8 p-6 bg-white rounded-xl shadow-lg">
+                        <h2 class="rambus-section-title text-indigo-500">Company Snapshot</h2>
+                        <p class="text-gray-700 leading-relaxed">
+                            Rambus Inc. is a provider of industry-leading chips and silicon IP, making data faster and safer. It plays a crucial role in the semiconductor ecosystem, with a strong focus on <span class="font-semibold text-indigo-600">Data Center</span> and <span class="font-semibold text-indigo-600">Artificial Intelligence (AI)</span> markets. The company is evolving from primarily IP licensing to a balanced model with significant chip product revenue.
+                        </p>
+                        <div class="mt-4">
+                            <span class="inline-block bg-indigo-100 text-indigo-700 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">NASDAQ: RMBS</span>
+                            <span class="inline-block bg-sky-100 text-sky-700 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Semiconductors</span>
+                            <span class="inline-block bg-emerald-100 text-emerald-700 text-xs font-semibold px-2.5 py-0.5 rounded-full">Memory Interface</span>
+                        </div>
+                    </div>
+            
+                    <section class="mb-8">
+                        <h2 class="rambus-section-title">Q1 2025 Financial Highlights (vs Q1 2024)</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div class="rambus-kpi-card">
+                                <h3 class="rambus-kpi-title">Total GAAP Revenue</h3>
+                                <p class="rambus-kpi-value">$166.7 M</p>
+                                <p class="rambus-kpi-change rambus-positive-change">+41.4% YoY</p>
+                            </div>
+                            <div class="rambus-kpi-card">
+                                <h3 class="rambus-kpi-title">Product Revenue</h3>
+                                <p class="rambus-kpi-value">$76.3 M</p>
+                                <p class="rambus-kpi-change rambus-positive-change">+51.4% YoY (Record)</p>
+                            </div>
+                            <div class="rambus-kpi-card">
+                                <h3 class="rambus-kpi-title">Royalties</h3>
+                                <p class="rambus-kpi-value">$74.0 M</p>
+                                <p class="rambus-kpi-change rambus-positive-change">+55.8% YoY</p>
+                            </div>
+                            <div class="rambus-kpi-card">
+                                <h3 class="rambus-kpi-title">GAAP Net Income</h3>
+                                <p class="rambus-kpi-value">$60.3 M</p>
+                                <p class="rambus-kpi-change rambus-positive-change">+83.3% YoY</p>
+                            </div>
+                            <div class="rambus-kpi-card">
+                                <h3 class="rambus-kpi-title">GAAP Diluted EPS</h3>
+                                <p class="rambus-kpi-value">$0.56</p>
+                                <p class="rambus-kpi-change rambus-positive-change">vs $0.30 YoY (+86.7%)</p>
+                            </div>
+                            <div class="rambus-kpi-card">
+                                <h3 class="rambus-kpi-title">Cash from Operations</h3>
+                                <p class="rambus-kpi-value">$77.4 M</p>
+                                <p class="rambus-kpi-change rambus-positive-change">+97.9% YoY</p>
+                            </div>
+                        </div>
+                    </section>
+            
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                        <section>
+                            <h2 class="rambus-section-title">Revenue Mix (Q1 2025)</h2>
+                            <div class="bg-white p-6 rounded-xl shadow-lg">
+                                <div class="space-y-3">
+                                    <div>
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-base font-medium text-blue-700">Product Revenue</span>
+                                            <span class="text-sm font-medium text-blue-700">45.8%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="bg-blue-600 h-2.5 rounded-full" style="width: 45.8%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-base font-medium text-green-700">Royalties</span>
+                                            <span class="text-sm font-medium text-green-700">44.4%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="bg-green-500 h-2.5 rounded-full" style="width: 44.4%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-base font-medium text-purple-700">Contract & Other</span>
+                                            <span class="text-sm font-medium text-purple-700">9.8%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="bg-purple-600 h-2.5 rounded-full" style="width: 9.8%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="mt-4 text-sm text-gray-600">Demonstrates a balanced model with strong growth in product revenue, aligning with strategic shift.</p>
+                            </div>
+                        </section>
+            
+                        <section>
+                            <h2 class="rambus-section-title">Q2 2025 Outlook</h2>
+                            <div class="bg-white p-6 rounded-xl shadow-lg grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="rambus-kpi-card !shadow-none !p-4 border border-gray-200">
+                                    <h3 class="rambus-kpi-title">Product Revenue</h3>
+                                    <p class="rambus-kpi-value text-2xl">$77M - $83M</p>
+                                </div>
+                                <div class="rambus-kpi-card !shadow-none !p-4 border border-gray-200">
+                                    <h3 class="rambus-kpi-title">Licensing Billings</h3>
+                                    <p class="rambus-kpi-value text-2xl">$64M - $70M</p>
+                                </div>
+                                 <div class="rambus-kpi-card !shadow-none !p-4 border border-gray-200 col-span-1 sm:col-span-2">
+                                    <h3 class="rambus-kpi-title">Contract & Other Revenue</h3>
+                                    <p class="rambus-kpi-value text-2xl">$17M - $23M</p>
+                                </div>
+                            </div>
+                            <p class="mt-4 text-sm text-gray-600">Guidance suggests continued momentum, especially in product revenue.</p>
+                        </section>
+                    </div>
+                    
+                    <section class="mb-8">
+                        <h2 class="rambus-section-title">Strategic Pillars & Growth Drivers</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="rambus-kpi-card">
+                                <h3 class="rambus-kpi-title flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" /></svg>
+                                    DDR5 Leadership
+                                </h3>
+                                <p class="text-gray-700 mt-2 text-sm leading-relaxed">Dominant market position in DDR5 server & client memory interface chipsets (RCDs, PMICs, CKDs). Strong demand from data center upgrades and AI PCs.</p>
+                            </div>
+                            <div class="rambus-kpi-card">
+                                <h3 class="rambus-kpi-title flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7.014A7.987 7.987 0 0122 12c0 3-1 7-6.343 6.657z" /></svg>
+                                    CXL Monetization
+                                </h3>
+                                <p class="text-gray-700 mt-2 text-sm leading-relaxed">Significant growth vector via IP licensing (CXL 2.0/3.1 controllers with IDE security) and potential for CXL-based chip solutions. Key for next-gen data centers.</p>
+                            </div>
+                            <div class="rambus-kpi-card">
+                                <h3 class="rambus-kpi-title flex items-center">
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+                                    AI & Data Center Focus
+                                </h3>
+                                <p class="text-gray-700 mt-2 text-sm leading-relaxed">Products address critical memory bandwidth, capacity, and latency needs for AI/ML workloads and expanding data center infrastructure.</p>
+                            </div>
+                        </div>
+                    </section>
+            
+                    <section class="mb-8">
+                        <h2 class="rambus-section-title">Persistent Memory (PM) & CXL Strategy</h2>
+                        <div class="bg-white p-6 rounded-xl shadow-lg">
+                            <p class="text-gray-700 mb-3 leading-relaxed">Rambus is strategically leveraging CXL to enable new memory tiers, including persistent memory, for data centers. While having a history with NVDIMM (DDR4 NVRCD), the current emphasis is on CXL as the more flexible and scalable path forward.</p>
+                            <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
+                                <li><span class="font-semibold">CXL Controller IP:</span> Offers CXL 2.0 & 3.1 controllers with key differentiators like zero-latency Integrity & Data Encryption (IDE) and Global Fabric Attached Memory (G-FAM) support.</li>
+                                <li><span class="font-semibold">CXL Memory Initiative:</span> Aims to create "novel memory solutions" to address latency gaps and bandwidth starvation.</li>
+                                <li><span class="font-semibold">Enabling PM via CXL:</span> Positioned to provide controller technology for CXL Type 3 memory expander devices, which can be populated with persistent media (SCM, NAND) by partners.</li>
+                                <li><span class="font-semibold">CXL PDK:</span> A Platform Development Kit with a CXL controller chip prototype signals capabilities beyond IP, potentially for future chip products.</li>
+                            </ul>
+                        </div>
+                    </section>
+            
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                        <section>
+                            <h2 class="rambus-section-title">Market Opportunity</h2>
+                            <div class="bg-white p-6 rounded-xl shadow-lg space-y-4">
+                                <div>
+                                    <h4 class="font-semibold text-lg text-sky-600">NVDIMM Market</h4>
+                                    <p class="text-sm text-gray-600">Global market valued at $3.51B (2024), projected to reach <span class="font-bold">$21.20B by 2030</span> (34.1% CAGR). NVDIMM-P segment to see fastest growth (44.3% CAGR).</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-lg text-emerald-600">CXL Market</h4>
+                                    <p class="text-sm text-gray-600">Projected to reach <span class="font-bold">~$15B - $16B by 2028</span> (from $14M in 2023). CXL Controller IP market alone to hit $2.31B by 2033 (37.6% CAGR).</p>
+                                    <p class="text-xs text-gray-500 mt-1">Adoption driven by AI/ML, memory disaggregation, and rising CPU core counts.</p>
+                                </div>
+                            </div>
+                        </section>
+            
+                        <section>
+                            <h2 class="rambus-section-title">Competitive Strengths</h2>
+                            <div class="bg-white p-6 rounded-xl shadow-lg">
+                                <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
+                                    <li><span class="font-semibold">Differentiated CXL IP:</span> Integrated zero-latency IDE security, advanced CXL 3.1 features (G-FAM).</li>
+                                    <li><span class="font-semibold">Proven Architecture:</span> CXL controllers built on silicon-proven PCIe base.</li>
+                                    <li><span class="font-semibold">Strategic Acquisitions:</span> PLDA & AnalogX enhance CXL/PCIe IP and SerDes capabilities.</li>
+                                    <li><span class="font-semibold">Expanding Product Portfolio:</span> Shift towards higher-margin chip sales alongside IP licensing.</li>
+                                    <li><span class="font-semibold">Strong Patent Portfolio:</span> Approx. 2,700 patents and applications.</li>
+                                     <li><span class="font-semibold">Ecosystem Enablement:</span> CXL PDK to accelerate partner development.</li>
+                                </ul>
+                            </div>
+                        </section>
+                    </div>
+                    
+                    <section class="mb-8">
+                        <h2 class="rambus-section-title">Investment Snapshot (Speculative Buy - Long Term)</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-green-50 p-6 rounded-xl border border-green-200 shadow-md">
+                                <h3 class="text-xl font-semibold text-green-700 mb-3">Key Opportunities</h3>
+                                <ul class="list-disc list-inside space-y-1 text-sm text-green-800">
+                                    <li>Sustained DDR5 market leadership and profitability.</li>
+                                    <li>Significant CXL monetization (IP & potential chips).</li>
+                                    <li>Strong leverage to Data Center & AI growth.</li>
+                                    <li>Enabling role in persistent memory via CXL.</li>
+                                    <li>Robust balance sheet (debt-free, strong cash flow).</li>
+                                </ul>
+                            </div>
+                            <div class="bg-red-50 p-6 rounded-xl border border-red-200 shadow-md">
+                                <h3 class="text-xl font-semibold text-red-700 mb-3">Key Risks</h3>
+                                <ul class="list-disc list-inside space-y-1 text-sm text-red-800">
+                                    <li>Intense competition in CXL space (IP vendors, chip makers).</li>
+                                    <li>Pace of CXL market adoption (CPU dependent).</li>
+                                    <li>Execution risk in CXL chip commercialization.</li>
+                                    <li>Potential cyclicality in IP licensing revenues.</li>
+                                    <li>Evolving persistent memory landscape.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                    <footer class="text-center mt-12 py-4 border-t border-gray-300">
+                        <p class="text-sm text-gray-500">This dashboard provides a summary based on available data as of Q1 2025. For detailed information, refer to official Rambus Inc. investor relations and SEC filings. This is not financial advice.</p>
+                    </footer>
+                </div> </section>
+        </div>
+
+    </div>
+
+    <script>
+        // Store chart instances to prevent re-initialization issues
+        let globalLandscapePieChartInstance = null;
+        let cxlAdoptionLineChartInstance = null;
+
+        function initializeCharts() {
+            // Destroy existing charts if they exist
+            if (globalLandscapePieChartInstance) {
+                globalLandscapePieChartInstance.destroy();
+                globalLandscapePieChartInstance = null; // Nullify after destroying
+            }
+            if (cxlAdoptionLineChartInstance) {
+                cxlAdoptionLineChartInstance.destroy();
+                cxlAdoptionLineChartInstance = null; // Nullify after destroying
+            }
+            
+            // Helper function to parse percentage strings like "25-30%" or "<1%" or "90%+" into an average number
+            function parsePercentage(value) {
+                if (typeof value !== 'string') return 0;
+                value = value.replace('%', '').replace('+', '');
+                if (value.includes('-')) {
+                    const parts = value.split('-');
+                    return (parseFloat(parts[0]) + parseFloat(parts[1])) / 2;
+                } else if (value.startsWith('<')) {
+                     return parseFloat(value.substring(1)) * 0.9; // Represent <1 as 0.9 for charting
+                } else if (value.startsWith('~')) {
+                    return parseFloat(value.substring(1));
+                }
+                const num = parseFloat(value);
+                return isNaN(num) ? 0 : num;
+            }
+
+            function parseSharePercentage(value) {
+                if (typeof value !== 'string') return 0;
+                const match = value.match(/(\d+(\.\d+)?)/); 
+                return match ? parseFloat(match[0]) : 0;
+            }
+
+            const rawDataPersistentMemory = [
+                {"Data Center Type": "Hyperscalers", "Intel Optane 2025": "40%", "Intel Optane 2027": "20%", "Intel Optane 2030": "5%", "CXL-Based PMem 2025": "25-30%", "CXL-Based PMem 2027": "50%", "CXL-Based PMem 2030": "75%", "NVMe-over-PMem 2025": "5-10%", "NVMe-over-PMem 2027": "10%", "NVMe-over-PMem 2030": "15%", "Emerging NVM 2025": "<1%", "Emerging NVM 2027": "2%", "Emerging NVM 2030": "5%", "SSD-backed Memory Tier 2025": "90%+", "SSD-backed Memory Tier 2027": "85%", "SSD-backed Memory Tier 2030": "70%"},
+                {"Data Center Type": "Cloud Providers (Tier 2)", "Intel Optane 2025": "30%", "Intel Optane 2027": "15%", "Intel Optane 2030": "3%", "CXL-Based PMem 2025": "5-10%", "CXL-Based PMem 2027": "20%", "CXL-Based PMem 2030": "50%", "NVMe-over-PMem 2025": "2-5%", "NVMe-over-PMem 2027": "5%", "NVMe-over-PMem 2030": "8%", "Emerging NVM 2025": "<1%", "Emerging NVM 2027": "1%", "Emerging NVM 2030": "3%", "SSD-backed Memory Tier 2025": "80%", "SSD-backed Memory Tier 2027": "75%", "SSD-backed Memory Tier 2030": "60%"},
+                {"Data Center Type": "Large Enterprises", "Intel Optane 2025": "20-25%", "Intel Optane 2027": "10%", "Intel Optane 2030": "2%", "CXL-Based PMem 2025": "<2%", "CXL-Based PMem 2027": "10%", "CXL-Based PMem 2030": "40%", "NVMe-over-PMem 2025": "<1%", "NVMe-over-PMem 2027": "2%", "NVMe-over-PMem 2030": "5%", "Emerging NVM 2025": "0%", "Emerging NVM 2027": "1%", "Emerging NVM 2030": "2%", "SSD-backed Memory Tier 2025": "70-80%", "SSD-backed Memory Tier 2027": "70%", "SSD-backed Memory Tier 2030": "55%"},
+                {"Data Center Type": "Mid/Small Enterprises", "Intel Optane 2025": "5-10%", "Intel Optane 2027": "3%", "Intel Optane 2030": "1%", "CXL-Based PMem 2025": "<1%", "CXL-Based PMem 2027": "5%", "CXL-Based PMem 2030": "15%", "NVMe-over-PMem 2025": "~0%", "NVMe-over-PMem 2027": "1%", "NVMe-over-PMem 2030": "2%", "Emerging NVM 2025": "0%", "Emerging NVM 2027": "0%", "Emerging NVM 2030": "1%", "SSD-backed Memory Tier 2025": "70-90%", "SSD-backed Memory Tier 2027": "70%", "SSD-backed Memory Tier 2030": "60%"},
+                {"Data Center Type": "Edge / Colocation / Gov", "Intel Optane 2025": "5%", "Intel Optane 2027": "2%", "Intel Optane 2030": "0.5%", "CXL-Based PMem 2025": "<1%", "CXL-Based PMem 2027": "3%", "CXL-Based PMem 2030": "10%", "NVMe-over-PMem 2025": "0%", "NVMe-over-PMem 2027": "0%", "NVMe-over-PMem 2030": "1%", "Emerging NVM 2025": "0%", "Emerging NVM 2027": "0%", "Emerging NVM 2030": "0.5%", "SSD-backed Memory Tier 2025": "50-70%", "SSD-backed Memory Tier 2027": "55%", "SSD-backed Memory Tier 2030": "50%"}
+            ];
+            const technologies = ["Intel Optane", "CXL-Based PMem", "NVMe-over-PMem", "Emerging NVM", "SSD-backed Memory Tier"];
+            const years = ["2025", "2027", "2030"];
+
+            const tableBodyPersistentMemory = document.getElementById('dataTableBody');
+            // Only populate table if it's empty to avoid duplication on tab switch
+            if (tableBodyPersistentMemory && tableBodyPersistentMemory.rows.length === 0) { 
+                rawDataPersistentMemory.forEach(item => {
+                    const row = tableBodyPersistentMemory.insertRow();
+                    const cellType = row.insertCell();
+                    cellType.textContent = item["Data Center Type"];
+                    cellType.className = "px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 sticky left-0 bg-white z-10";
+                    technologies.forEach(tech => {
+                        years.forEach(year => {
+                            const cell = row.insertCell();
+                            cell.textContent = item[`${tech} ${year}`];
+                            cell.className = "px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center";
+                        });
+                    });
+                });
+            }
+
+            const rawDataGlobalLandscape = [
+                { "Type of Data Center": "Hyperscale", "Estimated Share of Total": "~15%" },
+                { "Type of Data Center": "Cloud Service Providers", "Estimated Share of Total": "~10%" },
+                { "Type of Data Center": "Large Enterprise DCs", "Estimated Share of Total": "~30%" },
+                { "Type of Data Center": "Small/Midsize Enterprise", "Estimated Share of Total": "~30%" },
+                { "Type of Data Center": "Colocation/Edge/Other", "Estimated Share of Total": "~15%" }
+            ];
+
+            const pieCtx = document.getElementById('globalLandscapePieChart');
+            if (pieCtx) {
+                const pieLabels = rawDataGlobalLandscape.map(item => item["Type of Data Center"]);
+                const pieData = rawDataGlobalLandscape.map(item => parseSharePercentage(item["Estimated Share of Total"]));
+                globalLandscapePieChartInstance = new Chart(pieCtx.getContext('2d'), { 
+                    type: 'pie',
+                    data: { labels: pieLabels, datasets: [{
+                        label: 'Estimated Share of Total Data Centers', data: pieData,
+                        backgroundColor: ['rgba(255, 99, 132, 0.7)','rgba(54, 162, 235, 0.7)','rgba(255, 206, 86, 0.7)','rgba(75, 192, 192, 0.7)','rgba(153, 102, 255, 0.7)'],
+                        borderColor: ['rgba(255, 99, 132, 1)','rgba(54, 162, 235, 1)','rgba(255, 206, 86, 1)','rgba(75, 192, 192, 1)','rgba(153, 102, 255, 1)'],
+                        borderWidth: 1
+                    }]},
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' }, tooltip: { callbacks: { label: function(context) {
+                        let label = context.label || ''; if (label) { label += ': '; } if (context.parsed !== null) { label += context.parsed + '%'; } return label;
+                    }}}}}
+                });
+            }
+
+            const lineCtx = document.getElementById('cxlAdoptionLineChart');
+            if (lineCtx) {
+                const hyperscalerData = rawDataPersistentMemory.find(item => item["Data Center Type"] === "Hyperscalers");
+                const cloudProviderData = rawDataPersistentMemory.find(item => item["Data Center Type"] === "Cloud Providers (Tier 2)");
+                const cxlHyperscalerValues = hyperscalerData ? years.map(year => parsePercentage(hyperscalerData[`CXL-Based PMem ${year}`])) : [];
+                const cxlCloudProviderValues = cloudProviderData ? years.map(year => parsePercentage(cloudProviderData[`CXL-Based PMem ${year}`])) : [];
+                cxlAdoptionLineChartInstance = new Chart(lineCtx.getContext('2d'), { 
+                    type: 'line',
+                    data: { labels: years, datasets: [
+                        { label: 'Hyperscalers CXL Adoption (%)', data: cxlHyperscalerValues, borderColor: 'rgba(255, 99, 132, 1)', backgroundColor: 'rgba(255, 99, 132, 0.2)', tension: 0.1, fill: false },
+                        { label: 'Cloud Providers (Tier 2) CXL Adoption (%)', data: cxlCloudProviderValues, borderColor: 'rgba(54, 162, 235, 1)', backgroundColor: 'rgba(54, 162, 235, 0.2)', tension: 0.1, fill: false }
+                    ]},
+                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, title: { display: true, text: 'Adoption (%)' }}, x: { title: { display: true, text: 'Year' }}}, plugins: { legend: { position: 'top'}, tooltip: { callbacks: { label: function(context) {
+                        return `${context.dataset.label}: ${context.formattedValue}%`;
+                    }}}}}
+                });
+            }
+        }
+
+        // Function to show/hide main content panes
+        function showMainContent(sectionId, clickedLink) {
+            document.querySelectorAll('.main-content-pane').forEach(pane => {
+                pane.classList.add('hidden');
+            });
+            const currentPane = document.getElementById(sectionId + '-content');
+            if (currentPane) {
+                currentPane.classList.remove('hidden');
+            }
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            if (clickedLink) {
+                clickedLink.classList.add('active');
+            }
+
+            if (sectionId === 'charts') {
+                initializeCharts(); // Initialize or re-render charts when this tab is active
+            }
+        }
+
+        // Function to show/hide CXL sub-content panes
+        function showCxlSubContent(subSectionId, clickedSubLink) {
+            document.querySelectorAll('.cxl-sub-content-pane').forEach(pane => {
+                pane.classList.add('hidden');
+            });
+            const currentSubPane = document.getElementById(subSectionId + '-content');
+            if (currentSubPane) {
+                currentSubPane.classList.remove('hidden');
+            }
+            
+            document.querySelectorAll('.sub-nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            if (clickedSubLink) {
+                clickedSubLink.classList.add('active');
+            }
+            const cxlContentElement = document.getElementById('cxl-content');
+            if (cxlContentElement) {
+                 cxlContentElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            showMainContent('home', document.querySelector('.nav-link'));
+            const cxlContent = document.getElementById('cxl-content');
+            if (cxlContent && !cxlContent.classList.contains('hidden')) {
+                 showCxlSubContent('cxl-versions', document.querySelector('#cxl-sub-nav .sub-nav-link'));
+            }
+        });
+    </script>
+
+</body>
+</html>
