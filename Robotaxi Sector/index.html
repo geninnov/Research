@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robotaxis Interactive Dashboard</title>
+    <link rel="icon" href="https://geninnov.github.io/Assets/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* gray-100 */
+        }
+        .dashboard-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 12px; /* rounded-xl */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-lg */
+            padding: 20px; /* p-5 */
+            margin-bottom: 24px;
+            overflow-x: auto; /* For tables that might be too wide */
+        }
+        .card-title {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600; /* semibold */
+            color: #1f2937; /* gray-800 */
+            margin-bottom: 16px;
+        }
+        .kpi-value {
+            font-size: 2.5rem; /* text-4xl */
+            font-weight: 700; /* bold */
+            color: #10b981; /* emerald-500 */
+        }
+        .kpi-label {
+            font-size: 0.875rem; /* text-sm */
+            color: #6b7280; /* gray-500 */
+            margin-top: 4px;
+        }
+        canvas {
+            max-height: 350px; /* Ensure charts don't get too tall */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem; /* text-sm */
+        }
+        th, td {
+            border: 1px solid #e5e7eb; /* border-gray-200 */
+            padding: 10px; /* p-2.5 */
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: #f9fafb; /* bg-gray-50 */
+            font-weight: 600; /* semibold */
+        }
+        /* Responsive grid */
+        .grid-container {
+            display: grid;
+            gap: 24px; /* gap-6 */
+        }
+        @media (min-width: 768px) { /* md */
+            .grid-container {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+        @media (min-width: 1280px) { /* xl */
+            .grid-container {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+            .col-span-2-xl {
+                grid-column: span 2 / span 2;
+            }
+             .col-span-3-xl {
+                grid-column: span 3 / span 3;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="mb-8 flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="https://geninnov.github.io/Assets/favicon.ico" alt="Logo" class="h-12 w-12 mr-4">
+                <h1 class="text-3xl font-bold text-gray-800">Robotaxis Industry Dashboard</h1>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <div class="card text-center">
+                <div class="kpi-value text-blue-600">~4,100</div>
+                <div class="kpi-label">Est. Robotaxi Fleet in China (2025)</div>
+            </div>
+            <div class="card text-center">
+                <div class="kpi-value text-green-600">$47B</div>
+                <div class="kpi-label">China Market Projection (2035)</div>
+            </div>
+            <div class="card text-center">
+                <div class="kpi-value text-purple-600">$25B - $100B</div>
+                <div class="kpi-label">Global Market Projection (2030)</div>
+            </div>
+            <div class="card text-center">
+                <div class="kpi-value text-red-500">137</div>
+                <div class="kpi-label">Waymo Incidents Reported (US, Q1 2025)</div>
+                 <p class="text-xs text-gray-400 mt-1">(1 fatality, 1 serious, 3 moderate, 11 minor)</p>
+            </div>
+        </div>
+
+        <div class="grid-container">
+            <div class="card">
+                <h2 class="card-title">Robotaxi Market Growth Projections (USD)</h2>
+                <canvas id="marketGrowthChart"></canvas>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Key Player Estimated Fleet Sizes</h2>
+                <canvas id="fleetSizeChart"></canvas>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Pony AI Financial Snapshot (Revenue & Net Income, $MN)</h2>
+                <canvas id="ponyAiFinancialsChart"></canvas>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title">Pony AI Financial Snapshot (EBITDA & EPS)</h2>
+                <canvas id="ponyAiEbitdaEpsChart"></canvas>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">China: Est. Costs & Revenue Per Vehicle (Tier-1 Cities)</h2>
+                <canvas id="costRevenuePerVehicleChart"></canvas>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title">Pony AI: 7th Gen System Cost Reduction</h2>
+                <canvas id="ponyAiCostReductionChart"></canvas>
+            </div>
+
+            <div class="card col-span-2-xl">
+                <h2 class="card-title">Major Player Comparison</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Vehicle Strategy</th>
+                            <th>Key Technology Focus</th>
+                            <th>Deployment Strategy</th>
+                            <th>Key Differentiators</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Waymo (Alphabet)</td>
+                            <td>Integrates tech into existing platforms.</td>
+                            <td>Advanced AI, extensive simulation, proprietary lidar, comprehensive software stack.</td>
+                            <td>Gradual, data-driven expansion in US & international, Uber partnership.</td>
+                            <td>Vertical integration, advanced AI & simulation, cautious expansion.</td>
+                        </tr>
+                        <tr>
+                            <td>Baidu (Apollo Go)</td>
+                            <td>Primarily integrates into modified vehicles, also purpose-built designs (RT6 - <$30k mfg cost).</td>
+                            <td>Open Apollo Platform, strong AI capabilities, cost-effective vehicle design.</td>
+                            <td>Aggressive expansion across many cities in China & international pilots (e.g., Dubai: 100 by 2025, 1000 by 2028).</td>
+                            <td>Open platform (Apollo), strong China presence, cost-effective vehicle development.</td>
+                        </tr>
+                        <tr>
+                            <td>Aurora Innovation</td>
+                            <td>Integrates Aurora Driver into existing vehicle platforms (Toyota, PACCAR, Volvo).</td>
+                            <td>"Verifiable AI," proprietary FMCW lidar (FirstLight), dual focus (robotaxis & trucking).</td>
+                            <td>Dual strategy: robotaxis (initially highway focused, Uber partnership) and autonomous trucking. Focused on rigorous testing.</td>
+                            <td>Experienced leadership, dual application, FMCW lidar, verifiable safety.</td>
+                        </tr>
+                        <tr>
+                            <td>Zoox (Amazon)</td>
+                            <td>Designs and builds its own purpose-built, bidirectional electric robotaxi.</td>
+                            <td>Integrated hardware & software, unique 360° overlapping sensor architecture, advanced prediction.</td>
+                            <td>Initially focusing on select US cities, scaling production of purpose-built vehicles.</td>
+                            <td>Purpose-built robotaxi, unique 360° sensor architecture, Amazon backing, urban focus.</td>
+                        </tr>
+                        <tr>
+                            <td>Tesla</td>
+                            <td>Primarily Consumer Vehicles (Potential Robotaxi Network), Dedicated Robotaxi in Development.</td>
+                            <td>Vision-First (Tesla Vision), end-to-end neural networks, large-scale data leverage.</td>
+                            <td>Gradual rollout of FSD (Supervised), preparing for dedicated robotaxi service in Austin (June 2025).</td>
+                            <td>Vision-centric autonomy, massive real-world data, iterative software updates.</td>
+                        </tr>
+                        <tr>
+                            <td>Pony AI</td>
+                            <td>Vehicle-Agnostic (Integrates into Toyota, BAIC, GAC). Pony World.</td>
+                            <td>Full-stack AV system, multi-sensor fusion, AI for complex urban environments. 7th Gen system (70% BOM, 68% Lidar, 80% ADC cost reduction).</td>
+                            <td>Global deployment strategy with local adaptations, strong ride-hailing platform partnerships.</td>
+                            <td>Vehicle-agnostic tech, strong ecosystem partnerships, cost reduction focus.</td>
+                        </tr>
+                        <tr>
+                            <td>WeRide</td>
+                            <td>Integrates tech into existing platforms (Nissan, Renault-Nissan-Mitsubishi, BYD).</td>
+                            <td>"Virtual Driver," AI for complex urban environments.</td>
+                            <td>Strong focus on deployment in China, expanding internationally via partnerships (Uber).</td>
+                            <td>Strong China presence, diverse AV applications, strategic partnerships.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card col-span-3-xl">
+                <h2 class="card-title">Deployment & Regulatory Snapshot</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Est. Robotaxis Deployed (Operational/Testing)*</th>
+                            <th>Est. Miles Covered (Autonomous)</th>
+                            <th>Key Regulatory Environments</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Waymo</td>
+                            <td>> 430+ (CA testing 2024); 2,000 more planned (US)</td>
+                            <td>> 25 million miles (driverless, late 2024) + supervised</td>
+                            <td>US (AZ, CA, TX, FL), Japan (testing)</td>
+                        </tr>
+                        <tr>
+                            <td>Baidu (Apollo Go)</td>
+                            <td>Hundreds (operating in 10-25 cities); Wuhan: 400+</td>
+                            <td>> 100 million km (~62M miles) (Apr 2024)</td>
+                            <td>China (Beijing, Shanghai, Wuhan, etc.), HK (testing), Dubai</td>
+                        </tr>
+                        <tr>
+                            <td>Pony AI</td>
+                            <td>250+ (Beijing, Shanghai, Shenzhen, Guangzhou)</td>
+                            <td>> 32 million km (~19M miles) (Apr 2024)</td>
+                            <td>China (Beijing, Guangzhou, etc.), US (CA), Europe (Luxembourg), Middle East (testing)</td>
+                        </tr>
+                        <tr>
+                            <td>Aurora</td>
+                            <td>Not specified (testing focus)</td>
+                            <td>Significant testing miles (TX, CA)</td>
+                            <td>US (TX, CA)</td>
+                        </tr>
+                        <tr>
+                            <td>Zoox</td>
+                            <td>Not specified (public launch prep Las Vegas, San Francisco 2025)</td>
+                            <td>Significant testing miles</td>
+                            <td>US (NV, CA)</td>
+                        </tr>
+                        <tr>
+                            <td>Tesla</td>
+                            <td>Pilot launch Austin June 2025 (dedicated); FSD on consumer vehicles</td>
+                            <td>Billions of miles (Autopilot/FSD, not all fully autonomous robotaxi)</td>
+                            <td>US (various states), evolving globally</td>
+                        </tr>
+                        <tr>
+                            <td>WeRide</td>
+                            <td>Hundreds (operating in 8 cities in China, UAE, Switzerland as of May 2025)</td>
+                            <td>40 million km (~25M miles)</td>
+                            <td>China, UAE, Switzerland, Singapore, France, US (CA - testing)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="text-xs text-gray-500 mt-2">* "Deployed" can mean vehicles in testing, pilot programs, or fully commercial operations.</p>
+            </div>
+             <div class="card">
+                <h2 class="card-title">Waymo Crash Statistics (Q1 2025, NHTSA)</h2>
+                <canvas id="waymoCrashStatsChart"></canvas>
+            </div>
+        </div>
+
+        <footer class="mt-12 pt-6 border-t border-gray-300 text-center text-sm text-gray-500">
+            <p>&copy; 2025 Robotaxis Report Dashboard. Data extracted from provided report.</p>
+        </footer>
+    </div>
+
+<script>
+    // Helper function for consistent chart colors
+    const chartColors = {
+        blue: 'rgba(59, 130, 246, 0.7)', // blue-500
+        green: 'rgba(16, 185, 129, 0.7)', // emerald-500
+        purple: 'rgba(139, 92, 246, 0.7)', // violet-500
+        red: 'rgba(239, 68, 68, 0.7)', // red-500
+        yellow: 'rgba(245, 158, 11, 0.7)', // amber-500
+        teal: 'rgba(20, 184, 166, 0.7)', // teal-500
+        pink: 'rgba(236, 72, 153, 0.7)', // pink-500
+        orange: 'rgba(249, 115, 22, 0.7)', // orange-500
+
+        blueBorder: 'rgba(59, 130, 246, 1)',
+        greenBorder: 'rgba(16, 185, 129, 1)',
+        purpleBorder: 'rgba(139, 92, 246, 1)',
+        redBorder: 'rgba(239, 68, 68, 1)',
+        yellowBorder: 'rgba(245, 158, 11, 1)',
+        tealBorder: 'rgba(20, 184, 166, 1)',
+        pinkBorder: 'rgba(236, 72, 153, 1)',
+        orangeBorder: 'rgba(249, 115, 22, 1)',
+    };
+
+    // 1. Market Growth Chart
+    const marketGrowthCtx = document.getElementById('marketGrowthChart').getContext('2d');
+    new Chart(marketGrowthCtx, {
+        type: 'bar',
+        data: {
+            labels: ['China 2024', 'China 2030', 'China 2035', 'Global 2030 (Est.)', 'Global 2030 (Optimistic)'],
+            datasets: [{
+                label: 'Market Size (USD Billion)',
+                data: [0.01, 12, 47, 25, 100], // China: 10M, 12B, 47B. Global: 25B, 100B
+                backgroundColor: [chartColors.blue, chartColors.blue, chartColors.blue, chartColors.green, chartColors.teal],
+                borderColor: [chartColors.blueBorder, chartColors.blueBorder, chartColors.blueBorder, chartColors.greenBorder, chartColors.tealBorder],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'USD Billions' }
+                }
+            }
+        }
+    });
+
+    // 2. Fleet Size Chart
+    const fleetSizeCtx = document.getElementById('fleetSizeChart').getContext('2d');
+    new Chart(fleetSizeCtx, {
+        type: 'bar',
+        data: {
+            labels: ['China (Total Est. 2025)', 'Pony AI (China)', 'Baidu (Wuhan)', 'Waymo (US Expansion Plan)'],
+            datasets: [{
+                label: 'Number of Vehicles',
+                data: [4100, 250, 400, 2000],
+                backgroundColor: [chartColors.purple, chartColors.orange, chartColors.yellow, chartColors.red],
+                borderColor: [chartColors.purpleBorder, chartColors.orangeBorder, chartColors.yellowBorder, chartColors.redBorder],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y', // Horizontal bar chart
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Number of Vehicles' }
+                }
+            }
+        }
+    });
+
+    // 3. Pony AI Financials Chart (Revenue & Net Income)
+    const ponyAiFinancialsCtx = document.getElementById('ponyAiFinancialsChart').getContext('2d');
+    new Chart(ponyAiFinancialsCtx, {
+        type: 'line',
+        data: {
+            labels: ['2024', '2025E', '2026E', '2027E'],
+            datasets: [
+                {
+                    label: 'Revenue ($MN)',
+                    data: [75.0, 80.1, 96.0, 148.9],
+                    borderColor: chartColors.blueBorder,
+                    backgroundColor: chartColors.blue,
+                    tension: 0.1
+                },
+                {
+                    label: 'Net Income ($MN)',
+                    data: [-274.1, -192.9, -197.2, -242.4],
+                    borderColor: chartColors.redBorder,
+                    backgroundColor: chartColors.red,
+                    tension: 0.1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    title: { display: true, text: 'USD Millions' }
+                }
+            }
+        }
+    });
+
+    // 4. Pony AI Financials Chart (EBITDA & EPS)
+    const ponyAiEbitdaEpsCtx = document.getElementById('ponyAiEbitdaEpsChart').getContext('2d');
+    new Chart(ponyAiEbitdaEpsCtx, {
+        type: 'bar', // Using bar for EBITDA, line for EPS on secondary axis
+        data: {
+            labels: ['2024', '2025E', '2026E', '2027E'],
+            datasets: [
+                {
+                    label: 'EBITDA ($MN)',
+                    data: [-273.2, -179.1, -165.6, -207.7],
+                    backgroundColor: chartColors.green,
+                    borderColor: chartColors.greenBorder,
+                    yAxisID: 'y',
+                    order: 2
+                },
+                {
+                    label: 'EPS ($)',
+                    data: [-2.40, -0.55, -0.56, -0.69], // Using reported EPS
+                    borderColor: chartColors.purpleBorder,
+                    backgroundColor: chartColors.purple,
+                    type: 'line',
+                    tension: 0.1,
+                    yAxisID: 'y1',
+                    order: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    title: { display: true, text: 'EBITDA ($MN)' }
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    title: { display: true, text: 'EPS ($)' },
+                    grid: {
+                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                    },
+                }
+            }
+        }
+    });
+    
+    // 5. Cost & Revenue Per Vehicle Chart (China Tier-1)
+    const costRevenuePerVehicleCtx = document.getElementById('costRevenuePerVehicleChart').getContext('2d');
+    new Chart(costRevenuePerVehicleCtx, {
+        type: 'bar',
+        data: {
+            labels: ['R&D Expense 2025', 'R&D Expense 2035', 'SG&A 2025', 'SG&A 2035', 'Revenue 2025', 'Revenue 2035'],
+            datasets: [{
+                label: 'USD per Vehicle per Year',
+                data: [270000, 5000, 80000, 3000, 9000, 31000],
+                backgroundColor: [
+                    chartColors.red, chartColors.redBorder, 
+                    chartColors.orange, chartColors.orangeBorder,
+                    chartColors.green, chartColors.greenBorder
+                ],
+                borderColor: [
+                    chartColors.redBorder, chartColors.red,
+                    chartColors.orangeBorder, chartColors.orange,
+                    chartColors.greenBorder, chartColors.green
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'USD per Vehicle' },
+                    type: 'logarithmic', // Using log scale due to large differences
+                     ticks: {
+                        callback: function(value, index, values) {
+                            if (value === 1000000) return "1M";
+                            if (value === 100000) return "100K";
+                            if (value === 10000) return "10K";
+                            if (value === 1000) return "1K";
+                            if (value === 100) return "100";
+                            if (value === 10) return "10";
+                            if (value === 1) return "1";
+                            return null;
+                        }
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                                label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits:0, maximumFractionDigits:0 }).format(context.parsed.y);
+                            }
+                            return label;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // 6. Pony AI Cost Reduction Chart
+    const ponyAiCostReductionCtx = document.getElementById('ponyAiCostReductionChart').getContext('2d');
+    new Chart(ponyAiCostReductionCtx, {
+        type: 'bar',
+        data: {
+            labels: ['BOM Reduction', 'Lidar Cost Reduction', 'ADC Cost Reduction'],
+            datasets: [{
+                label: 'Cost Reduction (%)',
+                data: [70, 68, 80],
+                backgroundColor: [chartColors.blue, chartColors.green, chartColors.purple],
+                borderColor: [chartColors.blueBorder, chartColors.greenBorder, chartColors.purpleBorder],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    title: { display: true, text: 'Percentage (%)' }
+                }
+            },
+             plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ' + context.parsed.y + '%';
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // 7. Waymo Crash Statistics Chart
+    const waymoCrashStatsCtx = document.getElementById('waymoCrashStatsChart').getContext('2d');
+    new Chart(waymoCrashStatsCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Minor Injuries', 'Moderate Injuries', 'Serious Injury', 'Fatality', 'Other Incidents (No Injury Info)'],
+            datasets: [{
+                label: 'Waymo Incidents Q1 2025',
+                data: [11, 3, 1, 1, (137 - 11 - 3 - 1 - 1)], // 137 total incidents
+                backgroundColor: [
+                    chartColors.yellow,
+                    chartColors.orange,
+                    chartColors.red,
+                    'rgba(107, 114, 128, 0.7)', // gray-500
+                    chartColors.blue
+                ],
+                borderColor: [
+                    chartColors.yellowBorder,
+                    chartColors.orangeBorder,
+                    chartColors.redBorder,
+                    'rgba(107, 114, 128, 1)',
+                    chartColors.blueBorder
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Breakdown of 137 Waymo Incidents (Q1 2025)'
+                }
+            }
+        }
+    });
+
+</script>
+</body>
+</html>

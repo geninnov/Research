@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBI354 Drug Analysis Dashboard</title>
+    <link rel="icon" href="https://geninnov.github.io/Assets/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        /* Sidebar Styles */
+        #sidebar {
+            width: 280px; /* Increased width */
+            background-color: #1f2937; /* Darker gray */
+            color: white;
+            padding: 20px; /* Increased padding */
+            height: 100%;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+        #sidebar .sidebar-title-container {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center title and icon */
+            margin-bottom: 25px; /* Increased margin */
+        }
+        #sidebar .sidebar-title-container img {
+            width: 30px; /* Adjust size as needed */
+            height: 30px;
+            margin-right: 10px; /* Space between icon and text */
+        }
+        #sidebar h2 {
+            font-size: 1.5rem; /* Adjusted for icon */
+            font-weight: 700;
+            color: #9ca3af; /* Lighter text for title */
+            margin: 0; /* Remove default margin */
+        }
+        #sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        #sidebar ul li a {
+            display: block;
+            color: #d1d5db; /* Lighter gray for links */
+            padding: 15px 20px; /* Increased padding */
+            text-decoration: none;
+            border-radius: 8px; /* Rounded corners */
+            margin-bottom: 10px; /* Space between items */
+            font-weight: 500;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        #sidebar ul li a:hover, #sidebar ul li a.active {
+            background-color: #4b5563; /* Medium gray on hover/active */
+            color: white;
+        }
+        /* Main Content Styles */
+        #main-content {
+            flex-grow: 1;
+            padding: 30px; /* Increased padding */
+            overflow-y: auto;
+            background-color: #ffffff; /* White background for content */
+        }
+        .content-section {
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .content-section.active {
+            display: block; /* Shown when active */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .chart-container {
+            width: 100%;
+            max-width: 700px; /* Max width for charts */
+            margin: 20px auto; /* Centered with margin */
+            padding: 20px;
+            background-color: #f9fafb; /* Very light gray for chart background */
+            border-radius: 12px; /* More rounded corners */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Softer shadow */
+        }
+        h1 {
+            color: #111827; /* Darker text for headings */
+            font-size: 2rem; /* Tailwind text-3xl equivalent */
+            font-weight: 700; /* Tailwind font-bold equivalent */
+            margin-bottom: 1.5rem; /* Tailwind mb-6 equivalent */
+        }
+        h3 {
+            color: #111827; /* Darker text for headings */
+            font-size: 1.25rem; /* Tailwind text-xl equivalent */
+            font-weight: 600; /* Tailwind font-semibold equivalent */
+            margin-top: 1.5rem; /* Tailwind mt-6 equivalent */
+            margin-bottom: 0.75rem; /* Tailwind mb-3 equivalent */
+        }
+        p {
+            color: #374151; /* Medium dark gray for paragraphs */
+            line-height: 1.6;
+            margin-bottom: 1rem; /* Tailwind mb-4 equivalent */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        th, td {
+            border: 1px solid #e5e7eb; /* Lighter border */
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f3f4f6; /* Light gray for table header */
+            font-weight: 600;
+        }
+        td {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div id="sidebar">
+        <div class="sidebar-title-container">
+            <img src="https://geninnov.github.io/Assets/favicon.ico" alt="Favicon">
+            <h2>IBI354 Analysis</h2>
+        </div>
+        <ul>
+            <li><a href="#overview" class="nav-link active">Overview</a></li>
+            <li><a href="#efficacy" class="nav-link">Efficacy Comparison</a></li>
+            <li><a href="#safety" class="nav-link">Safety Profile</a></li>
+            <li><a href="#market" class="nav-link">Market Potential</a></li>
+            <li><a href="#orr-details" class="nav-link">Detailed ORR</a></li>
+            <li><a href="#competitive-landscape" class="nav-link">Competitive Landscape</a></li>
+            <li><a href="#conclusion" class="nav-link">Conclusion</a></li>
+        </ul>
+    </div>
+
+    <div id="main-content">
+        <div id="overview" class="content-section active">
+            <h1>Innovent Biologics' IBI354 for PROC</h1>
+            <p>Innovent Biologics has initiated patient dosing in its phase 3 trial (HeriCare-Ovarian01) for <strong>IBI354</strong>, an antibody-drug conjugate (ADC) targeting HER2, aimed at treating platinum-resistant ovarian cancer (PROC). PROC is known to be a notoriously difficult condition to treat, making advancements in this area particularly significant.</p>
+            <p>IBI354 is composed of a HER2 monoclonal antibody conjugated to a camptothecin derivative, which acts as a Topoisomerase inhibitor. This targeted delivery mechanism is a key aspect of its design.</p>
+            <p>To evaluate whether IBI354 represents a genuine breakthrough or an incremental improvement, this analysis considers three critical dimensions: its clinical significance and the existing market need, the competitive landscape and the level of innovation it brings, and finally, the potential for competitors to replicate or improve upon this technology.</p>
+            
+            <h3>Key Phase 1/2 Trial Data Highlights:</h3>
+            <ul class="list-disc list-inside pl-5 mb-4 space-y-1">
+                <li><strong>Objective Response Rate (ORR):</strong> 40.2% overall.</li>
+                <li>ORR at higher dosage (12 mg/kg): <strong>52.5%</strong>.</li>
+                <li>ORR in HER2 low-expression group (IHC 1+): <strong>55.6%</strong>.</li>
+                <li><strong>Disease Control Rate (DCR):</strong> 81.6% overall, 90% at 12 mg/kg dose.</li>
+                <li><strong>Safety Profile:</strong> Reported as excellent, with a very low incidence of severe adverse effects.
+                    <ul class="list-disc list-inside pl-5 mt-1 space-y-1">
+                        <li>Grade ≥3 adverse events: 21.5%.</li>
+                        <li>Discontinuation rate due to adverse events: 1.6%.</li>
+                        <li>Interstitial lung disease (a common concern with ADCs): 1.6% incidence, all reported as mild.</li>
+                    </ul>
+                </li>
+            </ul>
+            <p>This dashboard further explores these aspects, providing visual comparisons and summaries of IBI354's efficacy, safety, market potential, and competitive positioning based on the available preliminary data.</p>
+        </div>
+
+        <div id="efficacy" class="content-section">
+            <h1>Efficacy: IBI354 vs. Standard Treatment</h1>
+            <p>Platinum-resistant ovarian cancer (PROC) is challenging to treat. Current standard treatments show limited efficacy. IBI354's Phase 1/2 data suggests a significant improvement.</p>
+            <div class="chart-container">
+                <canvas id="efficacyChart"></canvas>
+            </div>
+            <h3>Data Comparison:</h3>
+             <table>
+                <thead>
+                    <tr>
+                        <th>Treatment</th>
+                        <th>ORR (%)</th>
+                        <th>DCR (%)</th>
+                        <th>Median OS (months)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>IBI354 (12 mg/kg)</td>
+                        <td>52.5%</td>
+                        <td>90%</td>
+                        <td>Not yet matured</td>
+                    </tr>
+                    <tr>
+                        <td>Chemotherapy (Standard)</td>
+                        <td>4-13.2%</td>
+                        <td>~20-40% (typical)</td>
+                        <td>10.9-14</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="safety" class="content-section">
+            <h1>Safety Profile: IBI354 vs. Competitor ADCs</h1>
+            <p>Innovent's IBI354 demonstrates a promising safety profile, particularly concerning Grade ≥3 Adverse Events (AEs), when compared to other established ADCs.</p>
+            <div class="chart-container">
+                <canvas id="safetyChart"></canvas>
+            </div>
+            <h3>Grade ≥3 Adverse Events Comparison:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Drug</th>
+                        <th>Target</th>
+                        <th>Payload Type</th>
+                        <th>Grade ≥3 AE (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>IBI354</td>
+                        <td>HER2</td>
+                        <td>Topo I Inhibitor</td>
+                        <td>21.5%</td>
+                    </tr>
+                    <tr>
+                        <td>Enhertu</td>
+                        <td>HER2</td>
+                        <td>Topo I Inhibitor</td>
+                        <td>~30-40%</td>
+                    </tr>
+                    <tr>
+                        <td>Elahere</td>
+                        <td>Folate</td>
+                        <td>Microtubule inhibitor</td>
+                        <td>~40-45%</td>
+                    </tr>
+                    <tr>
+                        <td>Trodelvy</td>
+                        <td>TROP2</td>
+                        <td>Topo I Inhibitor</td>
+                        <td>~40-50%</td>
+                    </tr>
+                </tbody>
+            </table>
+             <p class="mt-4">IBI354's lower rate of severe adverse events is a critical differentiating factor, potentially leading to better patient compliance and quality of life.</p>
+        </div>
+
+        <div id="market" class="content-section">
+            <h1>Market Potential of IBI354</h1>
+            <p>The global ovarian cancer market was approximately $4 billion in 2023, with HER2-expressing patients accounting for about 38%. IBI354 shows significant peak revenue potential in the PROC HER2 market (estimated at $1.5B).</p>
+            <div class="chart-container">
+                <canvas id="marketChart"></canvas>
+            </div>
+             <h3>Peak Revenue Potential Scenarios (PROC HER2 Market):</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Scenario</th>
+                        <th>PROC HER2 Market Share</th>
+                        <th>Peak Revenue Potential (per year)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Conservative</td>
+                        <td>20%</td>
+                        <td>$300 million</td>
+                    </tr>
+                    <tr>
+                        <td>Base</td>
+                        <td>40%</td>
+                        <td>$600 million</td>
+                    </tr>
+                    <tr>
+                        <td>Optimistic</td>
+                        <td>60%</td>
+                        <td>$900 million</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="mt-4">Expansion into other solid tumors (e.g., gastric, colorectal, lung) could further multiply revenue, potentially exceeding $1B+ per year long-term.</p>
+        </div>
+
+        <div id="orr-details" class="content-section">
+            <h1>IBI354: Detailed Objective Response Rates (ORR)</h1>
+            <p>The Phase 1/2 trial data for IBI354 shows promising ORR across different patient subgroups and conditions.</p>
+            <div class="chart-container">
+                <canvas id="orrDetailsChart"></canvas>
+            </div>
+            <h3>ORR Breakdown:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Context</th>
+                        <th>ORR (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Overall (All Patients)</td>
+                        <td>40.2%</td>
+                    </tr>
+                    <tr>
+                        <td>Higher Dosage (12 mg/kg)</td>
+                        <td>52.5%</td>
+                    </tr>
+                    <tr>
+                        <td>HER2 Low-Expression Group (IHC 1+)</td>
+                        <td>55.6%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="mt-4">The high ORR in the HER2 low-expression group is particularly noteworthy, as it could expand the eligible patient population for IBI354.</p>
+        </div>
+
+        <div id="competitive-landscape" class="content-section">
+            <h1>Competitive Landscape for ADCs</h1>
+            <p>The field of Antibody-Drug Conjugates (ADCs) is highly competitive, with several established players and marketed drugs. Innovent's IBI354 aims to differentiate itself through superior efficacy and safety.</p>
+            <h3>Key Competitors and their ADCs:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Drug (Target)</th>
+                        <th>Cancer Types</th>
+                        <th>Stage</th>
+                        <th>Note</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Daiichi Sankyo/AstraZeneca</td>
+                        <td>Enhertu (HER2 ADC)</td>
+                        <td>Breast, Gastric, Lung</td>
+                        <td>Marketed</td>
+                        <td>Widely successful, standard-setting</td>
+                    </tr>
+                    <tr>
+                        <td>ImmunoGen</td>
+                        <td>Elahere (Folate ADC)</td>
+                        <td>Ovarian</td>
+                        <td>Marketed</td>
+                        <td>First approved ADC for ovarian cancer</td>
+                    </tr>
+                    <tr>
+                        <td>Gilead</td>
+                        <td>Trodelvy (TROP2 ADC)</td>
+                        <td>Breast, Bladder</td>
+                        <td>Marketed</td>
+                        <td>Strong efficacy and adoption</td>
+                    </tr>
+                    <tr>
+                        <td>Roche</td>
+                        <td>Kadcyla (HER2 ADC)</td>
+                        <td>Breast</td>
+                        <td>Marketed</td>
+                        <td>Established HER2 ADC</td>
+                    </tr>
+                     <tr>
+                        <td>Innovent Biologics</td>
+                        <td>IBI354 (HER2 ADC)</td>
+                        <td>PROC, other solid tumors</td>
+                        <td>Phase 3</td>
+                        <td>Subject of this analysis</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="mt-4">Innovent's proprietary SoloTx ADC platform technology, with a high drug-to-antibody ratio (DAR=8), is a key differentiator, aiming for high payload delivery with minimal toxicity. This offers a potential advantage over existing ADCs, though long-term copiability by larger firms remains a consideration.</p>
+        </div>
+
+         <div id="conclusion" class="content-section">
+            <h1>Conclusion & Definitive Assessment</h1>
+            <p>Based on the available Phase 1/2 data, IBI354 appears to be a <strong>genuine breakthrough</strong> in platinum-resistant ovarian cancer (PROC) treatment, rather than an incremental improvement. This is primarily due to its clearly superior efficacy and safety profile compared to current standards and some competitor ADCs.</p>
+
+            <h3>Summary Assessment:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Criterion</th>
+                        <th>Rating</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Clinical Significance</td>
+                        <td class="text-green-600 font-semibold">High</td>
+                        <td>Remarkable efficacy & safety</td>
+                    </tr>
+                    <tr>
+                        <td>Innovation</td>
+                        <td class="text-green-600 font-semibold">High</td>
+                        <td>Proprietary linker/payload, superior profile</td>
+                    </tr>
+                    <tr>
+                        <td>Competitiveness</td>
+                        <td class="text-yellow-600 font-semibold">Medium-High</td>
+                        <td>Better ORR/safety vs. competition</td>
+                    </tr>
+                    <tr>
+                        <td>Copiability Risk</td>
+                        <td class="text-orange-600 font-semibold">Medium</td>
+                        <td>Copiable long-term by larger companies</td>
+                    </tr>
+                    <tr>
+                        <td>Market Potential</td>
+                        <td class="text-green-600 font-semibold">High</td>
+                        <td>Significant commercial potential</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="mt-4">If Phase 3 results for IBI354 align with its current performance, it has the potential to be transformative for PROC treatment. It could dominate the PROC market and significantly shift market shares, leading to blockbuster revenue.</p>
+            <p class="mt-4"><strong>Final Remark:</strong> IBI354 deserves close monitoring as a potential game-changing oncology drug. However, competitive responses over the next 2-4 years will be crucial to observe.</p>
+        </div>
+
+
+    </div>
+
+    <script>
+        // JavaScript for Navigation and Chart Creation
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            let currentChartInstances = {}; // To keep track of chart instances
+
+            // Function to destroy existing charts
+            function destroyCharts() {
+                for (const chartId in currentChartInstances) {
+                    if (currentChartInstances[chartId]) {
+                        currentChartInstances[chartId].destroy();
+                        delete currentChartInstances[chartId];
+                    }
+                }
+            }
+
+            // Function to handle navigation
+            function navigateToSection(hash) {
+                destroyCharts(); // Destroy charts before switching sections
+
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+
+                const targetSection = document.querySelector(hash);
+                const targetLink = document.querySelector(`a[href="${hash}"]`);
+
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                    // Initialize charts for the active section
+                    if (hash === '#efficacy') initEfficacyChart();
+                    if (hash === '#safety') initSafetyChart();
+                    if (hash === '#market') initMarketChart();
+                    if (hash === '#orr-details') initOrrDetailsChart();
+                }
+                if (targetLink) {
+                    targetLink.classList.add('active');
+                }
+            }
+
+            // Event listeners for navigation links
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    navigateToSection(targetId);
+                    // Update URL hash without page jump for better UX, if desired
+                    // history.pushState(null, null, targetId); 
+                });
+            });
+
+            // Initial section display (e.g., #overview or based on URL hash)
+            const initialHash = window.location.hash || '#overview';
+            navigateToSection(initialHash); // This will also trigger chart init for the initial section
+
+
+            // --- Chart Initialization Functions ---
+
+            // Chart 1: Efficacy Comparison (IBI354 vs. Standard Chemo)
+            function initEfficacyChart() {
+                const ctx = document.getElementById('efficacyChart')?.getContext('2d');
+                if (!ctx) return;
+                currentChartInstances['efficacyChart'] = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Objective Response Rate (ORR)', 'Disease Control Rate (DCR)'],
+                        datasets: [
+                            {
+                                label: 'IBI354 (12 mg/kg)',
+                                data: [52.5, 90], // ORR, DCR
+                                backgroundColor: 'rgba(54, 162, 235, 0.7)', // Blue
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Standard Chemotherapy',
+                                data: [8.6, 30], // Avg ORR (4-13.2 -> 8.6), Avg DCR (~20-40 -> 30)
+                                backgroundColor: 'rgba(255, 99, 132, 0.7)', // Red
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'IBI354 vs. Standard Chemo Efficacy (%)',
+                                font: { size: 16 }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.dataset.label + ': ' + context.parsed.y + '%';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                title: {
+                                    display: true,
+                                    text: 'Percentage (%)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Chart 2: Safety Profile (Grade ≥3 AE)
+            function initSafetyChart() {
+                const ctx = document.getElementById('safetyChart')?.getContext('2d');
+                 if (!ctx) return;
+                currentChartInstances['safetyChart'] = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['IBI354', 'Enhertu', 'Elahere', 'Trodelvy'],
+                        datasets: [{
+                            label: 'Grade ≥3 Adverse Events (%)',
+                            data: [21.5, 35, 42.5, 45], // IBI354, Enhertu (avg 30-40), Elahere (avg 40-45), Trodelvy (avg 40-50)
+                            backgroundColor: [
+                                'rgba(75, 192, 192, 0.7)',  // Teal for IBI354
+                                'rgba(255, 159, 64, 0.7)', // Orange
+                                'rgba(153, 102, 255, 0.7)',// Purple
+                                'rgba(255, 205, 86, 0.7)'  // Yellow
+                            ],
+                            borderColor: [
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(255, 159, 64, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 205, 86, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y', // Horizontal bar chart
+                         plugins: {
+                            title: {
+                                display: true,
+                                text: 'Safety: Grade ≥3 Adverse Events Comparison (%)',
+                                font: { size: 16 }
+                            },
+                             tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.dataset.label + ': ' + context.parsed.x + '%';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Percentage (%)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Chart 3: Market Potential Scenarios (Peak Revenue)
+            function initMarketChart() {
+                const ctx = document.getElementById('marketChart')?.getContext('2d');
+                if (!ctx) return;
+                currentChartInstances['marketChart'] = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Conservative ($300M)', 'Base ($600M)', 'Optimistic ($900M)'],
+                        datasets: [{
+                            label: 'Peak Revenue Potential (PROC HER2 Market)',
+                            data: [300, 600, 900], // Revenue in millions
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.7)', // Red
+                                'rgba(54, 162, 235, 0.7)', // Blue
+                                'rgba(75, 192, 192, 0.7)'  // Teal
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(75, 192, 192, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'IBI354 Peak Revenue Potential Scenarios (Millions USD)',
+                                font: { size: 16 }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            label += '$' + context.parsed + 'M';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Chart 4: Detailed ORR for IBI354
+            function initOrrDetailsChart() {
+                const ctx = document.getElementById('orrDetailsChart')?.getContext('2d');
+                if (!ctx) return;
+                currentChartInstances['orrDetailsChart'] = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Overall (40.2%)', 'Higher Dosage (12mg/kg) (52.5%)', 'HER2 Low-Expression (IHC 1+) (55.6%)'],
+                        datasets: [{
+                            label: 'Objective Response Rate (%)',
+                            data: [40.2, 52.5, 55.6],
+                            backgroundColor: [
+                                'rgba(153, 102, 255, 0.7)', // Purple
+                                'rgba(255, 159, 64, 0.7)', // Orange
+                                'rgba(54, 162, 235, 0.7)'  // Blue
+                            ],
+                             borderColor: [
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)',
+                                'rgba(54, 162, 235, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                     options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'IBI354: Detailed Objective Response Rates (%)',
+                                font: { size: 16 }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        // context.label already contains the percentage in this setup
+                                        return context.label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

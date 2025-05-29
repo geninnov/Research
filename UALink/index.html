@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide to Ultra Accelerator Link (UALink)</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices:
+    * Report Info: UALink Definition, Problems, Objectives -> Goal: Inform -> Viz/Method: Structured Text, Key Bullet Points -> Interaction: Static display, clear headings -> Justification: Foundational understanding -> Library/Method: HTML/Tailwind.
+    * Report Info: UALink Protocol Stack (Table 3) -> Goal: Organize/Inform -> Viz/Method: HTML/CSS diagram of layers -> Interaction: Click layer to show details (simplified to static display for this version) -> Justification: Visualizes complex structure -> Library/Method: HTML/Tailwind.
+    * Report Info: UALink Performance Metrics (Bandwidth, Latency, Efficiency) -> Goal: Inform -> Viz/Method: Dynamic Stat Cards/Key Figures -> Interaction: Static display of key metrics -> Justification: Quick grasp of core performance numbers -> Library/Method: HTML/Tailwind.
+    * Report Info: Scale-Up vs. Scale-Out -> Goal: Compare/Explain -> Viz/Method: Side-by-side text, HTML/CSS conceptual diagram -> Interaction: Static display -> Justification: Clarifies fundamental scaling concepts relevant to UALink's positioning -> Library/Method: HTML/Tailwind.
+    * Report Info: Interconnect Comparison (Table 1) -> Goal: Compare -> Viz/Method: Static HTML Table (simplified from interactive for initial version) -> Interaction: Scrollable table -> Justification: Allows comparison of UALink against alternatives -> Library/Method: HTML/Tailwind.
+    * Report Info: UALink vs. NVLink (Table 2, Section V) -> Goal: Compare (Detailed) -> Viz/Method: Text summaries, comparative lists -> Interaction: Content organized under clear subheadings -> Justification: In-depth focus on the primary competitor -> Library/Method: HTML/Tailwind.
+    * Report Info: Market Data (TAM/SAM, Growth Projections - Section VI) -> Goal: Inform/Show Trend -> Viz/Method: Bar chart for market size/growth (e.g., AI Accelerator Market 2024 vs 2029) -> Interaction: Chart.js visualization -> Justification: Visually represents market opportunity and growth trends -> Library/Method: Chart.js.
+    * Report Info: Opportunities from UALink (Section VII.B) -> Goal: Inform/Organize -> Viz/Method: List with expandable details (simplified to static list) -> Interaction: Static list -> Justification: Highlights ecosystem opportunities -> Library/Method: HTML/Tailwind.
+    * CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. All visualizations are HTML/CSS/Tailwind or Chart.js (Canvas). -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .nav-button { transition: background-color 0.3s ease, color 0.3s ease; }
+        .nav-button.active { background-color: #0D9488; color: white; }
+        .nav-button:hover:not(.active) { background-color: #F0FDFA; color: #14B8A6; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        .metric-card { background-color: white; border-radius: 0.5rem; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); margin-bottom: 1rem; }
+        .protocol-layer { border: 1px solid #9CA3AF; padding: 1rem; margin-bottom: 0.5rem; border-radius: 0.375rem; background-color: #F9FAFB; }
+        .comparison-table th, .comparison-table td { border: 1px solid #D1D5DB; padding: 0.75rem; text-align: left; }
+        .comparison-table th { background-color: #F3F4F6; }
+        .tab-button { background-color: #F3F4F6; border: 1px solid #D1D5DB; padding: 0.5rem 1rem; margin-right: 0.5rem; border-radius: 0.375rem; cursor: pointer; }
+        .tab-button.active { background-color: #0D9488; color: white; border-color: #0D9488;}
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body class="bg-stone-100 text-neutral-800">
+
+    <header class="bg-neutral-800 text-white py-4 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="favicon.ico" alt="Firm Logo" class="h-10 w-10 mr-3 rounded">
+                <h1 class="text-2xl md:text-3xl font-bold">Interactive Guide to UALink</h1>
+            </div>
+        </div>
+    </header>
+
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-center items-center py-3 space-x-2 md:space-x-4">
+                <button class="nav-button px-3 py-2 rounded-md text-sm font-medium text-neutral-700 active" data-target="overview">Overview</button>
+                <button class="nav-button px-3 py-2 rounded-md text-sm font-medium text-neutral-700" data-target="tech-deep-dive">Tech Deep Dive</button>
+                <button class="nav-button px-3 py-2 rounded-md text-sm font-medium text-neutral-700" data-target="scaling-pods">Scaling & Pods</button>
+                <button class="nav-button px-3 py-2 rounded-md text-sm font-medium text-neutral-700" data-target="comparisons">Interconnects Compared</button>
+                <button class="nav-button px-3 py-2 rounded-md text-sm font-medium text-neutral-700" data-target="market-view">Market View</button>
+                <button class="nav-button px-3 py-2 rounded-md text-sm font-medium text-neutral-700" data-target="ecosystem-future">Ecosystem & Future</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+        <section id="overview" class="content-section active">
+            <h2 class="text-2xl font-semibold text-teal-700 mb-6">UALink: An Overview</h2>
+            <p class="mb-6 text-lg">Welcome to the interactive guide for Ultra Accelerator Link (UALink). This application provides a structured exploration of UALink, an open industry standard for high-speed, low-latency communication between AI accelerators. Discover its purpose, the problems it solves, and its core objectives in shaping the future of AI infrastructure.</p>
+
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold text-teal-600 mb-3">What is UALink?</h3>
+                    <p class="mb-2">Ultra Accelerator Link (UALink) is an open industry standard interconnect technology. It's designed for high-speed, low-latency communication primarily between AI accelerators (like GPUs, NPUs, FPGAs) and specialized switches within an AI computing pod.</p>
+                    <p class="mb-2"><strong>Key Characteristics:</strong></p>
+                    <ul class="list-disc list-inside space-y-1 text-neutral-700">
+                        <li>Enables direct memory operations (load, store, atomic) between accelerators.</li>
+                        <li>Developed by the UALink Consortium (AMD, Google, Intel, Meta, Microsoft, etc.).</li>
+                        <li>Aims to foster an open, interoperable, and competitive ecosystem.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold text-teal-600 mb-3">Problems Solved by UALink</h3>
+                    <p class="mb-2">UALink addresses limitations of traditional interconnects for modern AI workloads:</p>
+                    <ul class="list-disc list-inside space-y-1 text-neutral-700">
+                        <li><strong>Extreme Bandwidth Needs:</strong> For massive dataset and parameter movement.</li>
+                        <li><strong>Ultra-Low Latency:</strong> Crucial for distributed training and synchronization.</li>
+                        <li><strong>Efficient Memory Sharing:</strong> Direct access to remote accelerator memory.</li>
+                        <li><strong>Scalability:</strong> Supporting hundreds to thousands of accelerators.</li>
+                        <li><strong>Power Efficiency & Cost:</strong> Reducing operational expenditure and vendor lock-in.</li>
+                    </ul>
+                </div>
+            </div>
+             <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold text-teal-600 mb-3">Core Objectives of the UALink Consortium</h3>
+                <ul class="list-disc list-inside space-y-2 text-neutral-700">
+                    <li>Provide a low-latency, high-bandwidth fabric for tightly coupled AI workloads.</li>
+                    <li>Support hundreds of accelerators (up to 1,024 with UALink 1.0) in a single computing pod.</li>
+                    <li>Facilitate simple load/store semantics with software-managed coherency, making distributed memory appear as a unified address space.</li>
+                    <li>Cultivate a vibrant, competitive connectivity ecosystem as an alternative to proprietary technologies.</li>
+                    <li>Accelerate innovation and drive down costs in AI hardware.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="tech-deep-dive" class="content-section">
+            <h2 class="text-2xl font-semibold text-teal-700 mb-6">UALink: Technical Deep Dive</h2>
+            <p class="mb-6 text-lg">This section delves into the technical heart of UALink. Explore its specifications, architecture, protocol stack, performance characteristics, memory model, and features for reliability, security, and manageability.</p>
+
+            <div class="mb-6">
+                <button class="tab-button active" data-tab="tech-spec">Specification</button>
+                <button class="tab-button" data-tab="tech-arch">Architecture</button>
+                <button class="tab-button" data-tab="tech-protocol">Protocol Stack</button>
+                <button class="tab-button" data-tab="tech-switches">Switches</button>
+                <button class="tab-button" data-tab="tech-perf">Performance</button>
+                <button class="tab-button" data-tab="tech-memory">Memory Model</button>
+                <button class="tab-button" data-tab="tech-ras-security">RAS & Security</button>
+            </div>
+
+            <div id="tech-spec" class="tab-content active bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold text-teal-600 mb-3">UALink 1.0 Specification</h3>
+                <p class="mb-2">Ratified on April 8, 2025, the UALink 1.0 Specification defines a low-latency, high-bandwidth interconnect for AI accelerators and switches within AI computing pods.</p>
+                <ul class="list-disc list-inside space-y-1 text-neutral-700">
+                    <li>Enables 200 GT/s (Gigatransfers per second) per lane.</li>
+                    <li>Supports up to 1,024 accelerators in a single pod.</li>
+                    <li>Provides a stable target for hardware and software development.</li>
+                </ul>
+            </div>
+
+            <div id="tech-arch" class="tab-content bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold text-teal-600 mb-3">System Nodes & Multi-Node Architecture</h3>
+                <p class="mb-2">UALink interconnects multiple "System Nodes." Each node typically contains host CPUs and AI accelerators, with internal connectivity via PCIe, CXL, etc.</p>
+                <ul class="list-disc list-inside space-y-1 text-neutral-700">
+                    <li>UALink facilitates communication *between accelerators in different System Nodes*.</li>
+                    <li>Enables direct read, write, and atomic memory operations on remote accelerator memory.</li>
+                    <li>Restricted to accelerator-initiated traffic; host CPUs cannot use UALink for inter-node memory access.</li>
+                    <li>Creates the appearance of a single, massively parallel processing unit.</li>
+                </ul>
+            </div>
+            
+            <div id="tech-protocol" class="tab-content bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold text-teal-600 mb-3">UALink Protocol Stack</h3>
+                <p class="mb-4">UALink employs a layered protocol stack optimized for high efficiency and low latency. It consists of four primary layers:</p>
+                <div class="space-y-3">
+                    <div class="protocol-layer">
+                        <h4 class="font-semibold text-neutral-700">Protocol Layer (UPLI)</h4>
+                        <p class="text-sm text-neutral-600">Standardizes interface between component core (Accelerator/Switch) and UALink stack. Facilitates load/store semantics. Key components: UALink Protocol Level Interface (UPLI), Time Division Multiplexing, Flow Control, Ordering Rules.</p>
+                    </div>
+                    <div class="protocol-layer">
+                        <h4 class="font-semibold text-neutral-700">Transaction Layer (TL)</h4>
+                        <p class="text-sm text-neutral-600">Implements compressed addressing, direct memory operations (read, write, atomic), manages TL Flits, ensures ordering. Features: TL Flit formats, sequencing, packing, Compression Caches. Achieves ~93-95% protocol efficiency.</p>
+                    </div>
+                    <div class="protocol-layer">
+                        <h4 class="font-semibold text-neutral-700">Data Link Layer (DL)</h4>
+                        <p class="text-sm text-neutral-600">Packages TL Flits into DL Flits, handles error detection (CRC) and recovery (link-level replay), inter-device messaging. Features: DL Flit formats, DL Messages, Link Level Replay, RAS features.</p>
+                    </div>
+                    <div class="protocol-layer">
+                        <h4 class="font-semibold text-neutral-700">Physical Layer (PL)</h4>
+                        <p class="text-sm text-neutral-600">Electrical signaling, encoding/decoding, FEC. Based on Ethernet PHY (e.g., 200GBASE-KR1/CR1 from IEEE 802.3dj) with modifications for low latency. 200GT/s per Lane, max 4 Lanes per port. Signaling at 212.5 GT/s to accommodate FEC.</p>
+                    </div>
+                </div>
+                 <p class="mt-4 text-sm text-neutral-600">This layered structure allows for modularity and specialization, ensuring UALink meets its performance and reliability goals while facilitating interoperability.</p>
+            </div>
+
+            <div id="tech-switches" class="tab-content bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold text-teal-600 mb-3">UALink Switches</h3>
+                <p class="mb-2">UALink Switches are central to interconnecting multiple accelerators. They use a 10-bit unique identifier for addressing up to 1,024 UALink endpoints.</p>
+                <p class="font-medium mb-1">Key Design Principles:</p>
+                <ul class="list-disc list-inside space-y-1 text-neutral-700">
+                    <li>Lossless Delivery: Ensures data integrity.</li>
+                    <li>Non-Blocking Architecture: Maximizes throughput.</li>
+                    <li>Forward Progress Guarantee: Prevents deadlocks.</li>
+                    <li>Low Latency: 100-150 ns port-to-port hop.</li>
+                    <li>Power Efficiency: Contributes to lower TCO.</li>
+                    <li>Features: Bifurcation, defined routing tables, configuration mechanisms.</li>
+                </ul>
+            </div>
+
+            <div id="tech-perf" class="tab-content bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold text-teal-600 mb-3">Key Performance Characteristics</h3>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="metric-card text-center">
+                        <h4 class="text-lg font-medium text-neutral-700 mb-1">Bandwidth (per Lane)</h4>
+                        <p class="text-3xl font-bold text-teal-600">200 GT/s</p>
+                        <p class="text-sm text-neutral-500">(212.5 GT/s raw signaling)</p>
+                    </div>
+                    <div class="metric-card text-center">
+                        <h4 class="text-lg font-medium text-neutral-700 mb-1">Aggregate Bandwidth (x4 Port)</h4>
+                        <p class="text-3xl font-bold text-teal-600">~100 GB/s</p>
+                        <p class="text-sm text-neutral-500">(Unidirectional, ~1.6 TGT/s Bidirectional)</p>
+                    </div>
+                     <div class="metric-card text-center">
+                        <h4 class="text-lg font-medium text-neutral-700 mb-1">Target Pod Latency (RTT)</h4>
+                        <p class="text-3xl font-bold text-teal-600">&lt;1 µs</p>
+                        <p class="text-sm text-neutral-500">(Small payloads)</p>
+                    </div>
+                    <div class="metric-card text-center">
+                        <h4 class="text-lg font-medium text-neutral-700 mb-1">Switch Hop Latency</h4>
+                        <p class="text-3xl font-bold text-teal-600">100-150 ns</p>
+                        <p class="text-sm text-neutral-500">(Port-to-port)</p>
+                    </div>
+                    <div class="metric-card text-center">
+                        <h4 class="text-lg font-medium text-neutral-700 mb-1">Protocol Efficiency</h4>
+                        <p class="text-3xl font-bold text-teal-600">~93-95%</p>
+                        <p class="text-sm text-neutral-500">(Peak bandwidth utilization)</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="tech-memory" class="tab-content bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold text-teal-600 mb-3">Memory Model: Load/Store & Software-Managed Coherency</h3>
+                <p class="mb-2">UALink uses a load/store memory model, allowing accelerators to directly issue memory operations (read, write, atomics) to any other accelerator's memory in the pod. This creates the abstraction of a single, massive, globally addressable memory space.</p>
+                <p class="font-medium mb-1">Coherency:</p>
+                <ul class="list-disc list-inside space-y-1 text-neutral-700">
+                    <li>UALink is a non-coherent interconnect.</li>
+                    <li>It employs a <strong>software-managed coherency model</strong>.</li>
+                    <li>Hardware does not enforce system-wide cache coherency.</li>
+                    <li>Responsibility for data consistency lies with the software stack (drivers, libraries, applications).</li>
+                    <li>UALink hardware provides synchronization features to aid software in managing coherency.</li>
+                    <li>This approach can lead to simpler, more scalable hardware but places a greater onus on software optimization.</li>
+                </ul>
+            </div>
+
+            <div id="tech-ras-security" class="tab-content bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold text-teal-600 mb-3">Reliability, Availability, Serviceability (RAS) & Security</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-lg font-medium text-neutral-700 mb-2">RAS Features:</h4>
+                        <ul class="list-disc list-inside space-y-1 text-neutral-700">
+                            <li><strong>Error Detection/Correction:</strong> Physical Layer FEC, Data Link Layer CRCs.</li>
+                            <li><strong>Link-Level Replay:</strong> Data Link Layer retransmits affected flits on error.</li>
+                            <li><strong>Error Handling/Reporting:</strong> Defined procedures for error identification and logging.</li>
+                            <li><strong>End-to-End Data Protection:</strong> Robust data protection across the communication path.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-medium text-neutral-700 mb-2">Security (UALinkSec) & Manageability:</h4>
+                        <ul class="list-disc list-inside space-y-1 text-neutral-700">
+                            <li><strong>UALinkSec:</strong> Hardware-level encryption and authentication of all UALink traffic.</li>
+                            <li><strong>Confidential Computing:</strong> Supports TEEs (AMD SEV, Arm CCA, Intel TDX).</li>
+                            <li><strong>Manageability:</strong> Requirements for accelerators, switches, pod controllers. Workflows for configuration, monitoring, diagnostics, firmware updates.</li>
+                            <li><strong>Virtual Pods:</strong> Logical isolation of accelerator groups within a physical pod for multi-tenancy and resource utilization.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="scaling-pods" class="content-section">
+            <h2 class="text-2xl font-semibold text-teal-700 mb-6">Scaling Architectures & Accelerator Pods</h2>
+            <p class="mb-6 text-lg">UALink is central to new paradigms for scaling AI systems. This section explains "Scale-Up" vs. "Scale-Out" architectures and the concept of "Accelerator Pods," highlighting UALink's role in enabling these powerful compute concentrations.</p>
+            
+            <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+                <h3 class="text-xl font-semibold text-teal-600 mb-3">Scale-Up vs. Scale-Out</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-lg font-medium text-neutral-700 mb-1">Scale-Up (Vertical Scaling)</h4>
+                        <p class="text-sm text-neutral-600 mb-2">Increasing power of a single system/tightly coupled cluster by adding resources (CPUs, GPUs, memory). UALink is a scale-up fabric.</p>
+                        <p class="text-sm font-semibold">Implication:</p>
+                        <p class="text-sm text-neutral-600 mb-2">Creates illusion of a single powerful system with unified/directly accessible memory. Requires high-bandwidth, ultra-low-latency interconnects like UALink.</p>
+                        <p class="text-sm font-semibold">Use Cases:</p>
+                        <p class="text-sm text-neutral-600">Large model training, fine-grained data sharing, frequent inter-process communication.</p>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-medium text-neutral-700 mb-1">Scale-Out (Horizontal Scaling)</h4>
+                        <p class="text-sm text-neutral-600 mb-2">Increasing capacity by adding more independent nodes and distributing workload. Technologies like Ultra Ethernet (UEC) are for scale-out.</p>
+                        <p class="text-sm font-semibold">Implication:</p>
+                        <p class="text-sm text-neutral-600 mb-2">Connects distinct clusters/nodes. Communication typically message-passing based. Less emphasis on global shared memory.</p>
+                        <p class="text-sm font-semibold">Use Cases:</p>
+                        <p class="text-sm text-neutral-600">Large-scale inference, web serving, embarrassingly parallel computations.</p>
+                    </div>
+                </div>
+                <p class="mt-4 text-sm text-neutral-600">UALink (scale-up within pods) and UEC (scale-out between pods/racks) are complementary, suggesting a hierarchical network architecture for future AI data centers.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold text-teal-600 mb-3">Accelerator Pods: Concentrated Compute Power</h3>
+                <p class="mb-2">An "AI computing pod" is a densely packed cluster of AI accelerators interconnected by a high-speed, low-latency fabric like UALink, designed for collaborative large-scale AI/HPC tasks.</p>
+                <ul class="list-disc list-inside space-y-1 text-neutral-700 mb-3">
+                    <li><strong>Scale:</strong> UALink 1.0 supports pods up to 1,024 accelerators. Configurations can range from 8 GPUs to hundreds.</li>
+                    <li><strong>Concept:</strong> Create a high-performance "island" of computational resources.</li>
+                </ul>
+                <h4 class="text-lg font-medium text-neutral-700 mb-1">UALink's Role in High-Performance Pods:</h4>
+                <ul class="list-disc list-inside space-y-1 text-neutral-700">
+                    <li><strong>High Bandwidth & Low Latency:</strong> Essential for rapid data exchange and synchronization.</li>
+                    <li><strong>Memory Semantics:</strong> Load/store access to any accelerator's memory within the pod, enabling a "single massive GPU" software abstraction.</li>
+                    <li><strong>Dedicated Switch Ecosystem:</strong> Specialized UALink switches for efficient traffic management.</li>
+                    <li><strong>Virtual Pods:</strong> Flexible partitioning of physical pods for multi-tenancy and resource optimization.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="comparisons" class="content-section">
+            <h2 class="text-2xl font-semibold text-teal-700 mb-6">Interconnects Compared</h2>
+            <p class="mb-6 text-lg">To understand UALink's position, it's vital to compare it with other interconnect technologies. This section provides an overview of alternatives and a detailed head-to-head comparison with NVIDIA's NVLink.</p>
+
+            <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+                <h3 class="text-xl font-semibold text-teal-600 mb-3">Comparative Overview of Key Interconnects</h3>
+                <p class="mb-4 text-sm text-neutral-600">The following table summarizes key features of UALink and prominent alternatives. (Note: This is a simplified representation of Table 1 from the source report.)</p>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Feature/Technology</th>
+                                <th>UALink 1.0</th>
+                                <th>NVLink (Blackwell)</th>
+                                <th>CXL 3.0</th>
+                                <th>PCIe 6.0</th>
+                                <th>InfiniBand (XDR)</th>
+                                <th>Ultra Ethernet (UEC)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-semibold">Primary Use Case</td>
+                                <td>AI Accelerator Scale-Up (in-pod)</td>
+                                <td>GPU-to-GPU/CPU Scale-Up</td>
+                                <td>CPU-Device, Mem Expansion</td>
+                                <td>General I/O</td>
+                                <td>HPC/AI Scale-Out</td>
+                                <td>AI/HPC Scale-Out</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Max BW/Lane</td>
+                                <td>200 GT/s</td>
+                                <td>~100-112 Gbps class</td>
+                                <td>64 GT/s</td>
+                                <td>64 GT/s</td>
+                                <td>200 Gbps (SerDes)</td>
+                                <td>Ethernet dependent</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Typical Latency</td>
+                                <td>&lt;1 µs (pod RTT)</td>
+                                <td>~100ns (switch hop)</td>
+                                <td>Low (over PCIe)</td>
+                                <td>Low (tens of ns + ToF)</td>
+                                <td>~1µs (app)</td>
+                                <td>Targets low tail</td>
+                            </tr>
+                             <tr>
+                                <td class="font-semibold">Coherency Model</td>
+                                <td>Software-Managed</td>
+                                <td>Hardware Cache Coherency</td>
+                                <td>CXL.cache/CXL.mem</td>
+                                <td>None (I/O)</td>
+                                <td>None (RDMA)</td>
+                                <td>None (RDMA-like)</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Open/Proprietary</td>
+                                <td>Open</td>
+                                <td>Proprietary</td>
+                                <td>Open</td>
+                                <td>Open</td>
+                                <td>Open</td>
+                                <td>Open</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Physical Layer Basis</td>
+                                <td>Ethernet PHY (mod)</td>
+                                <td>Custom NVIDIA</td>
+                                <td>PCIe PHY</td>
+                                <td>PCIe PHY</td>
+                                <td>Custom InfiniBand</td>
+                                <td>Ethernet PHY</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold text-teal-600 mb-3">UALink vs. NVLink: Detailed Comparison</h3>
+                <p class="mb-4 text-sm text-neutral-600">UALink is often seen as an open alternative to NVIDIA's proprietary NVLink. Here's a breakdown of their key differences:</p>
+                
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="text-lg font-medium text-neutral-700">Philosophical Differences</h4>
+                        <p class="text-sm text-neutral-600"><strong>UALink:</strong> Open industry standard, multi-vendor ecosystem, aims to reduce costs and vendor lock-in.</p>
+                        <p class="text-sm text-neutral-600"><strong>NVLink:</strong> Proprietary NVIDIA technology, highly optimized for its GPU ecosystem, potential for vendor lock-in.</p>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-medium text-neutral-700">Technical Specifications</h4>
+                        <ul class="list-disc list-inside text-sm text-neutral-600 space-y-1">
+                            <li><strong>Bandwidth:</strong> UALink 1.0 offers 200 GT/s per lane (~100 GB/s unidirectional for x4 port). NVLink 5th Gen (Blackwell) provides 1.8 TB/s total bidirectional bandwidth per GPU (via 18 links, each 50 GB/s unidirectional). Direct lane comparison is complex, but per-link/port bandwidths are in a similar class for individual connections.</li>
+                            <li><strong>Latency:</strong> Both target very low latencies (UALink <1 µs pod RTT, 100-150ns switch hop; NVLink ~100ns NVSwitch hop).</li>
+                            <li><strong>Scalability:</strong> UALink 1.0 supports up to 1,024 accelerators in a pod. NVLink (NVSwitch 4) theoretically up to 576 GPUs (e.g., DGX NVL72 connects 72 GPUs).</li>
+                            <li><strong>Physical Layer:</strong> UALink uses modified Ethernet PHYs. NVLink uses custom NVIDIA PHYs.</li>
+                        </ul>
+                    </div>
+                     <div>
+                        <h4 class="text-lg font-medium text-neutral-700">Coherency Models & Implications</h4>
+                        <p class="text-sm text-neutral-600"><strong>UALink:</strong> Software-managed coherency. Simpler hardware, potentially lower cost/power, more scalable hardware. Places onus on software for data consistency, but offers explicit control for optimization. Success depends on robust software ecosystem.</p>
+                        <p class="text-sm text-neutral-600"><strong>NVLink:</strong> Hardware-enforced cache coherency. More complex hardware. Simplifies programming for shared memory within CUDA ecosystem. Overhead of coherency protocols can sometimes impact performance at large scales.</p>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-medium text-neutral-700">Switching Architecture</h4>
+                        <p class="text-sm text-neutral-600"><strong>UALink Switches:</strong> Open ecosystem, aims for efficiency, low power, cost-effectiveness. Non-blocking, lossless. Multiple vendors expected.</p>
+                        <p class="text-sm text-neutral-600"><strong>NVSwitch:</strong> NVIDIA proprietary ASIC, highly specialized, features like SHARP for in-network reductions. Tightly integrated.</p>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-medium text-neutral-700">Power, Die Area, and Cost Efficiency (TCO)</h4>
+                        <p class="text-sm text-neutral-600"><strong>UALink:</strong> Claims significant power savings (150-200W/accelerator), smaller switch die area (1/2-1/3 of Ethernet ASIC), aiming for lower TCO through open standard and efficiency.</p>
+                        <p class="text-sm text-neutral-600"><strong>NVLink:</strong> Efficient interconnect, but high-performance components contribute to overall system power. Premium, proprietary solution, often higher upfront costs.</p>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-medium text-neutral-700">Ecosystem Maturity</h4>
+                        <p class="text-sm text-neutral-600"><strong>UALink:</strong> Emerging ecosystem, specification released April 2025, products expected 12-18 months later. Strong consortium backing.</p>
+                        <p class="text-sm text-neutral-600"><strong>NVLink:</strong> Mature, well-established, deep software integration (CUDA, NCCL).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="market-view" class="content-section">
+            <h2 class="text-2xl font-semibold text-teal-700 mb-6">Market View for UALink</h2>
+            <p class="mb-6 text-lg">UALink enters a dynamic and rapidly growing market for AI and HPC interconnects. This section explores the current landscape, market size (TAM), UALink's potential serviceable market (SAM), and key growth drivers.</p>
+
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold text-teal-600 mb-3">Current AI/HPC Interconnect Landscape</h3>
+                    <p class="mb-2 text-sm text-neutral-600">Dominated by technologies like Ethernet (with RoCE), InfiniBand, NVIDIA's NVLink, PCIe, and the emerging CXL. Key trends include demand for higher bandwidth, lower latency, power efficiency, and a strong push for open standards.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold text-teal-600 mb-3">Serviceable Addressable Market (SAM) for UALink</h3>
+                    <p class="mb-2 text-sm text-neutral-600">UALink targets AI scale-up deployments opting for an open ecosystem. Its SAM will be influenced by:</p>
+                    <ul class="list-disc list-inside text-sm text-neutral-600 space-y-1">
+                        <li>Adoption by consortium members (AMD, Intel, hyperscalers).</li>
+                        <li>Success of non-NVIDIA AI accelerators.</li>
+                        <li>Competitive performance, TCO, and ease of use vs. NVLink.</li>
+                        <li>Ecosystem readiness (switches, cables, software).</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+                <h3 class="text-xl font-semibold text-teal-600 mb-3">Total Addressable Market (TAM) Context</h3>
+                <p class="mb-4 text-sm text-neutral-600">While specific TAM for UALink is hard to isolate, related markets show massive growth. For example, the AI Accelerator Market:</p>
+                <div class="chart-container">
+                    <canvas id="aiAcceleratorMarketChart"></canvas>
+                </div>
+                <p class="text-xs text-center mt-2 text-neutral-500">Data based on projections: USD 16.55B (2024) to USD 53.23B (2029).</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold text-teal-600 mb-3">Growth Drivers for UALink</h3>
+                 <ul class="list-disc list-inside space-y-1 text-neutral-700">
+                    <li><strong>Exponential Growth in AI Model Size:</strong> Demands larger, more powerful, tightly coupled accelerator pods.</li>
+                    <li><strong>Industry Demand for Open Standards:</strong> To foster competition, reduce costs, prevent vendor lock-in.</li>
+                    <li><strong>Hyperscaler Investment:</strong> Major cloud providers are key UALink backers, driving adoption.</li>
+                    <li><strong>Emergence of Diverse AI Accelerators:</strong> UALink can interconnect various accelerator types, promoting heterogeneous computing.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="ecosystem-future" class="content-section">
+            <h2 class="text-2xl font-semibold text-teal-700 mb-6">Ecosystem Development & Future Outlook</h2>
+            <p class="mb-6 text-lg">UALink's introduction addresses existing gaps and creates new technological and business opportunities. Its success hinges on a robust ecosystem. This section looks at these opportunities, key players, and UALink's potential impact.</p>
+
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold text-teal-600 mb-3">Gaps Addressed by UALink</h3>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-neutral-600">
+                        <li>Lack of an open, high-performance scale-up standard for diverse accelerators.</li>
+                        <li>Cost and power inefficiencies in large-scale accelerator clusters.</li>
+                        <li>Interoperability challenges due to proprietary interconnects.</li>
+                        <li>Need for interconnects optimized for AI-specific traffic patterns and memory semantics.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold text-teal-600 mb-3">New Opportunities Arising from UALink</h3>
+                    <p class="text-sm text-neutral-600 mb-2">UALink catalyzes innovation across the AI hardware and software ecosystem:</p>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-neutral-600">
+                        <li><strong>Switch Silicon & Systems:</strong> UALink-specific switch ASICs and platforms. (Potential Players: Broadcom, Marvell, Cisco, Astera Labs)</li>
+                        <li><strong>Accelerator Design & Integration:</strong> AI accelerators with native UALink interfaces. (Potential Players: AMD, Intel, Google, Meta, Apple)</li>
+                        <li><strong>Software & Management Tools:</strong> Drivers, communication libraries (like NCCL for UALink), compilers, orchestration software. (Potential Players: OS vendors, CSPs, AI framework devs)</li>
+                        <li><strong>Testing & Verification Solutions:</strong> UALink VIP, compliance testing tools. (Potential Players: Synopsys, Cadence)</li>
+                        <li><strong>Optical Interconnects & Cabling:</strong> For larger scale-pods spanning racks. (Potential Players: Optical component manufacturers)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+                <h3 class="text-xl font-semibold text-teal-600 mb-3">Key Companies & Consortium</h3>
+                <p class="mb-2 text-sm text-neutral-600">The UALink Consortium, with over 85 members, is pivotal. Promoter members include:</p>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <span class="bg-teal-100 text-teal-800 px-2 py-1 rounded-full">AMD</span>
+                    <span class="bg-teal-100 text-teal-800 px-2 py-1 rounded-full">Apple</span>
+                    <span class="bg-teal-100 text-teal-800 px-2 py-1 rounded-full">Astera Labs</span>
+                    <span class="bg-teal-100 text-teal-800 px-2 py-1 rounded-full">AWS</span>
+                    <span class="bg-teal-100 text-teal-800 px-2 py-1 rounded-full">Cisco</span>
+                    <span class="bg-teal-100 text-teal-800 px-2 py-1 rounded-full">Google</span>
+                    <span class="bg-teal-100 text-teal-800 px-2 py-1 rounded-full">HPE</span>
+                    <span class="bg-teal-100 text-teal-800 px-2 py-1 rounded-full">Intel</span>
+                    <span class="bg-teal-100 text-teal-800 px-2 py-1 rounded-full">Meta</span>
+                    <span class="bg-teal-100 text-teal-800 px-2 py-1 rounded-full">Microsoft</span>
+                    <span class="bg-teal-100 text-teal-800 px-2 py-1 rounded-full">Synopsys</span>
+                    <span class="bg-teal-100 text-teal-800 px-2 py-1 rounded-full">Alibaba</span>
+                </div>
+                <p class="mt-2 text-sm text-neutral-600">Contributor/Adopter members like Cadence, Lenovo, Xconn Technologies also play vital roles.</p>
+            </div>
+             <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold text-teal-600 mb-3">Conclusion & Future Outlook</h3>
+                <p class="text-sm text-neutral-600 mb-2">UALink 1.0 is a credible, well-supported open standard initiative with the potential to significantly impact AI infrastructure. Its success depends on timely ecosystem development, demonstrated performance/TCO advantages, and effective software for its software-managed coherency model.</p>
+                <p class="text-sm text-neutral-600">UALink, with complementary technologies like Ultra Ethernet, could redefine AI data center architectures, fostering a more open, competitive, disaggregated, and innovative landscape for high-performance accelerator interconnects.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center py-8 text-sm text-neutral-500">
+        <p>&copy; 2025 Interactive UALink Guide. Information based on the "Ultra Accelerator Link (UALink): An In-Depth Technical and Market Analysis" report.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navButtons = document.querySelectorAll('.nav-button');
+            const contentSections = document.querySelectorAll('.content-section');
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            function activateSection(targetId) {
+                navButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.dataset.target === targetId) {
+                        btn.classList.add('active');
+                    }
+                });
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                    if (section.id === targetId) {
+                        section.classList.add('active');
+                    }
+                });
+            }
+            
+            navButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                   activateSection(this.dataset.target);
+                });
+            });
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const targetTab = this.dataset.tab;
+                    
+                    // Deactivate all tab buttons and contents within the same parent group
+                    this.parentElement.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const parentSection = this.closest('.content-section');
+                    parentSection.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                    parentSection.querySelector(`#${targetTab}`).classList.add('active');
+                });
+            });
+
+            // Initialize default active section
+            activateSection('overview');
+
+            // Chart.js: AI Accelerator Market Chart
+            const aiMarketCtx = document.getElementById('aiAcceleratorMarketChart');
+            if (aiMarketCtx) {
+                new Chart(aiMarketCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['2024 (Est.)', '2025 (Proj.)', '2029 (Proj.)'],
+                        datasets: [{
+                            label: 'Global AI Accelerator Market (USD Billion)',
+                            data: [16.55, 20.95, 53.23],
+                            backgroundColor: [
+                                'rgba(20, 184, 166, 0.6)', // teal-500
+                                'rgba(245, 158, 11, 0.6)', // amber-500
+                                'rgba(13, 148, 136, 0.6)' // teal-600
+                            ],
+                            borderColor: [
+                                'rgba(20, 184, 166, 1)',
+                                'rgba(245, 158, 11, 1)',
+                                'rgba(13, 148, 136, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Market Value (USD Billion)'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Year'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += '$' + context.parsed.y + ' Billion';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
