@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alphabet Q2 2025 Earnings Review</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN for interactive charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            position: relative; /* Needed for watermark positioning */
+        }
+        /* Watermark effect - now using an image */
+        #watermark-logo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('Logo-transparent.png'); /* Replace with your logo URL */
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: contain; /* Adjust as needed: 'contain', 'cover', or specific size like '50%' */
+            opacity: 0.07; /* Very subtle opacity */
+            pointer-events: none; /* Allows clicks/interactions through the watermark */
+            z-index: -1; /* Puts it behind content */
+            /*transform: rotate(-25deg); /* Rotate for a classic watermark look */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        .header {
+            background-color: #ffffff;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #e0e0e0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .nav-link {
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-weight: 600;
+            color: #555;
+        }
+        .nav-link:hover {
+            background-color: #e6f0ff;
+            color: #1a73e8;
+        }
+        .hero-section {
+            background: linear-gradient(135deg, #4285F4, #34A853);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            border-radius: 1rem;
+            margin-top: 2rem;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+        }
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #1a73e8;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .table-container {
+            overflow-x: auto;
+            margin-top: 2rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #444;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            border-radius: 1rem 1rem 0 0;
+        }
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: #1a73e8;
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 9999px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: background-color 0.3s ease;
+            z-index: 100;
+        }
+        .back-to-top:hover {
+            background-color: #155bb5;
+        }
+        .highlight {
+            background-color: #e6f0ff;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-weight: 600;
+            color: #1a73e8;
+        }
+        .bullet-point {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+        .bullet-icon {
+            color: #34A853;
+            font-size: 1.25rem;
+            margin-right: 0.75rem;
+            line-height: 1.6;
+        }
+        /* Chart container styling */
+        .chart-container {
+            position: relative;
+            height: 400px; /* Fixed height for charts */
+            width: 100%;
+            margin-bottom: 2rem;
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        }
+    </style>
+</head>
+<body class="scroll-smooth">
+
+    <!-- Watermark Logo -->
+    <div id="watermark-logo"></div>
+
+    <!-- Header and Navigation -->
+    <header class="header sticky top-0 z-50">
+        <div class="container flex flex-col md:flex-row justify-between items-center">
+            <!-- Logo Placeholder in Header -->
+            <div class="flex items-center mb-4 md:mb-0">
+                <img src="Logo-transparent.png" alt="Company Logo" class="h-12 w-12 mr-3 rounded-full shadow-md">
+                <h1 class="text-3xl font-bold text-gray-800">Alphabet Q2 2025 Earnings</h1>
+            </div>
+            <nav class="flex flex-wrap justify-center gap-2 md:gap-4">
+                <a href="#overview" class="nav-link">Overview</a>
+                <a href="#financials" class="nav-link">Financials</a>
+                <a href="#charts" class="nav-link">Charts</a> <!-- New navigation link for charts -->
+                <a href="#outlook" class="nav-link">Outlook & Guidance</a>
+                <a href="#takeaways" class="nav-link">Key Takeaways</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h2 class="text-5xl font-bold mb-4">Strong Performance in Q2 2025</h2>
+            <p class="text-xl max-w-2xl mx-auto">Alphabet reports robust growth across all segments, driven by Cloud momentum and AI innovation.</p>
+        </div>
+    </section>
+
+    <main class="container py-8">
+
+        <!-- Performance Overview Section -->
+        <section id="overview" class="mb-12">
+            <h2 class="section-title">Performance Overview</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3">Total Revenues</h3>
+                    <p class="text-gray-600">Reported <span class="highlight">$96.43 billion</span>, a <span class="highlight">14% increase</span> year-over-year, beating consensus by 2.57%.</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3">Operating Income</h3>
+                    <p class="text-gray-600">Rose <span class="highlight">14% to $31.27 billion</span>, slightly exceeding consensus by 0.51%.</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3">Diluted EPS</h3>
+                    <p class="text-gray-600">Delivered <span class="highlight">$2.31</span>, comfortably beating consensus by 5.96%.</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3">Google Cloud Revenue</h3>
+                    <p class="text-gray-600">Showed robust growth, increasing <span class="highlight">32% year-over-year to $13.62 billion</span>, surpassing consensus by 3.65%.</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3">YouTube Ads Revenue</h3>
+                    <p class="text-gray-600">Reached <span class="highlight">$9.796 billion</span>, exceeding consensus by 2.25%.</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3">Free Cash Flow (FCF)</h3>
+                    <p class="text-gray-600">Reported <span class="highlight">$5.30 billion</span>, significantly below consensus due to higher capital expenditures.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Financials Section -->
+        <section id="financials" class="mb-12">
+            <h2 class="section-title">Detailed Financials</h2>
+
+            <h3 class="text-2xl font-semibold text-gray-700 mb-4 text-center">Q2 2025 vs. Estimates</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>2Q25 Actual</th>
+                            <th>Jefferies Estimate</th>
+                            <th>GS Estimate</th>
+                            <th>Street Consensus</th>
+                            <th>% Difference VS consensus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Rev (Gross)</td><td>$96.43 B</td><td>$91.69 B</td><td>$93.91 B</td><td>$94.01 B</td><td>2.60%</td></tr>
+                        <tr><td>Rev (Net)</td><td>$81.72 B</td><td>$78.11 B</td><td>$79.79 B</td><td>$79.86 B</td><td>2.30%</td></tr>
+                        <tr><td>Op income</td><td>$31.27 B</td><td>$29.19 B</td><td>$30.59 B</td><td>$31.11 B</td><td>0.50%</td></tr>
+                        <tr><td>EPS (NG)</td><td>$2.31</td><td>$2.09</td><td>$2.12</td><td>$2.18</td><td>6.20%</td></tr>
+                        <tr><td>Op margin (off net rev)</td><td>38.30%</td><td>37.40%</td><td>38.30%</td><td>39.00%</td><td>-0.70%</td></tr>
+                        <tr><td>Google properties rev</td><td>$63.99 B</td><td>$61.30 B</td><td></td><td>$62.51 B</td><td>2.40%</td></tr>
+                        <tr><td>Search & other rev</td><td>$54.19 B</td><td>$51.90 B</td><td>$52.87 B</td><td>$52.93 B</td><td>2.40%</td></tr>
+                        <tr><td>YouTube ads rev</td><td>$9.80 B</td><td>$9.39 B</td><td>$9.53 B</td><td>$9.58 B</td><td>2.20%</td></tr>
+                        <tr><td>Google Network rev</td><td>$7.35 B</td><td>$6.70 B</td><td>$7.18B</td><td>$7.25 B</td><td>1.50%</td></tr>
+                        <tr><td>Google Cloud rev</td><td>$13.62 B</td><td>$12.95 B</td><td>$13.14 B</td><td>$13.14 B</td><td>3.70%</td></tr>
+                        <tr><td>Google subs, platforms, & devices</td><td>$11.20 B</td><td>$10.43 B</td><td>$10.82 B</td><td>$10.72 B</td><td>4.50%</td></tr>
+                        <tr><td>Other bets</td><td>$0.37 B</td><td>$0.32 B</td><td></td><td>$0.41 B</td><td>-9.40%</td></tr>
+                        <tr><td>CFFO</td><td>$27.75 B</td><td>$33.66 B</td><td></td><td>$35.71 B</td><td>-22.30%</td></tr>
+                        <tr><td>Capex</td><td>($22.45 B)</td><td>($18.06 B)</td><td>$18.79 B</td><td>($18.19 B)</td><td>-23.40%</td></tr>
+                        <tr><td>FCF</td><td>$5.30 B</td><td>$15.60 B</td><td>$17.31 B</td><td>$17.52 B</td><td>-69.70%</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-semibold text-gray-700 mb-4 mt-8 text-center">Quarter-over-Quarter Comparison</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Q2 2024 (Millions USD)</th>
+                            <th>Q1 2025 (Millions USD)</th>
+                            <th>Q2 2025 (Millions USD)</th>
+                            <th>YoY Change (%)</th>
+                            <th>QoQ Change (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Rev (Gross)</td><td>$84,742</td><td>$90,234</td><td>$96,428</td><td>14%</td><td>7%</td></tr>
+                        <tr><td>Op income</td><td>$27,425</td><td>$30,606</td><td>$31,271</td><td>14%</td><td>2%</td></tr>
+                        <tr><td>EPS (NG)</td><td>$1.89</td><td>$2.14</td><td>$2.31</td><td>22%</td><td>8%</td></tr>
+                        <tr><td>Op margin (off net rev)</td><td>32%</td><td>33.90%</td><td>32.40%</td><td>1%</td><td>-4%</td></tr>
+                        <tr><td>Google Services Revenues</td><td>$73,928</td><td>$77,264</td><td>$82,543</td><td>12%</td><td>5%</td></tr>
+                        <tr><td>Search & other rev</td><td>$48,509</td><td>$50,702</td><td>$54,190</td><td>12%</td><td>4%</td></tr>
+                        <tr><td>YouTube ads rev</td><td>$8,663</td><td>$8,927</td><td>$9,796</td><td>13%</td><td>9%</td></tr>
+                        <tr><td>Google Network rev</td><td>$7,444</td><td>$7,256</td><td>$7,354</td><td>-1%</td><td>3%</td></tr>
+                        <tr><td>Google Cloud rev</td><td>$10,347</td><td>$12,260</td><td>$13,624</td><td>32%</td><td>7%</td></tr>
+                        <tr><td>Google subs, platforms, & devices</td><td>$9,312</td><td>$10,379</td><td>$11,203</td><td>20%</td><td>9%</td></tr>
+                        <tr><td>Other bets</td><td>$365</td><td>$356</td><td>$373</td><td>2%</td><td>5%</td></tr>
+                        <tr><td>CFFO</td><td>$26,640</td><td>$36,150</td><td>$27,747</td><td>4%</td><td>-23%</td></tr>
+                        <tr><td>Capex</td><td>$13,186</td><td>$17,197</td><td>$22,446</td><td>70%</td><td>30%</td></tr>
+                        <tr><td>FCF</td><td>$13,454</td><td>$18,953</td><td>$5,301</td><td>-61%</td><td>-72%</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section id="charts" class="mb-12">
+            <h2 class="section-title">Visualizing Key Financials</h2>
+
+            <h3 class="text-2xl font-semibold text-gray-700 mb-4 text-center">Q2 2025 Actual vs. Street Consensus</h3>
+            <div class="chart-container">
+                <canvas id="q2VsConsensusChart"></canvas>
+            </div>
+
+            <h3 class="text-2xl font-semibold text-gray-700 mb-4 mt-8 text-center">Quarter-over-Quarter Performance</h3>
+            <div class="chart-container">
+                <canvas id="qoqPerformanceChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Financial Outlook & Guidance Section -->
+        <section id="outlook" class="mb-12">
+            <h2 class="section-title">Financial Outlook & Guidance</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card">
+                    <div class="bullet-point">
+                        <span class="bullet-icon">&#10003;</span>
+                        <p class="text-gray-700"><span class="font-semibold">Consolidated Revenue Growth:</span> Strong Q2 momentum expected to continue into H2 2025.</p>
+                    </div>
+                    <div class="bullet-point">
+                        <span class="bullet-icon">&#10003;</span>
+                        <p class="text-gray-700"><span class="font-semibold">Capex Increase:</span> FY25 guidance raised to <span class="highlight">$85 billion</span> (from $75 billion) for server investments and accelerated data center construction, driven by cloud customer demand, especially for AI products.</p>
+                    </div>
+                    <div class="bullet-point">
+                        <span class="bullet-icon">&#10003;</span>
+                        <p class="text-gray-700"><span class="font-semibold">Tight Supply Environment:</span> Demand for compute expected to outstrip current capacity into 2026.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="bullet-point">
+                        <span class="bullet-icon">&#10003;</span>
+                        <p class="text-gray-700"><span class="font-semibold">Depreciation Pressure:</span> Significant increase in capex will lead to higher depreciation, expected to accelerate in Q3.</p>
+                    </div>
+                    <div class="bullet-point">
+                        <span class="bullet-icon">&#10003;</span>
+                        <p class="text-gray-700"><span class="font-semibold">Headcount Growth:</span> Expected in key investment areas for 2025, with a sequential increase in Q3 due to new graduate hiring.</p>
+                    </div>
+                    <div class="bullet-point">
+                        <span class="bullet-icon">&#10003;</span>
+                        <p class="text-gray-700"><span class="font-semibold">Cloud Backlog:</span> Increased <span class="highlight">18% sequentially and 38% YoY to $106 billion</span>, indicating robust future revenue streams.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Takeaways Section -->
+        <section id="takeaways" class="mb-12">
+            <h2 class="section-title">Key Takeaways from Q&A and General Comments</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3">AI Strategy & Adoption</h3>
+                    <ul class="list-none p-0">
+                        <li class="bullet-point"><span class="bullet-icon">&#9679;</span><p class="text-gray-700">AI deeply integrated across products, driving growth and engagement.</p></li>
+                        <li class="bullet-point"><span class="bullet-icon">&#9679;</span><p class="text-gray-700">AI mode in Search (100M+ MAU in US/India) and AI Overviews (2M+ MAU globally) expanding user interaction.</p></li>
+                        <li class="bullet-point"><span class="bullet-icon">&#9679;</span><p class="text-gray-700">Gemini app has <span class="highlight">450M+ MAU</span>, processing 980 trillion monthly tokens.</p></li>
+                        <li class="bullet-point"><span class="bullet-icon">&#9679;</span><p class="text-gray-700">Google Lens and Circle to Search saw highest growth (70%), indicating strong GenZ user adoption.</p></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3">Cloud Momentum & Investment</h3>
+                    <ul class="list-none p-0">
+                        <li class="bullet-point"><span class="bullet-icon">&#9679;</span><p class="text-gray-700">Strong Google Cloud growth driven by high customer demand for AI.</p></li>
+                        <li class="bullet-point"><span class="bullet-icon">&#9679;</span><p class="text-gray-700">Significant increase in 2025 capex to <span class="highlight">$85 billion</span> for servers and data centers.</p></li>
+                        <li class="bullet-point"><span class="bullet-icon">&#9679;</span><p class="text-gray-700">Capacity expansion output visible towards the backend of the year.</p></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3">Monetization & Search Evolution</h3>
+                    <ul class="list-none p-0">
+                        <li class="bullet-point"><span class="bullet-icon">&#9679;</span><p class="text-gray-700">Advertising business managed for user outcomes and advertiser ROI.</p></li>
+                        <li class="bullet-point"><span class="bullet-icon">&#9679;</span><p class="text-gray-700">AI Overviews monetizing at similar rates to traditional search.</p></li>
+                        <li class="bullet-point"><span class="bullet-icon">&#9679;</span><p class="text-gray-700">AI search scene similar to early days of Web, indicating new competition.</p></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3">Agentic Capabilities & Partnerships</h3>
+                    <ul class="list-none p-0">
+                        <li class="bullet-point"><span class="bullet-icon">&#9679;</span><p class="text-gray-700">Significant progress in agentic capabilities, broader adoption anticipated for 2026.</p></li>
+                        <li class="bullet-point"><span class="bullet-icon">&#9679;</span><p class="text-gray-700">Huge improvement in internal coding agent mentioned by Sundar Pichai.</p></li>
+                        <li class="bullet-point"><span class="bullet-icon">&#9679;</span><p class="text-gray-700">More partnerships expected with OpenAI on Google Cloud.</p></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3">Dual Search/Gemini App Strategy & Device Evolution</h3>
+                    <ul class="list-none p-0">
+                        <li class="bullet-point"><span class="bullet-icon">&#9679;</span><p class="text-gray-700">Two-surface approach: AI mode in Search for info, Gemini app for conversational/creative tasks.</p></li>
+                        <li class="bullet-point"><span class="bullet-icon">&#9679;</span><p class="text-gray-700">AI to spur innovation in new hardware (e.g., glasses), but mobile phones central for 2-3 years.</p></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3">YouTube Performance & Talent</h3>
+                    <ul class="list-none p-0">
+                        <li class="bullet-point"><span class="bullet-icon">&#9679;</span><p class="text-gray-700">YouTube shows strong advertising revenue growth, Shorts monetizing effectively.</p></li>
+                        <li class="bullet-point"><span class="bullet-icon">&#9679;</span><p class="text-gray-700">Subscriptions increasingly important and growing part of the business.</p></li>
+                        <li class="bullet-point"><span class="bullet-icon">&#9679;</span><p class="text-gray-700">Google well-positioned to attract and retain top AI talent.</p></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Geninnov Pte. Ltd. All rights reserved.</p>
+        <p class="text-sm mt-2">Data as of July 24, 2025</p>
+        <p class="text-sm mt-2">Sidharth, GenInnov</p>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#top" class="back-to-top" aria-label="Back to top">↑ Top</a>
+
+    <script>
+        // Function to parse currency strings to numbers
+        function parseCurrencyToNumber(currencyString) {
+            // Remove '$', 'B', ',', and '()' for negative numbers, then parse as float
+            return parseFloat(currencyString.replace(/[\$,B()]/g, '').replace(/-/g, ''));
+        }
+
+        // Function to extract data from the first table (Q2 2025 vs. Estimates)
+        function getQ2VsConsensusData() {
+            const table = document.querySelector('#financials table:first-of-type');
+            if (!table) return null;
+
+            const rows = table.querySelectorAll('tbody tr');
+            const metrics = [];
+            const actualValues = [];
+            const consensusValues = [];
+
+            // Define which metrics to include in the chart and their corresponding row index
+            const chartMetrics = {
+                'Rev (Gross)': 0,
+                'Op income': 2,
+                'EPS (NG)': 3,
+                'Google Cloud rev': 9,
+                'YouTube ads rev': 7,
+                'FCF': 14,
+                'Capex': 13
+            };
+
+            for (const metricName in chartMetrics) {
+                const rowIndex = chartMetrics[metricName];
+                const row = rows[rowIndex];
+                if (row) {
+                    const cells = row.querySelectorAll('td');
+                    metrics.push(metricName);
+                    actualValues.push(parseCurrencyToNumber(cells[1].innerText));
+                    consensusValues.push(parseCurrencyToNumber(cells[4].innerText));
+                }
+            }
+            return { metrics, actualValues, consensusValues };
+        }
+
+        // Function to extract data from the second table (Quarter-over-Quarter Comparison)
+        function getQoQPerformanceData() {
+            const table = document.querySelector('#financials table:last-of-type');
+            if (!table) return null;
+
+            const rows = table.querySelectorAll('tbody tr');
+            const metrics = [];
+            const q22024Values = [];
+            const q12025Values = [];
+            const q22025Values = [];
+
+            // Define which metrics to include in the chart and their corresponding row index
+            const chartMetrics = {
+                'Rev (Gross)': 0,
+                'Op income': 1,
+                'EPS (NG)': 2,
+                'Google Cloud rev': 7,
+                'YouTube ads rev': 6
+            };
+
+            for (const metricName in chartMetrics) {
+                const rowIndex = chartMetrics[metricName];
+                const row = rows[rowIndex];
+                if (row) {
+                    const cells = row.querySelectorAll('td');
+                    metrics.push(metricName);
+                    q22024Values.push(parseCurrencyToNumber(cells[1].innerText));
+                    q12025Values.push(parseCurrencyToNumber(cells[2].innerText));
+                    q22025Values.push(parseCurrencyToNumber(cells[3].innerText));
+                }
+            }
+            return { metrics, q22024Values, q12025Values, q22025Values };
+        }
+
+        // Function to render the Q2 vs Consensus Chart
+        function renderQ2VsConsensusChart() {
+            const data = getQ2VsConsensusData();
+            if (!data) return;
+
+            const ctx = document.getElementById('q2VsConsensusChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.metrics,
+                    datasets: [
+                        {
+                            label: 'Q2 2025 Actual',
+                            data: data.actualValues,
+                            backgroundColor: 'rgba(66, 133, 244, 0.7)', // Google Blue
+                            borderColor: 'rgba(66, 133, 244, 1)',
+                            borderWidth: 1,
+                            borderRadius: 5,
+                        },
+                        {
+                            label: 'Street Consensus',
+                            data: data.consensusValues,
+                            backgroundColor: 'rgba(234, 67, 53, 0.7)', // Google Red
+                            borderColor: 'rgba(234, 67, 53, 1)',
+                            borderWidth: 1,
+                            borderRadius: 5,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Q2 2025 Actual vs. Street Consensus (in Billions USD)',
+                            font: { size: 16, weight: 'bold' }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += '$' + context.parsed.y.toLocaleString() + ' B';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Value (Billions USD)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value + 'B';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Function to render the Quarter-over-Quarter Performance Chart
+        function renderQoQPerformanceChart() {
+            const data = getQoQPerformanceData();
+            if (!data) return;
+
+            const ctx = document.getElementById('qoqPerformanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar', // Using bar chart for clear comparison
+                data: {
+                    labels: data.metrics,
+                    datasets: [
+                        {
+                            label: 'Q2 2024',
+                            data: data.q22024Values,
+                            backgroundColor: 'rgba(52, 168, 83, 0.7)', // Google Green
+                            borderColor: 'rgba(52, 168, 83, 1)',
+                            borderWidth: 1,
+                            borderRadius: 5,
+                        },
+                        {
+                            label: 'Q1 2025',
+                            data: data.q12025Values,
+                            backgroundColor: 'rgba(251, 188, 5, 0.7)', // Google Yellow
+                            borderColor: 'rgba(251, 188, 5, 1)',
+                            borderWidth: 1,
+                            borderRadius: 5,
+                        },
+                        {
+                            label: 'Q2 2025',
+                            data: data.q22025Values,
+                            backgroundColor: 'rgba(66, 133, 244, 0.7)', // Google Blue
+                            borderColor: 'rgba(66, 133, 244, 1)',
+                            borderWidth: 1,
+                            borderRadius: 5,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Quarter-over-Quarter Performance (in Millions USD)',
+                            font: { size: 16, weight: 'bold' }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += '$' + context.parsed.y.toLocaleString() + ' M';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Value (Millions USD)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value + 'M';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Render charts when the window loads
+        window.onload = function() {
+            renderQ2VsConsensusChart();
+            renderQoQPerformanceChart();
+        };
+    </script>
+</body>
+</html>
