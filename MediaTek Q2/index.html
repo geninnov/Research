@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediaTek Q2 2025 ConCall</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutral Harmony -->
+    <!-- Application Structure Plan: A thematic, single-page dashboard design. The structure uses a sticky top navigation to allow users to jump to key sections: 1) A main 'Dashboard' for at-a-glance KPIs and revenue mix, 2) 'Financials' for a detailed performance chart, 3) 'Business Segments' using interactive tabs to explore revenue drivers, 4) 'Analyst Perspectives' for a direct side-by-side comparison of MediaTek, JPM, and Jefferies' views, and 5) 'Future Outlook' to summarize key growth initiatives. This non-linear structure was chosen to facilitate easy comparison and synthesis of the different viewpoints, which is the core value of the provided source material, rather than simply replicating the report's layout. -->
+    <!-- Visualization & Content Choices: 
+        - Key KPIs (Inform): Presented in large 'stat cards' for immediate impact.
+        - Revenue Breakdown (Compare): A Donut chart (Chart.js) is used on the dashboard to clearly show the proportional contribution of each business segment. Interaction via hover tooltips.
+        - Financial Performance (Change): A Grouped Bar chart (Chart.js) compares Q2 2025 against Q1 2025 and Q2 2024, effectively visualizing performance trends.
+        - Analyst ASIC Forecasts (Compare): A simple Bar chart (Chart.js) directly contrasts the divergent FY26 revenue forecasts from MediaTek, JPM, and Jefferies, making the differing opinions instantly clear.
+        - Business Segments (Organize): An interactive tabbed layout (HTML/JS) is used to present detailed information for each segment without cluttering the main view.
+        - Analyst Comparison (Organize/Compare): A structured three-column layout (Tailwind Grid) presents qualitative commentary side-by-side, which is the most effective way to compare nuanced opinions.
+        - Justification: These choices prioritize clarity, direct comparison, and user engagement, turning a dense report into an explorable dashboard.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4;
+            color: #1f2937;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #2563eb;
+            background-color: #eff6ff;
+        }
+        .tab-button {
+            padding: 8px 16px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            border-color: #2563eb;
+            color: #2563eb;
+            background-color: #eff6ff;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <img src="https://geninnov.github.io/Assets/favicon.ico" alt="Company Logo" class="h-8 w-8">
+                    <h1 class="text-xl md:text-2xl font-bold text-gray-800">MediaTek Q2 2025 ConCall</h1>
+                </div>
+                <div class="hidden md:flex items-center space-x-2">
+                    <a href="#dashboard" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Dashboard</a>
+                    <a href="#financials" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Financials</a>
+                    <a href="#segments" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Segments</a>
+                    <a href="#analysts" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Analyst Views</a>
+                    <a href="#outlook" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Outlook</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="dashboard" class="scroll-mt-20 mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Q2 2025 Performance & Perspectives</h2>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">An interactive summary of MediaTek's financial results, management commentary, and key analyst reactions. Solid year-over-year growth is tempered by near-term headwinds and differing views on the crucial ASIC growth story.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                    <h3 class="text-gray-500 font-medium">Consolidated Revenue</h3>
+                    <p class="text-3xl font-bold text-gray-800 mt-2">NT$150.4B</p>
+                    <p class="text-sm text-green-600 font-semibold mt-2">+18.1% YoY</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                    <h3 class="text-gray-500 font-medium">Net Income</h3>
+                    <p class="text-3xl font-bold text-gray-800 mt-2">NT$28.1B</p>
+                    <p class="text-sm text-green-600 font-semibold mt-2">+8.1% YoY</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                    <h3 class="text-gray-500 font-medium">Earnings Per Share (EPS)</h3>
+                    <p class="text-3xl font-bold text-gray-800 mt-2">NT$17.50</p>
+                    <p class="text-sm text-green-600 font-semibold mt-2">Up from NT$16.19 YoY</p>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                <h3 class="text-xl font-bold text-center mb-4">Q2 2025 Revenue Breakdown</h3>
+                <p class="text-center text-gray-600 mb-6">This chart illustrates the contribution of each business segment to the total revenue in the second quarter. The Mobile Phone segment remains the largest contributor, followed closely by the growing Smart Edge Platforms.</p>
+                <div class="chart-container">
+                    <canvas id="revenueBreakdownChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="financials" class="scroll-mt-20 mb-16">
+            <h2 class="text-3xl font-bold text-center mb-4">Financial Performance Deep Dive</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">This section provides a visual comparison of key financial metrics for the second quarter of 2025 against the previous quarter and the same period last year, highlighting the company's performance trends.</p>
+            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                <div class="chart-container">
+                    <canvas id="financialPerformanceChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="segments" class="scroll-mt-20 mb-16">
+            <h2 class="text-3xl font-bold text-center mb-4">Business Segment Breakdown</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">Explore the performance of MediaTek's core business segments. Click on the tabs below to see detailed results and management commentary for each area.</p>
+            <div class="bg-white rounded-xl shadow-md border border-gray-200/80 p-6">
+                <div class="mb-6 border-b border-gray-200">
+                    <nav class="flex space-x-4" aria-label="Tabs">
+                        <button class="tab-button active" data-tab="mobile">📱 Mobile Phone</button>
+                        <button class="tab-button" data-tab="smart-edge">🧠 Smart Edge</button>
+                        <button class="tab-button" data-tab="power-ic">⚡ Power IC</button>
+                    </nav>
+                </div>
+                <div id="tab-content">
+                    <div id="mobile-content" class="tab-pane active">
+                        <h3 class="text-2xl font-bold mb-3">Mobile Phone (52% of Revenue)</h3>
+                        <p class="text-gray-600 mb-4">Continued share gains in the flagship segment, driven by the Dimensity 9400 family, are a key growth driver. The next-generation Dimensity 9500 is launching in Q3 with strong customer adoption.</p>
+                        <div class="grid grid-cols-2 gap-4 text-center">
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-sm text-gray-500">QoQ Revenue (NT$)</p>
+                                <p class="text-xl font-semibold text-red-600">▼ 9%</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-sm text-gray-500">YoY Revenue (NT$)</p>
+                                <p class="text-xl font-semibold text-green-600">▲ 13%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="smart-edge-content" class="tab-pane hidden">
+                        <h3 class="text-2xl font-bold mb-3">Smart Edge Platforms (43% of Revenue)</h3>
+                        <p class="text-gray-600 mb-4">Growth was fueled by AI-capable computing devices, share gains in consumer ASIC, and some inventory pull-in. All major Android tablet brands are now adopting MediaTek AI chips.</p>
+                         <div class="grid grid-cols-2 gap-4 text-center">
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-sm text-gray-500">QoQ Revenue (NT$)</p>
+                                <p class="text-xl font-semibold text-green-600">▲ 7%</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-sm text-gray-500">YoY Revenue (NT$)</p>
+                                <p class="text-xl font-semibold text-green-600">▲ 26%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="power-ic-content" class="tab-pane hidden">
+                        <h3 class="text-2xl font-bold mb-3">Power IC (6% of Revenue)</h3>
+                        <p class="text-gray-600 mb-4">Benefitted from market share gains and improved demand in Q2. However, revenue is expected to decline in Q3 due to a slowdown in consumer electronics.</p>
+                         <div class="grid grid-cols-2 gap-4 text-center">
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-sm text-gray-500">QoQ Revenue (NT$)</p>
+                                <p class="text-xl font-semibold text-green-600">▲ 17%</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-sm text-gray-500">YoY Revenue (NT$)</p>
+                                <p class="text-xl font-semibold text-green-600">▲ 11%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="analysts" class="scroll-mt-20 mb-16">
+            <h2 class="text-3xl font-bold text-center mb-4">Analyst Perspectives</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">The future growth story, particularly around AI ASICs, is where opinions diverge. This section contrasts the official company line with commentary from J.P. Morgan and Jefferies.</p>
+            
+            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200/80 mb-8">
+                <h3 class="text-xl font-bold text-center mb-4">FY26 Enterprise ASIC Revenue Forecasts</h3>
+                <p class="text-center text-gray-600 mb-6">A visual representation of the differing expectations for the crucial enterprise ASIC project. MediaTek has extended its timeline, while analysts have significantly lowered their near-term forecasts.</p>
+                <div class="chart-container">
+                    <canvas id="asicForecastChart"></canvas>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-md border border-blue-200">
+                    <h3 class="text-xl font-bold mb-4 text-blue-800">MediaTek's View</h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li><strong>ASIC Timeline:</strong> Project is on schedule for late Q3'25 tape-out and Q3'26 production.</li>
+                        <li><strong>$1B Revenue Target:</strong> Now expected to take 2-3 years, a shift from the previous "next year" goal.</li>
+                        <li><strong>Confidence:</strong> Confident in technical execution, competitive position, and rapid progress on 2nm with TSMC.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-amber-200">
+                    <h3 class="text-xl font-bold mb-4 text-amber-800">J.P. Morgan's View (Neutral)</h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li><strong>ASIC Delays:</strong> Believes delays are persistent and sees risk of the project being scaled down.</li>
+                        <li><strong>$1B Revenue Target:</strong> Tone from management is "more guarded." JPM estimates a more likely **$0.6B** in 2026.</li>
+                        <li><strong>Consensus:</strong> Expects street estimates for FY25 to fall 4-5% due to weak Q3 guidance.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-green-200">
+                    <h3 class="text-xl font-bold mb-4 text-green-800">Jefferies' View (Buy)</h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li><strong>ASIC Delays:</strong> Acknowledges delays, pushing revenue recognition to late Q4'26.</li>
+                        <li><strong>$1B Revenue Target:</strong> Slashed their forecast significantly to **$0.3B - $0.5B** for 2026.</li>
+                        <li><strong>Long-Term Positive:</strong> Maintains Buy rating, positive on long-term partnerships with Google and Meta, and sets a price target of NT$1,650.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="outlook" class="scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-4">Future Outlook & Key Initiatives</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">Despite near-term challenges, MediaTek is heavily investing in next-generation technologies and strategic partnerships to drive future growth.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                    <h3 class="text-lg font-bold mb-2">2-Nanometer Process</h3>
+                    <p class="text-gray-600">First 2nm chip tape-out is scheduled for **September 2025**, positioning MediaTek at the forefront of next-gen semiconductor technology for both edge and cloud AI.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                    <h3 class="text-lg font-bold mb-2">Dimensity 9500 Launch</h3>
+                    <p class="text-gray-600">The next-generation flagship mobile SoC begins mass production in Q3, with more customer and model adoptions than its predecessor, aiming to extend market share gains.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                    <h3 class="text-lg font-bold mb-2">NVIDIA Partnerships</h3>
+                    <p class="text-gray-600">The **GB10** chip (for DGX Spark) ramps in Q3 2025, and the **C-X1** automotive solution (for premium vehicles) will start generating revenue in 2026.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white mt-16 border-t">
+        <div class="container mx-auto py-6 px-4 text-center text-gray-500">
+            <p>This is an interactive dashboard created for analysis purposes based on publicly available financial reports and analyst commentary. Not financial advice.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const data = {
+                q2_2025: { revenue: 150.4, gross_profit: 73.9, net_income: 28.1 },
+                q1_2025: { revenue: 153.3, gross_profit: 73.8, net_income: 29.5 },
+                q2_2024: { revenue: 127.3, gross_profit: 62.2, net_income: 26.0 },
+                revenue_breakdown: {
+                    mobile: 52,
+                    smart_edge: 43,
+                    power_ic: 6
+                },
+                asic_forecasts: {
+                    mediatek: 1.0, 
+                    jpm: 0.6,
+                    jefferies_low: 0.3,
+                    jefferies_high: 0.5
+                }
+            };
+            
+            // Revenue Breakdown Donut Chart
+            const revenueBreakdownCtx = document.getElementById('revenueBreakdownChart').getContext('2d');
+            new Chart(revenueBreakdownCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Mobile Phone', 'Smart Edge Platforms', 'Power IC'],
+                    datasets: [{
+                        label: 'Revenue Breakdown (%)',
+                        data: [data.revenue_breakdown.mobile, data.revenue_breakdown.smart_edge, data.revenue_breakdown.power_ic],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(16, 185, 129, 0.8)',
+                            'rgba(245, 158, 11, 0.8)'
+                        ],
+                        borderColor: '#F8F7F4',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Financial Performance Bar Chart
+            const financialPerformanceCtx = document.getElementById('financialPerformanceChart').getContext('2d');
+            new Chart(financialPerformanceCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Revenue', 'Gross Profit', 'Net Income'],
+                    datasets: [
+                        {
+                            label: 'Q2 2024 (NT$B)',
+                            data: [data.q2_2024.revenue, data.q2_2024.gross_profit, data.q2_2024.net_income],
+                            backgroundColor: 'rgba(156, 163, 175, 0.7)',
+                            borderColor: 'rgba(156, 163, 175, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Q1 2025 (NT$B)',
+                            data: [data.q1_2025.revenue, data.q1_2025.gross_profit, data.q1_2025.net_income],
+                            backgroundColor: 'rgba(96, 165, 250, 0.7)',
+                            borderColor: 'rgba(96, 165, 250, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Q2 2025 (NT$B)',
+                            data: [data.q2_2025.revenue, data.q2_2025.gross_profit, data.q2_2025.net_income],
+                            backgroundColor: 'rgba(22, 163, 74, 0.7)',
+                            borderColor: 'rgba(22, 163, 74, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'NT$ Billions'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: {
+                           mode: 'index',
+                           intersect: false,
+                        }
+                    }
+                }
+            });
+
+            // ASIC Forecast Bar Chart
+            const asicForecastCtx = document.getElementById('asicForecastChart').getContext('2d');
+            new Chart(asicForecastCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['MediaTek Goal (2-3 Yrs)', 'J.P. Morgan Est.', 'Jefferies Est.'],
+                    datasets: [{
+                        label: 'FY26 Revenue (US$ Billions)',
+                        data: [data.asic_forecasts.mediatek, data.asic_forecasts.jpm, data.asic_forecasts.jefferies_high],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.7)',
+                            'rgba(245, 158, 11, 0.7)',
+                            'rgba(16, 185, 129, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(16, 185, 129, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'US$ Billions'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    if (context.label === 'Jefferies Est.') {
+                                        return `US$${data.asic_forecasts.jefferies_low}B - $${data.asic_forecasts.jefferies_high}B`;
+                                    }
+                                    return `US$${context.raw}B`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Tab functionality
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    const tab = button.getAttribute('data-tab');
+                    tabPanes.forEach(pane => {
+                        if (pane.id === `${tab}-content`) {
+                            pane.classList.remove('hidden');
+                            pane.classList.add('active');
+                        } else {
+                            pane.classList.add('hidden');
+                            pane.classList.remove('active');
+                        }
+                    });
+                });
+            });
+
+            // Nav link active state on scroll
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            window.onscroll = () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 80) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+        });
+    </script>
+</body>
+</html>
