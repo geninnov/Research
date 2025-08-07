@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VEON Q2 2025 Earnings Review</title>
+    <!-- Tailwind CSS from CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js from CDN for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+        .container {
+            max-width: 1200px;
+            
+        }
+        /* Custom size for the pie chart canvas */
+        #revenueSplitChart {
+            max-width: 300px;
+            max-height: 300px;
+            margin: auto;
+        }
+        /* Watermark style */
+        #watermark-logo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('Logo-transparent.png'); /* Placeholder for Logo-transparent.png */
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: contain; /* Adjust as needed: 'contain', 'cover', or specific size like '50%' */
+            opacity: 0.07; /* Very subtle opacity */
+            pointer-events: none; /* Allows clicks/interactions through the watermark */
+            z-index: -1; /* Puts it behind content */
+            /*transform: rotate(-25deg); /* Rotate for a classic watermark look */
+        }
+
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <div class="container mx-auto bg-white p-6 sm:p-10 rounded-3xl shadow-xl relative overflow-hidden">
+        <div id="watermark-logo"></div>
+
+        <!-- Header Section -->
+        <header class="flex flex-col sm:flex-row items-center justify-between mb-10 text-center sm:text-left">
+            <img src="Logo-transparent.png" alt="GenInnov Logo" class="h-12 w-12 mr-3 rounded-full shadow-md">
+            <div class="flex-grow text-center">
+                <h1 class="text-4xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-600 mb-2">VEON Q2 2025 Earnings Review</h1>
+                <p class="text-gray-600 text-lg">7 August 2025, Sidharth - Geninnov Pte. Ltd.</p>
+            </div>
+            <div class="w-24 sm:w-auto"></div>
+        </header>
+
+        <!-- Performance Overview Cards -->
+        <section class="mb-10 relative z-10">
+            <h2 class="text-3xl font-bold mb-6 text-gray-800 border-b-2 pb-2">Performance Overview</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Total Revenue Card -->
+                <div class="bg-gray-50 p-6 rounded-2xl shadow-md transition-transform transform hover:scale-105 hover:shadow-lg">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mr-4 text-2xl font-bold">
+                            $
+                        </div>
+                        <h3 class="text-xl font-semibold">Total Revenue</h3>
+                    </div>
+                    <p class="text-4xl font-bold text-gray-900 mb-2">$1,087 million</p>
+                    <p class="text-green-500 font-medium">+5.9% YoY (USD) <span class="text-gray-500">(+11.2% LCY)</span></p>
+                </div>
+                <!-- Direct Digital Revenue Card -->
+                <div class="bg-gray-50 p-6 rounded-2xl shadow-md transition-transform transform hover:scale-105 hover:shadow-lg">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mr-4 text-2xl font-bold">
+                            📈
+                        </div>
+                        <h3 class="text-xl font-semibold">Direct Digital Revenue</h3>
+                    </div>
+                    <p class="text-4xl font-bold text-gray-900 mb-2">$180 million</p>
+                    <p class="text-green-500 font-medium">+56.6% YoY (USD) <span class="text-gray-500">(+62.4% LCY)</span></p>
+                    <p class="text-gray-500 font-light text-sm mt-1">16.5% of total revenue (up from 11.2% in Q2 2024)</p>
+                </div>
+                <!-- EBITDA Card -->
+                <div class="bg-gray-50 p-6 rounded-2xl shadow-md transition-transform transform hover:scale-105 hover:shadow-lg">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 bg-green-100 text-green-600 rounded-full flex items-center justify-center mr-4 text-2xl font-bold">
+                            💰
+                        </div>
+                        <h3 class="text-xl font-semibold">EBITDA</h3>
+                    </div>
+                    <p class="text-4xl font-bold text-gray-900 mb-2">$520 million</p>
+                    <p class="text-green-500 font-medium">+13.2% YoY (USD) <span class="text-gray-500">(+19.6% LCY)</span></p>
+                </div>
+                <!-- Other Metrics -->
+                <div class="bg-gray-50 p-6 rounded-2xl shadow-md transition-transform transform hover:scale-105 hover:shadow-lg">
+                    <h3 class="text-xl font-semibold mb-2">LTM Equity FCF</h3>
+                    <p class="text-3xl font-bold text-gray-900 mb-2">$611 million</p>
+                    <p class="text-green-500 font-medium">+33.7% YoY</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-2xl shadow-md transition-transform transform hover:scale-105 hover:shadow-lg">
+                    <h3 class="text-xl font-semibold mb-2">4G Users</h3>
+                    <p class="text-3xl font-bold text-gray-900 mb-2">103.1 million</p>
+                    <p class="text-green-500 font-medium">+3.9% YoY</p>
+                    <p class="text-gray-500 font-light text-sm mt-1">67.7% of total subscribers</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-2xl shadow-md transition-transform transform hover:scale-105 hover:shadow-lg">
+                    <h3 class="text-xl font-semibold mb-2">Multiplay Customers</h3>
+                    <p class="text-3xl font-bold text-gray-900 mb-2">43.3 million</p>
+                    <p class="text-green-500 font-medium">+24.1% YoY</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="mb-10 relative z-10">
+            <h2 class="text-3xl font-bold mb-6 text-gray-800 border-b-2 pb-2">Key Financial Visuals</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <!-- Bar Chart for YoY Growth -->
+                <div class="bg-white p-6 rounded-2xl shadow-md">
+                    <h3 class="text-xl font-semibold text-center mb-4">YoY Growth of Key Metrics (%)</h3>
+                    <canvas id="yoyGrowthChart"></canvas>
+                </div>
+                <!-- Bar Chart for QoQ Growth -->
+                <div class="bg-white p-6 rounded-2xl shadow-md">
+                    <h3 class="text-xl font-semibold text-center mb-4">QoQ Growth of Key Metrics (%)</h3>
+                    <canvas id="qoqGrowthChart"></canvas>
+                </div>
+            </div>
+            <!-- Pie Chart for Revenue Split - Smaller Size -->
+            <div class="flex justify-center bg-white p-6 rounded-2xl shadow-md">
+                <div class="flex-shrink-0">
+                    <h3 class="text-xl font-semibold text-center mb-4">Q2 2025 Revenue Breakdown</h3>
+                    <canvas id="revenueSplitChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Metrics Table -->
+        <section class="mb-10 relative z-10">
+            <h2 class="text-3xl font-bold mb-6 text-gray-800 border-b-2 pb-2">Detailed Financial Metrics (USD)</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white rounded-xl shadow-md">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="py-3 px-4 border-b text-left">Metric</th>
+                            <th class="py-3 px-4 border-b text-left">YoY Change</th>
+                            <th class="py-3 px-4 border-b text-left">QoQ Change</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 border-b">Total Revenue</td>
+                            <td class="py-3 px-4 border-b text-green-500 font-semibold">5.80%</td>
+                            <td class="py-3 px-4 border-b text-green-500 font-semibold">5.90%</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 border-b">Direct Digital Revenue</td>
+                            <td class="py-3 px-4 border-b text-green-500 font-semibold">56.50%</td>
+                            <td class="py-3 px-4 border-b text-green-500 font-semibold">22.40%</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 border-b">EBITDA</td>
+                            <td class="py-3 px-4 border-b text-green-500 font-semibold">13.00%</td>
+                            <td class="py-3 px-4 border-b text-green-500 font-semibold">18.50%</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 border-b">Capex</td>
+                            <td class="py-3 px-4 border-b text-green-500 font-semibold">27.60%</td>
+                            <td class="py-3 px-4 border-b text-green-500 font-semibold">71.10%</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 border-b">LTM Equity FCF</td>
+                            <td class="py-3 px-4 border-b text-green-500 font-semibold">33.70%</td>
+                            <td class="py-3 px-4 border-b text-green-500 font-semibold">57.90%</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 border-b">Net Debt excl. leases</td>
+                            <td class="py-3 px-4 border-b text-red-500 font-semibold">-11.90%</td>
+                            <td class="py-3 px-4 border-b text-green-500 font-semibold">8.40%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Regional Performance Section -->
+        <section class="mb-10 relative z-10">
+            <h2 class="text-3xl font-bold mb-6 text-gray-800 border-b-2 pb-2">Regional Performance</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Pakistan Card -->
+                <div class="bg-blue-50 p-6 rounded-2xl shadow-md">
+                    <h3 class="text-2xl font-bold text-blue-800 mb-2">Pakistan</h3>
+                    <p class="text-lg">Revenue: <span class="font-semibold text-green-600">+13.9% YoY (USD)</span> / <span class="font-semibold text-green-600">+15.3% YoY (LCY)</span></p>
+                    <p class="text-lg">EBITDA: <span class="font-semibold text-green-600">+4.0% YoY (USD)</span> / <span class="font-semibold text-green-600">+5.4% YoY (LCY)</span></p>
+                    <p class="text-sm text-gray-500 mt-2">Strong digital and telecom performance.</p>
+                </div>
+                <!-- Ukraine Card -->
+                <div class="bg-yellow-50 p-6 rounded-2xl shadow-md">
+                    <h3 class="text-2xl font-bold text-yellow-800 mb-2">Ukraine</h3>
+                    <p class="text-lg">Revenue: <span class="font-semibold text-green-600">+20.8% YoY (USD)</span> / <span class="font-semibold text-green-600">+25.8% YoY (LCY)</span></p>
+                    <p class="text-lg">EBITDA: <span class="font-semibold text-green-600">+18.6% YoY (USD)</span> / <span class="font-semibold text-green-600">+23.5% YoY (LCY)</span></p>
+                    <p class="text-sm text-gray-500 mt-2">Growth across both telecom and digital segments, with the Uklon acquisition contributing to the digital revenue growth.</p>
+                </div>
+                <!-- Kazakhstan Card -->
+                <div class="bg-red-50 p-6 rounded-2xl shadow-md">
+                    <h3 class="text-2xl font-bold text-red-800 mb-2">Kazakhstan</h3>
+                    <p class="text-lg">Revenue: <span class="font-semibold text-red-600">-10.1% YoY (USD)</span> / <span class="font-semibold text-green-600">+3.1% YoY (LCY)</span></p>
+                    <p class="text-lg">EBITDA: <span class="font-semibold text-red-600">-20.1% YoY (USD)</span> / <span class="font-semibold text-red-600">-8.3% YoY (LCY)</span></p>
+                    <p class="text-sm text-gray-500 mt-2">Decline due to absence of a tax rebate for rural 4G deployment. A new law was passed retroactively, and a compensation of approximately $16 million is expected in Q3.</p>
+                </div>
+                <!-- Uzbekistan Card -->
+                <div class="bg-green-50 p-6 rounded-2xl shadow-md">
+                    <h3 class="text-2xl font-bold text-green-800 mb-2">Uzbekistan</h3>
+                    <p class="text-lg">Revenue: <span class="font-semibold text-green-600">+12.0% YoY (USD)</span> / <span class="font-semibold text-green-600">+13.6% YoY (LCY)</span></p>
+                    <p class="text-lg">EBITDA: <span class="font-semibold text-green-600">+20.4% YoY (USD)</span> / <span class="font-semibold text-green-600">+22.1% YoY (LCY)</span></p>
+                    <p class="text-sm text-gray-500 mt-2">Strong digital and telecom performance with margin expansion.</p>
+                </div>
+                <!-- Bangladesh Card -->
+                <div class="bg-indigo-50 p-6 rounded-2xl shadow-md">
+                    <h3 class="text-2xl font-bold text-indigo-800 mb-2">Bangladesh</h3>
+                    <p class="text-lg">Revenue: <span class="font-semibold text-red-600">-17.0% YoY (USD)</span> / <span class="font-semibold text-red-600">-11.4% YoY (LCY)</span></p>
+                    <p class="text-lg">EBITDA: <span class="font-semibold text-green-600">+68.1% YoY (USD)</span> / <span class="font-semibold text-green-600">+79.8% YoY (LCY)</span></p>
+                    <p class="text-sm text-gray-500 mt-2">Revenue decline due to challenging market conditions, but EBITDA increased due to structural cost efficiencies and one-off tax impacts.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Takeaways from Management Commentary -->
+        <section class="mb-10 relative z-10">
+            <h2 class="text-3xl font-bold mb-6 text-gray-800 border-b-2 pb-2">Key Takeaways from Management Commentary</h2>
+            <ul class="list-disc list-inside space-y-4 text-lg text-gray-700">
+                <li class="flex items-start">
+                    <span class="mr-2 text-xl text-blue-500">•</span>
+                    <div>
+                        <span class="font-semibold">AI as "Augmented Intelligence":</span> The CEO introduced the concept of "augmented intelligence" as a core part of the new "Al1440" strategy, focusing on using local language models and tools like online tutors to provide customers with Al tutoring tools. The focus is on delivering high quality services to strengthen loyalty of customers to the platform.
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-2 text-xl text-blue-500">•</span>
+                    <div>
+                        <span class="font-semibold">Monetization of Digital Assets:</span> Management stated they are taking a patient approach to monetizing their digital assets, specifically mentioning that the JazzCash business is a huge business, management considers their fintech business to be undervalued and plans to grow them further before thinking about their future.
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-2 text-xl text-blue-500">•</span>
+                    <div>
+                        <span class="font-semibold">Uklon's Growth:</span> Uklon generated $9.3 million in EBITDA and has 3.5 million monthly active users (MAUs). The company sees huge potential for growth by combining Uklon's services with VEON's customer acquisition and distribution channels, and plans to extend Uklon's capabilities to other markets over the next four quarters.
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-2 text-xl text-blue-500">•</span>
+                    <div>
+                        <span class="font-semibold">ARPO and Multiplay Details:</span> The company's multiplay ARPO stands at $3.4, significantly higher than the $1.9 mobile ARPU, confirming the effectiveness of its strategy to increase the proportion of multiplay subscribers.
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-2 text-xl text-blue-500">•</span>
+                    <div>
+                        <span class="font-semibold">Kazakhstan Tax Rebate:</span> The negative EBITDA growth in Kazakhstan was attributed to a tax rebate for rural 4G deployment that had expired. A new law was passed retroactively, and a compensation of approximately $16 million is expected to be recognized in Q3.
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-2 text-xl text-blue-500">•</span>
+                    <div>
+                        <span class="font-semibold">Shareholder Remuneration:</span> The CEO stated that a new shareholder remuneration strategy would be announced in Q3, emphasizing that it will balance growth opportunities with shareholder returns.
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-2 text-xl text-blue-500">•</span>
+                    <div>
+                        <span class="font-semibold">4G Technology:</span> The company's use of technologies like Massive MIMO and carrier aggregation (referred to as "4.9G") is helping them successfully compete against 5G operators in Kazakhstan, resulting in high NPS.
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-2 text-xl text-blue-500">•</span>
+                    <div>
+                        <span class="font-semibold">Digital Growth:</span> Management confirmed that a significant portion of the digital direct revenue growth is organic and that they have a pipeline of potential acquisitions in the digital space.
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Conclusion -->
+        <section relative z-10>
+            <h2 class="text-3xl font-bold mb-6 text-gray-800 border-b-2 pb-2">Overall Conclusion</h2>
+            <p class="text-lg text-gray-700">
+                The company is highly focused on enhancing its digital revenue and growing that sector, as signified by the impressive growth in digital revenue and management explicitly stating that it plans to become a "digital first company with a telecom licence". Management's confidence, backed by organic growth, and the strategic plans to provide greater value with Al services all positively reinforce this opinion. The company's plans to expand ride-hailing services also appear positive. It will be interesting to see if autonomous Robotaxis become part of these services, most likely through partnerships. The company's focus on capex intensity is also a positive indicator for a growth-focused company.
+            </p>
+        </section>
+
+    </div>
+
+    <script>
+        // Data for charts
+        const financialData = {
+            totalRevenue: 1087,
+            digitalRevenue: 180,
+            ebitda: 520,
+            capex: 231,
+            ltmEquityFcf: 611,
+            _4gUsers: 103.1,
+            multiplayCustomers: 43.3,
+        };
+
+        const yoyGrowthData = {
+            labels: ['Total Revenue', 'EBITDA', 'Digital Revenue', 'Capex', 'LTM FCF', '4G Users'],
+            data: [5.8, 13.0, 56.5, 27.6, 33.7, 3.8],
+            colors: ['rgba(59, 130, 246, 0.6)', 'rgba(34, 197, 94, 0.6)', 'rgba(168, 85, 247, 0.6)', 'rgba(239, 68, 68, 0.6)', 'rgba(251, 191, 36, 0.6)', 'rgba(52, 211, 153, 0.6)']
+        };
+        // The QoQ data for the charts is sourced from the detailed report table
+        const qoqGrowthData = {
+            labels: ['Total Revenue', 'EBITDA', 'Digital Revenue', 'Capex', 'LTM FCF', '4G Users'],
+            data: [5.9, 18.5, 22.4, 71.1, 57.9, 1.6],
+            colors: ['rgba(59, 130, 246, 0.6)', 'rgba(34, 197, 94, 0.6)', 'rgba(168, 85, 247, 0.6)', 'rgba(239, 68, 68, 0.6)', 'rgba(251, 191, 36, 0.6)', 'rgba(52, 211, 153, 0.6)']
+        };
+
+        const revenueBreakdownData = {
+            digitalRevenue: financialData.digitalRevenue,
+            otherRevenue: financialData.totalRevenue - financialData.digitalRevenue
+        };
+
+        // --- YoY Growth Bar Chart ---
+        const yoyGrowthCtx = document.getElementById('yoyGrowthChart').getContext('2d');
+        const yoyGrowthChart = new Chart(yoyGrowthCtx, {
+            type: 'bar',
+            data: {
+                labels: yoyGrowthData.labels,
+                datasets: [{
+                    label: 'YoY Growth (%)',
+                    data: yoyGrowthData.data,
+                    backgroundColor: yoyGrowthData.colors,
+                    borderColor: yoyGrowthData.colors.map(color => color.replace('0.6', '1')),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'YoY Growth %'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // --- QoQ Growth Bar Chart ---
+        const qoqGrowthCtx = document.getElementById('qoqGrowthChart').getContext('2d');
+        const qoqGrowthChart = new Chart(qoqGrowthCtx, {
+            type: 'bar',
+            data: {
+                labels: qoqGrowthData.labels,
+                datasets: [{
+                    label: 'QoQ Growth (%)',
+                    data: qoqGrowthData.data,
+                    backgroundColor: qoqGrowthData.colors,
+                    borderColor: qoqGrowthData.colors.map(color => color.replace('0.6', '1')),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'QoQ Growth %'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // --- Revenue Split Pie Chart ---
+        const revenueSplitCtx = document.getElementById('revenueSplitChart').getContext('2d');
+        const revenueSplitChart = new Chart(revenueSplitCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Direct Digital Revenue', 'Other Revenue'],
+                datasets: [{
+                    data: [revenueBreakdownData.digitalRevenue, revenueBreakdownData.otherRevenue],
+                    backgroundColor: [
+                        'rgba(168, 85, 247, 0.6)', // purple
+                        'rgba(59, 130, 246, 0.6)'  // blue
+                    ],
+                    borderColor: [
+                        'rgba(168, 85, 247, 1)',
+                        'rgba(59, 130, 246, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                let label = tooltipItem.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(tooltipItem.raw);
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
