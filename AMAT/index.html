@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applied Materials (AMAT) Performance Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+        .section-card {
+            background-color: #1F2937; /* bg-gray-800 */
+            border-radius: 0.75rem; /* rounded-xl */
+            padding: 1.5rem; /* p-6 */
+            margin-bottom: 2rem; /* mb-8 */
+            border: 1px solid #374151; /* border-gray-700 */
+        }
+        .toggle-btn {
+            background-color: #374151; /* bg-gray-700 */
+            color: #F3F4F6; /* text-gray-200 */
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #4B5563; /* border-gray-600 */
+            transition: background-color 0.3s;
+        }
+        .toggle-btn:hover {
+            background-color: #4B5563; /* bg-gray-600 */
+        }
+        .slider-btn {
+            background-color: #374151;
+            color: #D1D5DB;
+            border-radius: 9999px;
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+        .slider-btn:hover {
+            background-color: #4B5563;
+        }
+        .china-highlight {
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            border-radius: 0.75rem;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-300">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-white mb-4">Applied Materials (AMAT)</h1>
+            <h2 class="text-2xl text-blue-400">Performance Analysis</h2>
+            <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-400">
+                An analysis of AMAT's recent performance, capitalizing on technological shifts in AI while navigating geopolitical and market headwinds. This report details record Q3 2025 results alongside a muted Q4 forecast driven by uncertainty in China.
+            </p>
+        </header>
+
+        <!-- Financial & Segment Performance Section -->
+        <section id="financials" class="section-card">
+            <h3 class="text-2xl font-bold text-white mb-6">Financial & Segment Performance</h3>
+            
+            <!-- Key Financial Metrics -->
+            <div class="mb-10">
+                <div class="flex justify-between items-center mb-4">
+                    <h4 class="text-xl font-semibold text-blue-300">Key Financial Metrics (Non-GAAP)</h4>
+                    <button id="toggleMetrics" class="toggle-btn">View Chart</button>
+                </div>
+                <div id="metricsTableContainer">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-400">
+                            <thead class="text-xs text-gray-300 uppercase bg-gray-700">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">Metric</th>
+                                    <th scope="col" class="px-6 py-3">FQ1'24</th>
+                                    <th scope="col" class="px-6 py-3">FQ2'24</th>
+                                    <th scope="col" class="px-6 py-3">FQ3'24</th>
+                                    <th scope="col" class="px-6 py-3">FQ4'24</th>
+                                    <th scope="col" class="px-6 py-3">FQ1'25</th>
+                                    <th scope="col" class="px-6 py-3">FQ2'25</th>
+                                    <th scope="col" class="px-6 py-3">FQ3'25</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b bg-gray-800 border-gray-700">
+                                    <th scope="row" class="px-6 py-4 font-medium text-white whitespace-nowrap">Revenue (Net, M USD)</th>
+                                    <td class="px-6 py-4">$6,707</td><td class="px-6 py-4">$6,646</td><td class="px-6 py-4">$6,778</td>
+                                    <td class="px-6 py-4">$7,045</td><td class="px-6 py-4">$7,166</td><td class="px-6 py-4">$7,100</td>
+                                    <td class="px-6 py-4">$7,302</td>
+                                </tr>
+                                <tr class="border-b bg-gray-800 border-gray-700">
+                                    <th scope="row" class="px-6 py-4 font-medium text-white whitespace-nowrap">Gross Margin %</th>
+                                    <td class="px-6 py-4">47.9%</td><td class="px-6 py-4">47.5%</td><td class="px-6 py-4">47.4%</td>
+                                    <td class="px-6 py-4">47.5%</td><td class="px-6 py-4">48.9%</td><td class="px-6 py-4">49.2%</td>
+                                    <td class="px-6 py-4">48.9%</td>
+                                </tr>
+                                <tr class="border-b bg-gray-800 border-gray-700">
+                                    <th scope="row" class="px-6 py-4 font-medium text-white whitespace-nowrap">Operating Margin %</th>
+                                    <td class="px-6 py-4">29.5%</td><td class="px-6 py-4">29.0%</td><td class="px-6 py-4">28.8%</td>
+                                    <td class="px-6 py-4">29.3%</td><td class="px-6 py-4">30.6%</td><td class="px-6 py-4">30.7%</td>
+                                    <td class="px-6 py-4">30.7%</td>
+                                </tr>
+                                <tr class="bg-gray-800">
+                                    <th scope="row" class="px-6 py-4 font-medium text-white whitespace-nowrap">Diluted EPS</th>
+                                    <td class="px-6 py-4">$2.13</td><td class="px-6 py-4">$2.09</td><td class="px-6 py-4">$2.12</td>
+                                    <td class="px-6 py-4">$2.32</td><td class="px-6 py-4">$2.38</td><td class="px-6 py-4">$2.39</td>
+                                    <td class="px-6 py-4">$2.48</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="metricsChartContainer" class="hidden chart-container">
+                    <div class="mb-4">
+                        <label for="metricSelector" class="mr-2 text-sm font-medium">Select Metric:</label>
+                        <select id="metricSelector" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2">
+                            <option value="revenue" selected>Revenue (Net, M USD)</option>
+                            <option value="grossMargin">Gross Margin %</option>
+                            <option value="operatingMargin">Operating Margin %</option>
+                            <option value="eps">Diluted EPS</option>
+                        </select>
+                    </div>
+                    <canvas id="metricsChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Segment Net Revenue -->
+            <div class="mb-10">
+                <div class="flex justify-between items-center mb-4">
+                    <h4 class="text-xl font-semibold text-blue-300">Segment Net Revenue (Non-GAAP, Millions USD)</h4>
+                    <button id="toggleSegments" class="toggle-btn">View Chart</button>
+                </div>
+                <div id="segmentsTableContainer">
+                     <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-400">
+                            <thead class="text-xs text-gray-300 uppercase bg-gray-700">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">Segment</th>
+                                    <th scope="col" class="px-6 py-3">FQ1'24</th><th scope="col" class="px-6 py-3">FQ2'24</th><th scope="col" class="px-6 py-3">FQ3'24</th>
+                                    <th scope="col" class="px-6 py-3">FQ4'24</th><th scope="col" class="px-6 py-3">FQ1'25</th><th scope="col" class="px-6 py-3">FQ2'25</th>
+                                    <th scope="col" class="px-6 py-3">FQ3'25</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b bg-gray-800 border-gray-700">
+                                    <th scope="row" class="px-6 py-4 font-medium text-white whitespace-nowrap">Semiconductor Systems</th>
+                                    <td class="px-6 py-4">$4,909</td><td class="px-6 py-4">$4,901</td><td class="px-6 py-4">$4,924</td>
+                                    <td class="px-6 py-4">$5,177</td><td class="px-6 py-4">$5,356</td><td class="px-6 py-4">$5,255</td>
+                                    <td class="px-6 py-4">$5,427</td>
+                                </tr>
+                                <tr class="border-b bg-gray-800 border-gray-700">
+                                    <th scope="row" class="px-6 py-4 font-medium text-white whitespace-nowrap">Applied Global Services</th>
+                                    <td class="px-6 py-4">$1,476</td><td class="px-6 py-4">$1,530</td><td class="px-6 py-4">$1,580</td>
+                                    <td class="px-6 py-4">$1,639</td><td class="px-6 py-4">$1,594</td><td class="px-6 py-4">$1,566</td>
+                                    <td class="px-6 py-4">$1,600</td>
+                                </tr>
+                                <tr class="bg-gray-800">
+                                    <th scope="row" class="px-6 py-4 font-medium text-white whitespace-nowrap">Display</th>
+                                    <td class="px-6 py-4">$244</td><td class="px-6 py-4">$179</td><td class="px-6 py-4">$251</td>
+                                    <td class="px-6 py-4">$211</td><td class="px-6 py-4">$183</td><td class="px-6 py-4">$259</td>
+                                    <td class="px-6 py-4">$263</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="segmentsChartContainer" class="hidden chart-container">
+                    <canvas id="segmentsChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Net Revenue by Geography -->
+            <div>
+                <div class="flex justify-between items-center mb-4">
+                    <h4 class="text-xl font-semibold text-blue-300">Net Revenue by Geography (Millions USD)</h4>
+                    <button id="toggleGeography" class="toggle-btn">View Chart</button>
+                </div>
+                <div id="geographyTableContainer">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-400">
+                            <thead class="text-xs text-gray-300 uppercase bg-gray-700">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">Geography</th>
+                                    <th scope="col" class="px-6 py-3">FQ1'24</th><th scope="col" class="px-6 py-3">FQ2'24</th><th scope="col" class="px-6 py-3">FQ3'24</th>
+                                    <th scope="col" class="px-6 py-3">FQ4'24</th><th scope="col" class="px-6 py-3">FQ1'25</th><th scope="col" class="px-6 py-3">FQ2'25</th>
+                                    <th scope="col" class="px-6 py-3">FQ3'25</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white">United States</th><td class="px-6 py-4">$759 (11%)</td><td class="px-6 py-4">$853 (13%)</td><td class="px-6 py-4">$1,053 (16%)</td><td class="px-6 py-4">$1,153 (16%)</td><td class="px-6 py-4">$917 (13%)</td><td class="px-6 py-4">$808 (11%)</td><td class="px-6 py-4">$683 (9%)</td></tr>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white">Europe</th><td class="px-6 py-4">$410 (6%)</td><td class="px-6 py-4">$289 (4%)</td><td class="px-6 py-4">$339 (5%)</td><td class="px-6 py-4">$405 (6%)</td><td class="px-6 py-4">$330 (4%)</td><td class="px-6 py-4">$252 (4%)</td><td class="px-6 py-4">$160 (2%)</td></tr>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white">Japan</th><td class="px-6 py-4">$565 (9%)</td><td class="px-6 py-4">$453 (7%)</td><td class="px-6 py-4">$555 (8%)</td><td class="px-6 py-4">$581 (8%)</td><td class="px-6 py-4">$540 (8%)</td><td class="px-6 py-4">$572 (8%)</td><td class="px-6 py-4">$713 (10%)</td></tr>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white">Korea</th><td class="px-6 py-4">$1,231 (18%)</td><td class="px-6 py-4">$988 (15%)</td><td class="px-6 py-4">$1,102 (16%)</td><td class="px-6 py-4">$1,172 (17%)</td><td class="px-6 py-4">$1,667 (23%)</td><td class="px-6 py-4">$1,562 (22%)</td><td class="px-6 py-4">$1,160 (16%)</td></tr>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white">Taiwan</th><td class="px-6 py-4">$559 (8%)</td><td class="px-6 py-4">$1,019 (15%)</td><td class="px-6 py-4">$1,148 (17%)</td><td class="px-6 py-4">$1,284 (18%)</td><td class="px-6 py-4">$1,183 (17%)</td><td class="px-6 py-4">$1,997 (28%)</td><td class="px-6 py-4">$1,843 (25%)</td></tr>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white">Southeast Asia</th><td class="px-6 py-4">$186 (3%)</td><td class="px-6 py-4">$213 (3%)</td><td class="px-6 py-4">$428 (6%)</td><td class="px-6 py-4">$314 (5%)</td><td class="px-6 py-4">$286 (4%)</td><td class="px-6 py-4">$135 (2%)</td><td class="px-6 py-4">$195 (3%)</td></tr>
+                                <tr class="bg-gray-800"><th class="px-6 py-4 text-white">China</th><td class="px-6 py-4">$2,997 (45%)</td><td class="px-6 py-4">$2,831 (43%)</td><td class="px-6 py-4">$2,153 (32%)</td><td class="px-6 py-4">$2,136 (30%)</td><td class="px-6 py-4">$2,243 (31%)</td><td class="px-6 py-4">$1,774 (25%)</td><td class="px-6 py-4">$2,548 (35%)</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="geographyChartContainer" class="hidden chart-container">
+                    <canvas id="geographyChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Insights from Earnings Calls Section -->
+        <section id="earnings-insights" class="section-card">
+            <h3 class="text-2xl font-bold text-white mb-6">Insights from Earnings Calls</h3>
+            <div id="sliderContainer" class="relative">
+                <!-- Slides will be injected here by JS -->
+            </div>
+            <div class="flex justify-center items-center mt-6 space-x-4">
+                <button id="prevBtn" class="slider-btn">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                <div id="slideIndicator" class="text-sm text-gray-400"></div>
+                <button id="nextBtn" class="slider-btn">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- Key Technology Narratives Section -->
+        <section id="tech-narratives" class="section-card">
+            <h3 class="text-2xl font-bold text-white mb-6">Key Technology Narratives</h3>
+            <div class="space-y-8">
+                <div>
+                    <h4 class="text-xl font-semibold text-blue-300 mb-3">The Gate-All-Around (GAA) Inflection</h4>
+                    <p class="text-gray-400 leading-relaxed">The adoption of Gate-All-Around (GAA) transistor architectures represents a pivotal technological inflection point, significantly enhancing Applied Materials' market opportunities within the memory sector, particularly in leading-edge foundry-logic. This shift from FinFET to GAA is a direct response to the industry's imperative to achieve substantial improvements in energy efficiency for advanced AI chips, with a goal of driving a 10,000 times improvement in performance-per-watt over the next 15 years. Applied Materials is strategically positioned to capitalise on this transition, with its served available market (SAM) for the transistor module projected to grow from approximately $6 billion to $7 billion for every 100,000 wafer starts per month of capacity as GAA nodes transition to high-volume manufacturing. The company anticipates capturing over 50% of the process equipment spending for these advanced transistor steps, a notable increase from the mid-to-high 40% range seen with FinFET generation fabs. When considering the broader impact, including Backside Power Delivery (BPD), Applied's total available market is expected to grow by more than 15% to around $14 billion for every 100,000 wafer starts-per-month of capacity. This expansion is expected to translate into Applied's related revenues growing in the 30% range for the equivalent wafer fab capacity with the shift to GAA and BPD. The financial impact of GAA is increasingly evident in Applied Materials' results. The company generated more than $2.5 billion of revenue from GAA nodes in fiscal year 2024 (FY24), with projections for these revenues to approximately double in fiscal year 2025 (FY25). This growth is further supported by the rapid adoption of innovative solutions such as the Sym3 Magnum etch system, which has demonstrated strong momentum in GAA applications and generated more than $1.2 billion of revenue since its launch in February 2024. Additionally, Applied's Cold Field Emission (CFE) eBeam technology, also showing strong momentum in GAA, contributed to record revenues for its Process Diagnostics and Control business in Q2 Fiscal 2025. The Semiconductor Systems segment reported 20% year-over-year growth in foundry-logic revenue in Q1 Fiscal 2025, partially attributed to GAA ramps, and continued strong foundry-logic sales driven by customer investments for GAA nodes in Q2 Fiscal 2025. In Q3 Fiscal 2025, the metal deposition business, bolstered by leading-edge foundry strength, achieved nearly $1.2 billion in revenue, securing its first wins in Moly deposition for critical device performance applications. The full ramp-up of these GAA nodes, particularly with BPD, is anticipated to yield multiple points of market share gains for Applied Materials in the second half of 2026 and 2027.</p>
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold text-blue-300 mb-3">Powering the AI-Driven Memory Revolution</h4>
+                    <p class="text-gray-400 leading-relaxed">Applied Materials' earnings reports reveal a dynamic and evolving memory market, increasingly shaped by the demands of artificial intelligence (AI) and driven by significant materials engineering advancements. The company consistently highlights its pivotal role in enabling these shifts through its broad portfolio of solutions. The High-Bandwidth Memory (HBM) segment stands out as a primary growth driver, central to AI datacentres due to its high performance and energy efficiency. In fiscal year 2023, HBM constituted approximately 5% of DRAM output but was projected to grow at a 50% compound annual growth rate in the years that followed. The larger die size of HBM, more than double that of standard DRAM, necessitates over twice the fab capacity for equivalent chip volume, further boosting equipment demand. Applied Materials' HBM packaging revenue demonstrated substantial growth, initially expected to be four times larger in fiscal year 2024 compared to 2023, reaching almost $500 million, then revised upwards to potentially six times higher, exceeding $600 million. By fiscal year 2024, HBM packaging revenues actually surpassed $700 million. This growth trajectory continued into fiscal year 2025, with advanced DRAM customer revenues, including HBM, expected to grow more than 40%. The overall advanced packaging product portfolio, encompassing HBM, generated nearly $1.7 billion in fiscal year 2024, tripling in the preceding four years, with potential to double again in the coming years due to increased heterogeneous integration. This segment is further projected to exceed $3 billion in the next few years. Beyond HBM, the broader DRAM market is undergoing significant technological inflections that enhance Applied Materials' market opportunity. The shift from 6F2 to 4F2 (vertical transistor architectures) in DRAM is highly materials-enabled, anticipated to increase Applied Materials' market opportunity by approximately 10%. The subsequent transition to 3D DRAM is expected to further expand the addressable market by an additional 15%, with Applied Materials positioned to achieve over 50% market share in these new architectures. The company has already gained significant DRAM market share, reporting more than a 10-point increase over the past decade and their DRAM revenues in 2023 were larger than their two closest process equipment peers combined. Overall, the company's "inflection-focused innovation strategy" and its leadership in materials engineering solutions are key to its continued outperformance in the memory market.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Q3 Highs and Q4 Outlook Section -->
+        <section id="outlook" class="section-card">
+            <h3 class="text-2xl font-bold text-white mb-6">Q3 Record Highs and a Cautious Q4 Outlook</h3>
+            <div class="space-y-8">
+                <div class="china-highlight">
+                    <h4 class="text-xl font-semibold text-red-300 mb-3">China Headwinds: The Core of the Muted Forecast</h4>
+                    <p class="text-gray-300 leading-relaxed mb-4">Applied Materials has forecasted a sequential decrease in revenue and earnings for FQ4 2025, attributing this muted outlook primarily to uncertainties in its China business. The company cited three main factors: digestion of capacity following increased investments, a large backlog of pending export license applications with a conservative assumption of zero approvals, and non-linear demand from leading-edge customers. This is expected to result in FQ4 total revenue of approximately $6.7 billion (±$500 million) and non-GAAP EPS of ~$2.11 (±$0.20), with China's contribution to revenue decreasing to around 29%.</p>
+                     <p class="text-gray-300 leading-relaxed">Analysts believe this is primarily due to China spending digestion following strong spending in 2023/2024. The just-reported July-quarter saw China revenue up 44% Q/Q, suggesting a potential pull-forward from the second half of the year. Jefferies notes that China is expected to stay at muted levels for several quarters, digesting the significant over-shipment and low utilization of tools from ‘23/’24 and resetting the base lower, suggesting a significant headwind to WFE growth into 2026.</p>
+                </div>
+                <div>
+                     <h4 class="text-xl font-semibold text-blue-300 mb-3">Leading-Edge Demand Dynamics: A Secondary Factor</h4>
+                     <p class="text-gray-300 leading-relaxed">Driven by greater customer concentration and nonlinear demand trends, Applied also guided leading-edge logic to decline in the October quarter. The company continues to have high confidence in increasing leading-edge spending into next year, but the timing of spending appears delayed relative to prior expectations. Jefferies notes that expectations were set too high with Leading Edge guided to grow sequentially, which is now more lumpy given the concentration in TSMC and the timing of fab ramps. While the 2nm TAM and overall ramp should remain intact, tariff uncertainty and shorter visibility make it hard to predict when that will re-accelerate.</p>
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold text-blue-300 mb-4">Detailed Sell-Side Theses on the Decreased Outlook</h4>
+                    <ul class="space-y-6 list-disc list-inside text-gray-400">
+                        <li>
+                            <strong class="text-white">BofA Securities:</strong> Downgraded to Neutral, highlighting several risks. They note that slower growth could be perceived as market share loss, with their estimates suggesting four consecutive years of industry undergrowth for AMAT's Semi Systems segment. Their analysis suggests AMAT lost ~200bps in SAM share in 2024, a trend they believe is continuing. They also note that inventory days at semicap OEMs remain high, presenting a headwind for subsystem suppliers.
+                        </li>
+                        <li>
+                            <strong class="text-white">Jefferies:</strong> The outlook takes a step back with China taking a structural step down after 2 years of overspending and Leading Edge looking less reliable on timing. The ~$700M Q/Q revenue decline is attributed to a $500M drop from China ICAPS and $500M from GAA, offset by increases in display and non-China ICAPS. They see the structural reset to earnings power coming from China, with peers like KLAC and LRCX likely delayed in seeing similar trends.
+                        </li>
+                        <li>
+                            <strong class="text-white">J.P. Morgan:</strong> Maintained an Overweight rating, viewing the softness as a timing issue. The ~$700M Q/Q revenue decline is attributed to $500M lower revenues in both China and leading-edge foundry/logic, partially offset by a $300M increase in non-China ICAPS. They expect China revenue to be down 15-20% YoY over the next several quarters. However, they remain confident that 2nm GAA foundry/logic spend will pick up towards the end of 2025. They also see a path for the advanced packaging/HBM business to drive $3B+ in revenues over the next few years.
+                        </li>
+                         <li>
+                            <strong class="text-white">Goldman Sachs:</strong> Noted that while quarterly results were above the Street, the forward outlook was more conservative. They saw the sequential decline in China revenue as less of a surprise, as management had previously indicated a normalization from high 2023/24 spending levels. They also highlighted that while gross margins were strong, management believes they can hold the 48% mark going forward given a more normal China revenue mix.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Valuation and Key Ratios Section -->
+        <section id="valuation" class="section-card">
+            <h3 class="text-2xl font-bold text-white mb-6">Valuation and Key Ratios</h3>
+            <div class="space-y-8">
+                <div>
+                    <h4 class="text-xl font-semibold text-blue-300 mb-3">Applied Materials Forward P/E (x)</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-400">
+                            <thead class="text-xs text-gray-300 uppercase bg-gray-700">
+                                <tr>
+                                    <th class="px-6 py-3">Metric / Year (FYE October)</th><th class="px-6 py-3">BofA Securities¹</th><th class="px-6 py-3">Jefferies²</th><th class="px-6 py-3">J.P. Morgan³</th><th class="px-6 py-3">Consensus⁴</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white">P/E (2025E)</th><td class="px-6 py-4">17.3</td><td class="px-6 py-4">20.7</td><td class="px-6 py-4">20.1</td><td class="px-6 py-4">19.5</td></tr>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white">P/E (2026E)</th><td class="px-6 py-4">17.4</td><td class="px-6 py-4">18.7</td><td class="px-6 py-4">19.6</td><td class="px-6 py-4">18.1</td></tr>
+                                <tr class="bg-gray-800"><th class="px-6 py-4 text-white">P/E (2027E)</th><td class="px-6 py-4">15.0</td><td class="px-6 py-4">16.5</td><td class="px-6 py-4">N/A</td><td class="px-6 py-4">17.0</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-2">
+                        <p>¹ BofA Securities uses a price of $161.86. ² Jefferies uses a price of $188.24. ³ J.P. Morgan uses a price of $188.24. ⁴ Consensus P/E calculated using Jefferies' reported consensus EPS and price of $188.24.</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold text-blue-300 mb-3">Applied Materials Other Key Ratios</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-400">
+                             <thead class="text-xs text-gray-300 uppercase bg-gray-700">
+                                <tr>
+                                    <th class="px-6 py-3">Metric / Year (FYE October)</th><th class="px-6 py-3">BofA Securities</th><th class="px-6 py-3">Jefferies</th><th class="px-6 py-3">J.P. Morgan</th><th class="px-6 py-3">Consensus⁵</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white" colspan="5">Forward EV/EBITDA (x)</th></tr>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white pl-10">2025E</th><td class="px-6 py-4">14.8</td><td class="px-6 py-4">N/A</td><td class="px-6 py-4">17.6</td><td class="px-6 py-4">N/A</td></tr>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white pl-10">2026E</th><td class="px-6 py-4">14.9</td><td class="px-6 py-4">N/A</td><td class="px-6 py-4">17.3</td><td class="px-6 py-4">N/A</td></tr>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white pl-10">2027E</th><td class="px-6 py-4">13.3</td><td class="px-6 py-4">N/A</td><td class="px-6 py-4">N/A</td><td class="px-6 py-4">N/A</td></tr>
+
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white" colspan="5">EPS Growth (YoY %)</th></tr>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white pl-10">2025E</th><td class="px-6 py-4">8.0%</td><td class="px-6 py-4">2.1%</td><td class="px-6 py-4">8.2%</td><td class="px-6 py-4">8.4%</td></tr>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white pl-10">2026E</th><td class="px-6 py-4">-0.3%</td><td class="px-6 py-4">10.8%</td><td class="px-6 py-4">2.6%</td><td class="px-6 py-4">7.6%</td></tr>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white pl-10">2027E</th><td class="px-6 py-4">16.0%</td><td class="px-6 py-4">13.5%</td><td class="px-6 py-4">N/A</td><td class="px-6 py-4">6.5%</td></tr>
+
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white" colspan="5">Revenue Growth (YoY %)</th></tr>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white pl-10">2025E</th><td class="px-6 py-4">4.0%</td><td class="px-6 py-4">0.7%</td><td class="px-6 py-4">3.8%</td><td class="px-6 py-4">5.5%</td></tr>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white pl-10">2026E</th><td class="px-6 py-4">1.8%</td><td class="px-6 py-4">9.6%</td><td class="px-6 py-4">3.0%</td><td class="px-6 py-4">7.2%</td></tr>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white pl-10">2027E</th><td class="px-6 py-4">8.7%</td><td class="px-6 py-4">9.5%</td><td class="px-6 py-4">N/A</td><td class="px-6 py-4">3.5%</td></tr>
+
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white" colspan="5">FCF Yield (%)</th></tr>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white pl-10">2025E</th><td class="px-6 py-4">2.8%</td><td class="px-6 py-4">4.4%</td><td class="px-6 py-4">3.8%</td><td class="px-6 py-4">N/A</td></tr>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white pl-10">2026E</th><td class="px-6 py-4">4.6%</td><td class="px-6 py-4">4.0%</td><td class="px-6 py-4">3.5%</td><td class="px-6 py-4">N/A</td></tr>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white pl-10">2027E</th><td class="px-6 py-4">6.3%</td><td class="px-6 py-4">5.2%</td><td class="px-6 py-4">N/A</td><td class="px-6 py-4">N/A</td></tr>
+
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white" colspan="5">Dividend Yield (%)</th></tr>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white pl-10">2025E</th><td class="px-6 py-4">1.1%</td><td class="px-6 py-4">1.0%</td><td class="px-6 py-4">0.5%</td><td class="px-6 py-4">N/A</td></tr>
+                                <tr class="border-b bg-gray-800 border-gray-700"><th class="px-6 py-4 text-white pl-10">2026E</th><td class="px-6 py-4">1.3%</td><td class="px-6 py-4">1.1%</td><td class="px-6 py-4">0.5%</td><td class="px-6 py-4">N/A</td></tr>
+                                <tr class="bg-gray-800"><th class="px-6 py-4 text-white pl-10">2027E</th><td class="px-6 py-4">1.5%</td><td class="px-6 py-4">1.1%</td><td class="px-6 py-4">N/A</td><td class="px-6 py-4">N/A</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // --- DATA ---
+        const quarters = ["FQ1'24", "FQ2'24", "FQ3'24", "FQ4'24", "FQ1'25", "FQ2'25", "FQ3'25"];
+        
+        const metricsData = {
+            revenue: [6707, 6646, 6778, 7045, 7166, 7100, 7302],
+            grossMargin: [47.9, 47.5, 47.4, 47.5, 48.9, 49.2, 48.9],
+            operatingMargin: [29.5, 29.0, 28.8, 29.3, 30.6, 30.7, 30.7],
+            eps: [2.13, 2.09, 2.12, 2.32, 2.38, 2.39, 2.48]
+        };
+
+        const segmentsData = {
+            labels: quarters,
+            datasets: [
+                { label: 'Semiconductor Systems', data: [4909, 4901, 4924, 5177, 5356, 5255, 5427], borderColor: '#60A5FA', backgroundColor: '#60A5FA', tension: 0.1 },
+                { label: 'Applied Global Services', data: [1476, 1530, 1580, 1639, 1594, 1566, 1600], borderColor: '#34D399', backgroundColor: '#34D399', tension: 0.1 },
+                { label: 'Display', data: [244, 179, 251, 211, 183, 259, 263], borderColor: '#F87171', backgroundColor: '#F87171', tension: 0.1 }
+            ]
+        };
+
+        const geographyData = {
+            labels: quarters,
+            datasets: [
+                { label: 'United States', data: [759, 853, 1053, 1153, 917, 808, 683], backgroundColor: '#3B82F6' },
+                { label: 'Europe', data: [410, 289, 339, 405, 330, 252, 160], backgroundColor: '#8B5CF6' },
+                { label: 'Japan', data: [565, 453, 555, 581, 540, 572, 713], backgroundColor: '#EC4899' },
+                { label: 'Korea', data: [1231, 988, 1102, 1172, 1667, 1562, 1160], backgroundColor: '#10B981' },
+                { label: 'Taiwan', data: [559, 1019, 1148, 1284, 1183, 1997, 1843], backgroundColor: '#F59E0B' },
+                { label: 'Southeast Asia', data: [186, 213, 428, 314, 286, 135, 195], backgroundColor: '#6366F1' },
+                { label: 'China', data: [2997, 2831, 2153, 2136, 2243, 1774, 2548], backgroundColor: '#EF4444' }
+            ]
+        };
+        
+        const earningsInsightsData = [
+            {
+                quarter: "Q1 Fiscal Year 2024",
+                points: [
+                    "Overall market dynamics are improving, marked by a re-acceleration of capital investment from cloud companies, increasing fab utilisation across all device types, and normalising memory inventory levels.",
+                    "High-bandwidth memory (HBM) is identified as a key enabler for AI datacentres, with its output expected to grow at a 50% compound annual growth rate in the coming years. HBM dies are more than twice as large as standard DRAM, necessitating over double the capacity to produce the same volume of chips.",
+                    "The transition to Gate-All-Around (GAA) transistors in leading-edge foundry-logic is beginning to move into high-volume production, offering a more than 30% improvement in a chip’s energy efficiency.",
+                    "The industry's complexity, especially in leading-edge foundry-logic and DRAM, is driving the need for more and better metrology and inspection."
+                ]
+            },
+            {
+                quarter: "Q2 Fiscal Year 2024",
+                points: [
+                    "Semiconductors are fundamental to tectonic shifts in technology, including AI, IoT, automation, and clean energy, increasing demand for both capacity and higher-performance chips.",
+                    "AI is considered the 'biggest technology inflection' of our lifetimes, requiring advancements in leading-edge logic, HBM, and advanced packaging, where Applied holds process technology leadership.",
+                    "GAA transistors are transitioning to high-volume manufacturing, increasing Applied's available market and positioning the company to gain over 50% share of process equipment spending for transistor steps.",
+                    "Customers have accelerated their capacity plans for HBM due to increasing demand, leading to significant growth in HBM packaging revenue."
+                ]
+            },
+            {
+                quarter: "Q3 Fiscal Year 2024",
+                points: [
+                    "The race for AI leadership is largely determined by the ability to deliver substantial improvements in energy-efficient compute performance, with a goal of a 10,000 times improvement in performance-per-watt over the next 15 years.",
+                    "Device architecture inflections are increasingly enabled by materials science and engineering, where Applied holds a clear market and technology leadership position.",
+                    "The DRAM roadmap is advancing with the next major inflection from 6F2 to 4F2 (vertical transistor architectures), which is expected to grow Applied's market opportunity and share.",
+                    "Customer factory utilisation continued to strengthen across memory, foundry-logic, and advanced packaging."
+                ]
+            },
+            {
+                quarter: "Q4 Fiscal Year 2024",
+                points: [
+                    "Large-scale secular trends, particularly AI, are driving growth, with energy-efficient computing emerging as a unifying force.",
+                    "The industry roadmap is becoming increasingly complex, creating growth opportunities for integrated solutions, which now account for approximately 30% of Semiconductor Systems revenue.",
+                    "Leading-edge logic companies have started moving the first GAA nodes into high-volume production. The transition from FinFET to GAA and Backside Power Distribution is expanding Applied's available market.",
+                    "DRAM makers are accelerating capacity plans, especially in HBM, due to its critical role in AI datacentres; HBM dies necessitate over three times the wafer capacity compared to standard DRAM."
+                ]
+            },
+            {
+                quarter: "Q1 Fiscal Year 2025",
+                points: [
+                    "AI remains central to the industry outlook, with global semiconductor sales on track to exceed $1 trillion by 2030.",
+                    "Disruptive innovations are required to significantly improve the energy efficiency and cost of AI, necessitating innovation across the entire technology stack.",
+                    "Advancements in foundational semiconductor technologies will have a dramatic impact on system-level energy and cost reduction in the AI datacentre.",
+                    "Applied's integrated hybrid-bonding interconnect solution has successfully completed important qualification milestones and received volume orders."
+                ]
+            },
+            {
+                quarter: "Q2 Fiscal Year 2025",
+                points: [
+                    "AI is a transformative technology in the early phases of a multi-decade build-out, driving the need for major advances in computing performance and energy efficiency.",
+                    "The wafer fab equipment (WFE) market is experiencing significant shifts in spending mix, with substantial growth in investments for leading-edge foundry-logic and DRAM.",
+                    "Innovative new solutions are being rapidly adopted, exemplified by the Sym3 Magnum etch system, which has generated over $1.2 billion in revenue since its launch.",
+                    "Strong momentum was observed for leading-edge foundry-logic as customers ramp advanced technology nodes with GAA transistors into high-volume manufacturing."
+                ]
+            },
+            {
+                quarter: "Q3 Fiscal Year 2025",
+                points: [
+                    "AI leadership remains a major focus for companies and countries, driving substantial investments in infrastructure and R&D.",
+                    "The next wave of AI semiconductor innovation is concentrated around five key areas: leading-edge logic, next-generation high-performance DRAM, HBM, advanced packaging, and power electronics.",
+                    "The transition from FinFET to GAA transistors with backside power delivery is significantly growing the revenue opportunity, with Applied on track to gain multiple points of market share.",
+                    "Applied has secured new volume production positions at leading DRAM manufacturers for its next-generation gapfill and dielectric patterning systems."
+                ]
+            }
+        ];
+
+        // --- CHART & UI LOGIC ---
+        document.addEventListener('DOMContentLoaded', () => {
+            let metricsChartInstance, segmentsChartInstance, geographyChartInstance;
+            
+            const chartDefaultOptions = {
+                maintainAspectRatio: false,
+                responsive: true,
+                plugins: { legend: { labels: { color: '#D1D5DB' } } },
+                scales: {
+                    x: { ticks: { color: '#9CA3AF' }, grid: { color: '#374151' } },
+                    y: { ticks: { color: '#9CA3AF' }, grid: { color: '#374151' } }
+                }
+            };
+
+            // Toggle function
+            const setupToggle = (buttonId, tableId, chartId) => {
+                const button = document.getElementById(buttonId);
+                const tableContainer = document.getElementById(tableId);
+                const chartContainer = document.getElementById(chartId);
+                button.addEventListener('click', () => {
+                    const isChartVisible = !chartContainer.classList.contains('hidden');
+                    if (isChartVisible) {
+                        chartContainer.classList.add('hidden');
+                        tableContainer.classList.remove('hidden');
+                        button.textContent = 'View Chart';
+                    } else {
+                        chartContainer.classList.remove('hidden');
+                        tableContainer.classList.add('hidden');
+                        button.textContent = 'View Table';
+                    }
+                });
+            };
+
+            // 1. Key Metrics Chart
+            const ctxMetrics = document.getElementById('metricsChart').getContext('2d');
+            const metricSelector = document.getElementById('metricSelector');
+            
+            function createOrUpdateMetricsChart(metric) {
+                if (metricsChartInstance) {
+                    metricsChartInstance.destroy();
+                }
+                const labelsMap = {
+                    revenue: 'Revenue (Net, M USD)',
+                    grossMargin: 'Gross Margin %',
+                    operatingMargin: 'Operating Margin %',
+                    eps: 'Diluted EPS'
+                };
+                metricsChartInstance = new Chart(ctxMetrics, {
+                    type: 'line',
+                    data: {
+                        labels: quarters,
+                        datasets: [{
+                            label: labelsMap[metric],
+                            data: metricsData[metric],
+                            borderColor: '#60A5FA',
+                            backgroundColor: 'rgba(96, 165, 250, 0.2)',
+                            fill: true,
+                            tension: 0.1
+                        }]
+                    },
+                    options: chartDefaultOptions
+                });
+            }
+            metricSelector.addEventListener('change', (e) => createOrUpdateMetricsChart(e.target.value));
+            createOrUpdateMetricsChart('revenue');
+            setupToggle('toggleMetrics', 'metricsTableContainer', 'metricsChartContainer');
+
+            // 2. Segments Chart
+            const ctxSegments = document.getElementById('segmentsChart').getContext('2d');
+            segmentsChartInstance = new Chart(ctxSegments, {
+                type: 'line',
+                data: segmentsData,
+                options: chartDefaultOptions
+            });
+            setupToggle('toggleSegments', 'segmentsTableContainer', 'segmentsChartContainer');
+
+            // 3. Geography Chart
+            const ctxGeography = document.getElementById('geographyChart').getContext('2d');
+            geographyChartInstance = new Chart(ctxGeography, {
+                type: 'bar',
+                data: geographyData,
+                options: {
+                    ...chartDefaultOptions,
+                    scales: {
+                        x: { stacked: true, ticks: { color: '#9CA3AF' }, grid: { color: '#374151' } },
+                        y: { stacked: true, ticks: { color: '#9CA3AF' }, grid: { color: '#374151' } }
+                    }
+                }
+            });
+            setupToggle('toggleGeography', 'geographyTableContainer', 'geographyChartContainer');
+
+            // 4. Earnings Insights Slider
+            const sliderContainer = document.getElementById('sliderContainer');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const slideIndicator = document.getElementById('slideIndicator');
+            let currentSlide = 0;
+
+            function renderSlider() {
+                sliderContainer.innerHTML = '';
+                earningsInsightsData.forEach((insight, index) => {
+                    const slide = document.createElement('div');
+                    slide.className = 'p-4 bg-gray-700/50 rounded-lg';
+                    if (index !== currentSlide) {
+                        slide.classList.add('hidden');
+                    }
+                    
+                    let pointsHtml = insight.points.map(point => `<li class="mb-2">${point}</li>`).join('');
+                    
+                    slide.innerHTML = `
+                        <h4 class="text-lg font-semibold text-blue-300 mb-3">${insight.quarter}</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-2">
+                            ${pointsHtml}
+                        </ul>
+                    `;
+                    sliderContainer.appendChild(slide);
+                });
+                slideIndicator.textContent = `${currentSlide + 1} / ${earningsInsightsData.length}`;
+            }
+
+            nextBtn.addEventListener('click', () => {
+                currentSlide = (currentSlide + 1) % earningsInsightsData.length;
+                renderSlider();
+            });
+
+            prevBtn.addEventListener('click', () => {
+                currentSlide = (currentSlide - 1 + earningsInsightsData.length) % earningsInsightsData.length;
+                renderSlider();
+            });
+
+            renderSlider();
+        });
+    </script>
+
+</body>
+</html>
