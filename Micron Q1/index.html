@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micron (MU) Q4 Concall Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #e5e5e5;
+        }
+        .font-fira {
+            font-family: 'Fira Code', monospace;
+        }
+        /* Custom styles for tables and interactivity */
+        .table-container {
+            overflow-x: auto;
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+        .table-container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, and Opera */
+        }
+        th {
+            cursor: pointer;
+            user-select: none;
+        }
+        th .sort-indicator {
+            display: inline-block;
+            width: 1em;
+            text-align: center;
+            opacity: 0.5;
+            transition: opacity 0.2s ease-in-out;
+        }
+        th:hover .sort-indicator {
+            opacity: 1;
+        }
+        [contenteditable="true"] {
+            outline: none;
+            caret-color: #38bdf8;
+            transition: background-color 0.2s;
+        }
+        [contenteditable="true"]:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        [contenteditable="true"]:focus {
+            background-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 2px #38bdf8;
+            border-radius: 4px;
+        }
+        .tab-button {
+            transition: all 0.2s ease-in-out;
+        }
+        .tab-button.active {
+            color: #f5f5f5;
+            background-color: #262626;
+            border-color: #525252;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+        <!-- Header -->
+        <header class="flex items-center mb-6">
+            <img src="https://geninnov.github.io/Assets/favicon.ico" alt="Logo" class="h-10 w-10 mr-4 rounded-full">
+            <div>
+                <h1 class="text-2xl font-bold text-neutral-100">Micron (MU) Q4 Concall Analysis</h1>
+                <p class="text-sm text-neutral-400">Interactive data tables from the quarterly earnings call.</p>
+            </div>
+        </header>
+
+        <!-- Tabs Navigation -->
+        <div id="tabs-nav" class="mb-6 flex flex-wrap items-center gap-2 border-b border-neutral-800 pb-3">
+            <button data-tab="business-units" class="tab-button active text-sm font-medium px-4 py-2 rounded-md border border-transparent text-neutral-400 hover:text-neutral-100 hover:bg-neutral-800">Business Units</button>
+            <button data-tab="financials" class="tab-button text-sm font-medium px-4 py-2 rounded-md border border-transparent text-neutral-400 hover:text-neutral-100 hover:bg-neutral-800">Financials</button>
+            <button data-tab="hbm4" class="tab-button text-sm font-medium px-4 py-2 rounded-md border border-transparent text-neutral-400 hover:text-neutral-100 hover:bg-neutral-800">HBM4 Market</button>
+            <button data-tab="implications" class="tab-button text-sm font-medium px-4 py-2 rounded-md border border-transparent text-neutral-400 hover:text-neutral-100 hover:bg-neutral-800">Market Implications</button>
+            <button data-tab="sell-side" class="tab-button text-sm font-medium px-4 py-2 rounded-md border border-transparent text-neutral-400 hover:text-neutral-100 hover:bg-neutral-800">Sell Side Views</button>
+        </div>
+
+        <!-- Tab Content -->
+        <main id="tabs-content">
+            <!-- Business Unit Performance Table -->
+            <div id="business-units" class="tab-content">
+                <h2 class="text-lg font-semibold mb-3 text-neutral-200">Business Unit Performance (FQ4'25)</h2>
+                <div class="table-container bg-neutral-900/50 border border-neutral-800 rounded-lg p-1">
+                    <table class="w-full min-w-[1000px] text-sm text-left sortable-table">
+                        <thead class="text-xs text-neutral-400 uppercase bg-neutral-800/50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 rounded-tl-md">Business Unit <span class="sort-indicator">↕</span></th>
+                                <th scope="col" class="px-6 py-3 text-right">Revenue ($B) <span class="sort-indicator">↕</span></th>
+                                <th scope="col" class="px-6 py-3 text-right">% of Total <span class="sort-indicator">↕</span></th>
+                                <th scope="col" class="px-6 py-3 text-right">Seq. Growth (%) <span class="sort-indicator">↕</span></th>
+                                <th scope="col" class="px-6 py-3 text-right">Gross Margin (%) <span class="sort-indicator">↕</span></th>
+                                <th scope="col" class="px-6 py-3">Key Products</th>
+                                <th scope="col" class="px-6 py-3 rounded-tr-md">Primary Competitors</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-neutral-800 hover:bg-neutral-800/40">
+                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap text-neutral-100">Cloud Memory (CMBU)</th>
+                                <td class="px-6 py-4 text-right font-fira" contenteditable="true">4.5</td>
+                                <td class="px-6 py-4 text-right font-fira" contenteditable="true">40</td>
+                                <td class="px-6 py-4 text-right font-fira" contenteditable="true">34</td>
+                                <td class="px-6 py-4 text-right font-fira" contenteditable="true">59</td>
+                                <td class="px-6 py-4">HBM3E, LPDDR5 for Server, High-Capacity DIMMs</td>
+                                <td class="px-6 py-4">SK Hynix, Samsung</td>
+                            </tr>
+                            <tr class="border-b border-neutral-800 hover:bg-neutral-800/40">
+                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap text-neutral-100">Core Data Center (CDBU)</th>
+                                <td class="px-6 py-4 text-right font-fira" contenteditable="true">1.6</td>
+                                <td class="px-6 py-4 text-right font-fira" contenteditable="true">14</td>
+                                <td class="px-6 py-4 text-right font-fira" contenteditable="true">3</td>
+                                <td class="px-6 py-4 text-right font-fira" contenteditable="true">41</td>
+                                <td class="px-6 py-4">Data Center SSDs (PCIe Gen6), Enterprise Storage (G9 QLC NAND)</td>
+                                <td class="px-6 py-4">Samsung, SK Hynix (Solidigm), Kioxia, Western Digital</td>
+                            </tr>
+                            <tr class="border-b border-neutral-800 hover:bg-neutral-800/40">
+                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap text-neutral-100">Mobile Client (MCBU)</th>
+                                <td class="px-6 py-4 text-right font-fira" contenteditable="true">3.8</td>
+                                <td class="px-6 py-4 text-right font-fira" contenteditable="true">33</td>
+                                <td class="px-6 py-4 text-right font-fira" contenteditable="true">16</td>
+                                <td class="px-6 py-4 text-right font-fira" contenteditable="true">36</td>
+                                <td class="px-6 py-4">Mobile DRAM (LPDDR5X), Client SSDs (G9 NAND)</td>
+                                <td class="px-6 py-4">Samsung, SK Hynix</td>
+                            </tr>
+                            <tr class="hover:bg-neutral-800/40">
+                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap text-neutral-100">Automotive & Embedded (AEBU)</th>
+                                <td class="px-6 py-4 text-right font-fira" contenteditable="true">1.4</td>
+                                <td class="px-6 py-4 text-right font-fira" contenteditable="true">13</td>
+                                <td class="px-6 py-4 text-right font-fira" contenteditable="true">27</td>
+                                <td class="px-6 py-4 text-right font-fira" contenteditable="true">31</td>
+                                <td class="px-6 py-4">Automotive-grade DRAM (DDR5, LP5), Industrial Solutions</td>
+                                <td class="px-6 py-4">Samsung, SK Hynix, Nanya, Winbond</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Financials and Guidance Tables -->
+            <div id="financials" class="tab-content hidden">
+                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h2 class="text-lg font-semibold mb-3 text-neutral-200">Financial Performance & Guidance</h2>
+                         <div class="table-container bg-neutral-900/50 border border-neutral-800 rounded-lg p-1">
+                            <table class="w-full text-sm text-left sortable-table">
+                                <thead class="text-xs text-neutral-400 uppercase bg-neutral-800/50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 rounded-tl-md">Metric <span class="sort-indicator">↕</span></th>
+                                        <th scope="col" class="px-6 py-3 text-right">FQ4 2025 (Actual) <span class="sort-indicator">↕</span></th>
+                                        <th scope="col" class="px-6 py-3 text-right rounded-tr-md">FQ1 2026 (Guidance) <span class="sort-indicator">↕</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-neutral-800 hover:bg-neutral-800/40">
+                                        <th scope="row" class="px-6 py-4 font-medium text-neutral-100">Revenue ($B)</th>
+                                        <td class="px-6 py-4 text-right font-fira" contenteditable="true">11.32</td>
+                                        <td class="px-6 py-4 text-right font-fira" contenteditable="true">12.50</td>
+                                    </tr>
+                                    <tr class="border-b border-neutral-800 hover:bg-neutral-800/40">
+                                        <th scope="row" class="px-6 py-4 font-medium text-neutral-100">Gross Margin (%)</th>
+                                        <td class="px-6 py-4 text-right font-fira" contenteditable="true">45.7</td>
+                                        <td class="px-6 py-4 text-right font-fira" contenteditable="true">51.5</td>
+                                    </tr>
+                                    <tr class="border-b border-neutral-800 hover:bg-neutral-800/40">
+                                        <th scope="row" class="px-6 py-4 font-medium text-neutral-100">Operating Expenses ($B)</th>
+                                        <td class="px-6 py-4 text-right font-fira" contenteditable="true">1.20</td>
+                                        <td class="px-6 py-4 text-right font-fira" contenteditable="true">1.34</td>
+                                    </tr>
+                                    <tr class="hover:bg-neutral-800/40">
+                                        <th scope="row" class="px-6 py-4 font-medium text-neutral-100">Diluted EPS ($)</th>
+                                        <td class="px-6 py-4 text-right font-fira" contenteditable="true">3.03</td>
+                                        <td class="px-6 py-4 text-right font-fira" contenteditable="true">3.75</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-semibold mb-3 text-neutral-200">FQ4 Performance vs. Consensus</h2>
+                         <div class="table-container bg-neutral-900/50 border border-neutral-800 rounded-lg p-1">
+                            <table class="w-full text-sm text-left sortable-table">
+                                <thead class="text-xs text-neutral-400 uppercase bg-neutral-800/50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 rounded-tl-md">Metric <span class="sort-indicator">↕</span></th>
+                                        <th scope="col" class="px-6 py-3 text-right">Actual <span class="sort-indicator">↕</span></th>
+                                        <th scope="col" class="px-6 py-3">Consensus</th>
+                                        <th scope="col" class="px-6 py-3 text-right rounded-tr-md">Variance vs. Consensus <span class="sort-indicator">↕</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-neutral-800 hover:bg-neutral-800/40">
+                                        <th scope="row" class="px-6 py-4 font-medium text-neutral-100">Revenue ($B)</th>
+                                        <td class="px-6 py-4 text-right font-fira" contenteditable="true">11.32</td>
+                                        <td class="px-6 py-4 font-fira" contenteditable="true">11.12 - 11.15</td>
+                                        <td class="px-6 py-4 text-right font-fira text-green-400" contenteditable="true">+1.6%</td>
+                                    </tr>
+                                    <tr class="border-b border-neutral-800 hover:bg-neutral-800/40">
+                                        <th scope="row" class="px-6 py-4 font-medium text-neutral-100">Gross Margin (%)</th>
+                                        <td class="px-6 py-4 text-right font-fira" contenteditable="true">45.7</td>
+                                        <td class="px-6 py-4 font-fira" contenteditable="true">44.3 - 44.7</td>
+                                        <td class="px-6 py-4 text-right font-fira text-green-400" contenteditable="true">+2.7%</td>
+                                    </tr>
+                                    <tr class="hover:bg-neutral-800/40">
+                                        <th scope="row" class="px-6 py-4 font-medium text-neutral-100">Diluted EPS ($)</th>
+                                        <td class="px-6 py-4 text-right font-fira" contenteditable="true">3.03</td>
+                                        <td class="px-6 py-4 font-fira" contenteditable="true">2.82 - 2.84</td>
+                                        <td class="px-6 py-4 text-right font-fira text-green-400" contenteditable="true">+7.1%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HBM4 Market Updates -->
+            <div id="hbm4" class="tab-content hidden">
+                <h2 class="text-lg font-semibold mb-3 text-neutral-200">HBM4 Memory Market Updates</h2>
+                 <div class="table-container bg-neutral-900/50 border border-neutral-800 rounded-lg p-1">
+                    <table class="w-full min-w-[1000px] text-sm text-left sortable-table">
+                        <thead class="text-xs text-neutral-400 uppercase bg-neutral-800/50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 rounded-tl-md">Vendor <span class="sort-indicator">↕</span></th>
+                                <th scope="col" class="px-6 py-3">Bandwidth (per stack) <span class="sort-indicator">↕</span></th>
+                                <th scope="col" class="px-6 py-3">Pin Speed <span class="sort-indicator">↕</span></th>
+                                <th scope="col" class="px-6 py-3">Stack / Capacity <span class="sort-indicator">↕</span></th>
+                                <th scope="col" class="px-6 py-3">Base Logic Die</th>
+                                <th scope="col" class="px-6 py-3">Status / Timeline</th>
+                                <th scope="col" class="px-6 py-3 rounded-tr-md">Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-neutral-800 hover:bg-neutral-800/40">
+                                <th scope="row" class="px-6 py-4 font-medium text-neutral-100">Micron</th>
+                                <td class="px-6 py-4 font-fira" contenteditable="true">&gt;2.8 TB/s (Q4 call)</td>
+                                <td class="px-6 py-4 font-fira" contenteditable="true">&gt;11 Gb/s</td>
+                                <td class="px-6 py-4 font-fira" contenteditable="true">12-Hi, 36 GB samples</td>
+                                <td class="px-6 py-4">Standard + Custom BLD (with foundry)</td>
+                                <td class="px-6 py-4">Samples shipped; mass ramp 2026</td>
+                                <td class="px-6 py-4">First to stress custom BLD for NVIDIA Vera Rubin + others</td>
+                            </tr>
+                            <tr class="border-b border-neutral-800 hover:bg-neutral-800/40">
+                                <th scope="row" class="px-6 py-4 font-medium text-neutral-100">SK hynix</th>
+                                <td class="px-6 py-4 font-fira" contenteditable="true">~2× HBM3E (~2.5–2.8 TB/s)</td>
+                                <td class="px-6 py-4 font-fira" contenteditable="true">10–11 Gb/s+ (target)</td>
+                                <td class="px-6 py-4 font-fira" contenteditable="true">12-Hi; higher capacity roadmap</td>
+                                <td class="px-6 py-4">Working with foundries (TSMC MoU)</td>
+                                <td class="px-6 py-4">Claims world-first HBM4 dev complete; mass-prod readiness</td>
+                                <td class="px-6 py-4">Earliest mover → supply lead</td>
+                            </tr>
+                            <tr class="hover:bg-neutral-800/40">
+                                <th scope="row" class="px-6 py-4 font-medium text-neutral-100">Samsung</th>
+                                <td class="px-6 py-4 font-fira" contenteditable="true">Similar roadmap (~2.5–2.8 TB/s)</td>
+                                <td class="px-6 py-4 font-fira" contenteditable="true">10–11 Gb/s+</td>
+                                <td class="px-6 py-4 font-fira" contenteditable="true">12-Hi; capacity scaling</td>
+                                <td class="px-6 py-4">Offering Custom HBM options</td>
+                                <td class="px-6 py-4">In development; focus on PRA/certification</td>
+                                <td class="px-6 py-4">Strong in scale & customer certification</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Market Implications Table -->
+            <div id="implications" class="tab-content hidden">
+                <h2 class="text-lg font-semibold mb-3 text-neutral-200">Implications for the Memory Market</h2>
+                 <div class="table-container bg-neutral-900/50 border border-neutral-800 rounded-lg p-1">
+                    <table class="w-full min-w-[1000px] text-sm text-left sortable-table">
+                        <thead class="text-xs text-neutral-400 uppercase bg-neutral-800/50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 rounded-tl-md">Area of Impact <span class="sort-indicator">↕</span></th>
+                                <th scope="col" class="px-6 py-3">Implication for Memory Market</th>
+                                <th scope="col" class="px-6 py-3">Implication for SK Hynix</th>
+                                <th scope="col" class="px-6 py-3 rounded-tr-md">Implication for Samsung</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-neutral-800 hover:bg-neutral-800/40">
+                                <th scope="row" class="px-6 py-4 font-medium text-neutral-100 align-top">Market Environment</th>
+                                <td class="px-6 py-4">Confirms a strong cyclical upswing with tight supply and firming prices across DRAM and NAND.</td>
+                                <td class="px-6 py-4">Benefits from favorable market conditions, validating its early focus on HBM.</td>
+                                <td class="px-6 py-4">Also benefits, but faces pressure to overcome recent execution challenges.</td>
+                            </tr>
+                            <tr class="border-b border-neutral-800 hover:bg-neutral-800/40">
+                                <th scope="row" class="px-6 py-4 font-medium text-neutral-100 align-top">HBM Market Share</th>
+                                <td class="px-6 py-4">Validates HBM as the primary value and margin driver in the memory industry.</td>
+                                <td class="px-6 py-4">Faces a credible challenge from a rapidly executing Micron. Must maintain its technology lead in HBM4.</td>
+                                <td class="px-6 py-4">Micron's success raises the stakes. Must execute flawlessly on its roadmap to regain share.</td>
+                            </tr>
+                            <tr class="border-b border-neutral-800 hover:bg-neutral-800/40">
+                                <th scope="row" class="px-6 py-4 font-medium text-neutral-100 align-top">Capital Expenditures</th>
+                                <td class="px-6 py-4">Signals a new wave of investment focused on advanced DRAM nodes, benefiting equipment suppliers.</td>
+                                <td class="px-6 py-4">Must match or exceed Micron's capex intensity in HBM and advanced nodes.</td>
+                                <td class="px-6 py-4">Will likely accelerate its own capex to close the gap in HBM and defend overall market share.</td>
+                            </tr>
+                            <tr class="hover:bg-neutral-800/40">
+                                <th scope="row" class="px-6 py-4 font-medium text-neutral-100 align-top">Technology Roadmap</th>
+                                <td class="px-6 py-4">Competitive frontier has shifted to advanced packaging and customization of HBM base logic dies.</td>
+                                <td class="px-6 py-4">Must continue to innovate on its MR-MUF packaging technology, a key enabler of its leadership.</td>
+                                <td class="px-6 py-4">Plan to use 4nm FinFET for its HBM4 base die is a key strategic bet to leapfrog competitors.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Sell Side Views Table -->
+            <div id="sell-side" class="tab-content hidden">
+                <h2 class="text-lg font-semibold mb-3 text-neutral-200">Sell Side Views</h2>
+                 <div class="table-container bg-neutral-900/50 border border-neutral-800 rounded-lg p-1">
+                    <table class="w-full min-w-[1000px] text-sm text-left sortable-table">
+                        <thead class="text-xs text-neutral-400 uppercase bg-neutral-800/50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 rounded-tl-md">Analyst Firm <span class="sort-indicator">↕</span></th>
+                                <th scope="col" class="px-6 py-3">Key Takeaways & Recommendation</th>
+                                <th scope="col" class="px-6 py-3">Q4 Analysis</th>
+                                <th scope="col" class="px-6 py-3">FYQ1 Guidance</th>
+                                <th scope="col" class="px-6 py-3">Price Target <span class="sort-indicator">↕</span></th>
+                                <th scope="col" class="px-6 py-3">Key Risks</th>
+                                <th scope="col" class="px-6 py-3 rounded-tr-md">Opportunities</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-neutral-800 hover:bg-neutral-800/40">
+                                <th scope="row" class="px-6 py-4 font-medium text-neutral-100 align-top">Goldman Sachs</th>
+                                <td class="px-6 py-4"><b>Neutral.</b> Stock expected to rise on strong results/guidance. Notes healthy DRAM/NAND markets & improved HBM execution. Cautious on 2026 HBM pricing due to new competition.</td>
+                                <td class="px-6 py-4">Above Street: Rev $11.32B, GM 45.7%, EPS $3.03.</td>
+                                <td class="px-6 py-4">Significantly above Street: Rev $12.5B, GM 51.5%, EPS $3.75.</td>
+                                <td class="px-6 py-4 font-fira" contenteditable="true">$145 (from $130)</td>
+                                <td class="px-6 py-4">CXMT gaining DRAM share; Samsung qualifying HBM3E 12-Hi with Nvidia.</td>
+                                <td class="px-6 py-4">Strong HBM roadmap execution, market share gains from competitors.</td>
+                            </tr>
+                            <tr class="border-b border-neutral-800 hover:bg-neutral-800/40">
+                                <th scope="row" class="px-6 py-4 font-medium text-neutral-100 align-top">BofA Global Research</th>
+                                <td class="px-6 py-4"><b>Neutral.</b> Benefiting from AI demand & supply discipline. Neutral as positive news was priced in & Samsung's HBM entry in CY26 is a risk.</td>
+                                <td class="px-6 py-4">Sales & EPS were 2% and 7% above consensus, respectively.</td>
+                                <td class="px-6 py-4">Strong guidance: Sales $12.5B, EPS $3.75. GM at 51.5% (600bps above consensus).</td>
+                                <td class="px-6 py-4 font-fira" contenteditable="true">$180 (from $140)</td>
+                                <td class="px-6 py-4">Samsung's HBM3e qualification at NVIDIA could pressure share/pricing. Higher capex.</td>
+                                <td class="px-6 py-4">HBM3e share to reach low-20% in CQ3. HBM4 on track for mid-2026.</td>
+                            </tr>
+                            <tr class="hover:bg-neutral-800/40">
+                                <th scope="row" class="px-6 py-4 font-medium text-neutral-100 align-top">JPMorgan</th>
+                                <td class="px-6 py-4"><b>Overweight.</b> Strong results & outlook driven by HBM/datacenter. Favorable view on fundamentals through CY26.</td>
+                                <td class="px-6 py-4">August quarter results exceeded the positive pre-announcement.</td>
+                                <td class="px-6 py-4">Robust guidance. GM guided to 51.5% (first time >50% since 2019).</td>
+                                <td class="px-6 py-4 font-fira" contenteditable="true">$220 (from $185)</td>
+                                <td class="px-6 py-4">Sudden PC demand weakness. Aggressive ASP declines or supply/demand imbalance.</td>
+                                <td class="px-6 py-4">HBM share to exceed 22-23% in CY26. HBM4 optimized for Nvidia's Vera Rubin.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                 </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab functionality
+            const tabsNav = document.getElementById('tabs-nav');
+            const tabsContent = document.getElementById('tabs-content');
+            const tabButtons = tabsNav.querySelectorAll('.tab-button');
+            const tabPanels = tabsContent.querySelectorAll('.tab-content');
+
+            tabsNav.addEventListener('click', (e) => {
+                const button = e.target.closest('.tab-button');
+                if (!button) return;
+
+                const tabId = button.dataset.tab;
+
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                button.classList.add('active');
+
+                tabPanels.forEach(panel => {
+                    if (panel.id === tabId) {
+                        panel.classList.remove('hidden');
+                    } else {
+                        panel.classList.add('hidden');
+                    }
+                });
+            });
+
+            // Table sorting functionality
+            const getCellValue = (tr, idx) => {
+                const cell = tr.children[idx];
+                const text = cell.innerText || cell.textContent;
+                // Check if the content is a number for proper sorting
+                const num = parseFloat(text.replace(/[^0-9.-]+/g,""));
+                return isNaN(num) ? text.trim().toLowerCase() : num;
+            };
+
+            const comparer = (idx, asc) => (a, b) => ((vA, vB) => 
+                vA !== '' && vB !== '' && !isNaN(vA) && !isNaN(vB) ? vA - vB : vA.toString().localeCompare(vB)
+            )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
+
+            document.querySelectorAll('.sortable-table th').forEach(th => th.addEventListener('click', (() => {
+                const table = th.closest('table');
+                const tbody = table.querySelector('tbody');
+                const thIndex = Array.from(th.parentNode.children).indexOf(th);
+                
+                // Reset other columns' sort indicators
+                table.querySelectorAll('th').forEach(otherTh => {
+                    if (otherTh !== th) {
+                        otherTh.dataset.sortDir = '';
+                        const indicator = otherTh.querySelector('.sort-indicator');
+                        if (indicator) indicator.textContent = '↕';
+                    }
+                });
+
+                const currentDir = th.dataset.sortDir || 'desc';
+                const newDir = currentDir === 'asc' ? 'desc' : 'asc';
+                th.dataset.sortDir = newDir;
+                
+                const indicator = th.querySelector('.sort-indicator');
+                if(indicator) indicator.textContent = newDir === 'asc' ? '↑' : '↓';
+
+                Array.from(tbody.querySelectorAll('tr'))
+                    .sort(comparer(thIndex, newDir === 'asc'))
+                    .forEach(tr => tbody.appendChild(tr));
+            })));
+        });
+    </script>
+</body>
+</html>
+
+
