@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UMT (3491.TWO) Interactive Financial Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: A top-down, single-page dashboard structure was chosen to guide institutional investors from high-level conclusions to detailed analysis logically. The flow starts with the Executive Summary & Recommendation, providing the "bottom line" upfront. It then progresses into Financial Performance, Market Context, Innovation, and finally Risks/Opportunities. This non-linear navigation via a sticky header allows users to jump to sections of interest, supporting both a quick overview and a deep-dive analysis. This structure is more user-friendly than the original report's linear format, as it prioritizes discoverability and allows users to control their information consumption path. Key interactions include chart data toggles and interactive competitor tables to facilitate direct comparison and exploration. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: UMT Financial Metrics (Revenue, EBITDA, Net Income) -> Goal: Show trends -> Viz: Line Chart (Chart.js) -> Interaction: Tooltips on hover -> Justification: Line charts are ideal for visualizing performance over time.
+        - Report Info: LEO Market Growth Projections -> Goal: Illustrate market opportunity -> Viz: Bar Chart (Chart.js) -> Interaction: Tooltips on hover -> Justification: Bar charts effectively compare values across distinct years.
+        - Report Info: Competitor Financial Data -> Goal: Enable comparison -> Viz: Interactive HTML Table -> Interaction: Row highlight on click to focus user attention -> Justification: A table provides detailed, structured data, and JS interaction enhances readability and focus.
+        - Report Info: R&D Milestones -> Goal: Showcase innovation history -> Viz: Vertical Timeline (HTML/CSS) -> Interaction: None, static display -> Justification: A timeline is a clear, chronological way to present historical events.
+        - Report Info: Risks & Opportunities -> Goal: Summarize SWOT -> Viz: Four-quadrant grid layout (HTML/Tailwind) -> Interaction: None -> Justification: A grid visually separates the four aspects of the analysis for balanced and clear presentation.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1A1A1A;
+            color: #E5E7EB;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('Logo-transparent.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 200px; /* Adjust size as needed, e.g., '200px' or 'contain' */
+            opacity: 0.05; /* Adjust opacity for a subtle watermark effect */
+            z-index: -1;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 40vh;
+            max-height: 450px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 50vh;
+                max-height: 400px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #C084FC; /* A subtle purple accent */
+            border-bottom-color: #C084FC;
+        }
+        .stat-card {
+            background-color: #2D2D2D;
+            border: 1px solid #3F3F3F;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
+        }
+        .competitor-row {
+            transition: background-color 0.3s ease;
+        }
+        .competitor-row.highlight {
+            background-color: #3F3F3F; /* Darker gray highlight */
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-[#1A1A1A]/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <div class="text-center py-4 border-b border-gray-700">
+            <img src="Logo-transparent.png" alt="Company Logo" class="h-12 w-12 mx-auto mb-2 rounded-full shadow-md">
+            <h1 class="text-3xl font-extrabold text-white">UMT <span class="text-purple-400 text-sm align-super">(3491.TWO)</span></h1>
+            <p class="text-xs text-gray-400 mt-1">Sidharth, Analyst | August 19, 2025</p>
+        </div>
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gray-200">UMT Analysis</h1>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#overview" class="nav-link text-gray-400 font-medium pb-1">Overview</a>
+                <a href="#financials" class="nav-link text-gray-400 font-medium pb-1">Financials</a>
+                <a href="#latest-earnings" class="nav-link text-gray-400 font-medium pb-1">Latest Earnings</a>
+                <a href="#leo-satellites" class="nav-link text-gray-400 font-medium pb-1">LEO Satellites</a>
+                <a href="#market" class="nav-link text-gray-400 font-medium pb-1">Market & Ecosystem</a>
+                <a href="#innovation" class="nav-link text-gray-400 font-medium pb-1">Innovation Moat</a>
+                <a href="#recommendation" class="nav-link text-gray-400 font-medium pb-1">Recommendation</a>
+            </div>
+            <div class="md:hidden">
+                <select id="mobile-nav" class="bg-gray-800 border border-gray-600 text-gray-200 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5">
+                    <option value="#overview">Overview</option>
+                    <option value="#financials">Financials</option>
+                    <option value="#latest-earnings">Latest Earnings</option>
+                    <option value="#leo-satellites">LEO Satellites</option>
+                    <option value="#market">Market & Ecosystem</option>
+                    <option value="#innovation">Innovation Moat</option>
+                    <option value="#recommendation">Recommendation</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="overview" class="mb-20 text-center">
+            <h2 class="text-4xl font-bold text-white mb-4">Investment Thesis: Universal Microwave Technology Inc.</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-400 mb-8">An interactive dashboard analyzing UMT's strategic position in the high-growth LEO satellite sector, its financial health, competitive landscape, and overall investment potential.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div class="stat-card bg-green-900 border-green-700">
+                    <h3 class="text-sm font-semibold text-green-400 uppercase">Recommendation</h3>
+                    <p class="text-4xl font-bold text-green-300 mt-2">BUY</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="text-sm font-semibold text-gray-500 uppercase">Target Price</h3>
+                    <p class="text-4xl font-bold text-gray-200 mt-2">NT$510</p>
+                    <p class="text-md text-gray-400">(based on 20.0x 2028E P/E)</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="text-sm font-semibold text-gray-500 uppercase">P/E Ratio (2025E)</h3>
+                    <p class="text-4xl font-bold text-gray-200 mt-2">34.6x</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="financials" class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white">Financial Performance</h2>
+                <p class="max-w-2xl mx-auto text-md text-gray-400 mt-2">UMT's financial results demonstrate a strong and improving trajectory, largely driven by its strategic focus on LEO satellite components. This section visualizes key performance indicators and highlights the growing contribution of satellite-related revenue.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-black p-4 sm:p-6 rounded-xl shadow-lg border border-gray-700">
+                    <h3 class="text-xl font-semibold text-center mb-4 text-gray-200">Key Financials (NT$ mn)</h3>
+                    <div class="chart-container">
+                        <canvas id="financialsChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-black p-4 sm:p-6 rounded-xl shadow-lg border border-gray-700">
+                    <h3 class="text-xl font-semibold text-center mb-4 text-gray-200">Revenue Mix (NT$ mn)</h3>
+                    <div class="chart-container">
+                        <canvas id="revenueMixChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+                 <div class="bg-black p-4 sm:p-6 rounded-xl shadow-lg border border-gray-700">
+                    <h3 class="text-xl font-semibold text-center mb-4 text-gray-200">EPS Trend (NT$)</h3>
+                    <div class="chart-container">
+                        <canvas id="epsChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-black p-4 sm:p-6 rounded-xl shadow-lg border border-gray-700">
+                    <h3 class="text-xl font-semibold text-center mb-4 text-gray-200">P/E Trend (x)</h3>
+                    <div class="chart-container">
+                        <canvas id="peChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                <div class="stat-card">
+                    <h3 class="text-sm font-semibold text-gray-500 uppercase">Gross Margin (%)</h3>
+                    <p class="text-4xl font-bold text-purple-400 mt-2">48.5% (2025E)</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="text-sm font-semibold text-gray-500 uppercase">Net Profit Margin (%)</h3>
+                    <p class="text-4xl font-bold text-purple-400 mt-2">23.8% (2025E)</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="text-sm font-semibold text-gray-500 uppercase">EPS (2025E)</h3>
+                    <p class="text-4xl font-bold text-purple-400 mt-2">NT$9.96</p>
+                </div>
+            </div>
+            <div class="text-center mt-8">
+                <h3 class="text-2xl font-bold text-white">Key Financial Growth Drivers</h3>
+            </div>
+            <div class="max-w-4xl mx-auto text-gray-400 leading-relaxed space-y-4">
+                <p>UMT's profitability is directly tied to the growth of its LEO satellite business, which carries higher gross margins than its traditional telecom products. According to the reports, the gross margin for 2025E is projected at 48.5% and is expected to grow as the LEO satellite revenue mix increases. Despite recent short-term fluctuations caused by unfavorable foreign exchange rates and a temporary slowdown in customer procurement, the company's long-term margin profile is expected to improve. This is a key reason we remain positive on the company's outlook. The EPS for 2025E is projected to be NT$9.96, reflecting a significant growth trajectory driven by the LEO satellite business ramp-up.
+                </p>
+            </div>
+        </section>
+        <section id="latest-earnings" class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white">Latest Earnings Release: Q1 2025</h2>
+                <p class="max-w-2xl mx-auto text-md text-gray-400 mt-2">The Q1 2025 financial report shows continued robust performance and strong growth, reinforcing the company's positive trajectory. Below is a summary of the key highlights compared to the same period last year.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+                <div class="stat-card">
+                    <h3 class="text-sm font-semibold text-gray-500 uppercase">Operating Revenue</h3>
+                    <p class="text-3xl font-bold text-gray-200 mt-2">NT$620.1M</p>
+                    <p class="text-md text-green-500 mt-1">▲ 43.0% YoY</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="text-sm font-semibold text-gray-500 uppercase">Operating Net Profit</h3>
+                    <p class="text-3xl font-bold text-gray-200 mt-2">NT$166.7M</p>
+                    <p class="text-md text-green-500 mt-1">▲ 117.5% YoY</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="text-sm font-semibold text-gray-500 uppercase">Net Income</h3>
+                    <p class="text-3xl font-bold text-gray-200 mt-2">NT$143.2M</p>
+                    <p class="text-md text-green-500 mt-1">▲ 62.7% YoY</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="text-sm font-semibold text-gray-500 uppercase">Diluted EPS</h3>
+                    <p class="text-3xl font-bold text-gray-200 mt-2">NT$2.07</p>
+                    <p class="text-md text-green-500 mt-1">▲ 72.5% YoY</p>
+                </div>
+            </div>
+            <div class="mt-8 max-w-4xl mx-auto text-center">
+                <h3 class="text-xl font-semibold text-white mb-2">Key Takeaways from Q1 2025</h3>
+                <ul class="list-disc list-inside space-y-2 text-gray-400">
+                    <li>**Growth in Revenue and Profitability:** The latest report shows significant year-over-year growth across all key metrics, with operating revenue up over 40% and operating net profit more than doubling. This performance is a direct result of the company's success in the microwave/mmWave and LEO satellite component markets.</li>
+                    <li>**Margin Expansion:** Gross margin improved from 45% in Q1 2024 to 51% in Q1 2025, demonstrating the positive impact of the high-margin LEO satellite products on the overall business mix.</li>
+                    <li>**Strategic Focus:** The company's strategic decision to focus on the high-growth LEO satellite sector is clearly paying off, with a substantial increase in revenue from its core business segment. This report confirms the strong momentum and validates our positive long-term outlook.</li>
+                </ul>
+            </div>
+        </section>
+        <section id="leo-satellites" class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white">Understanding LEO Satellites</h2>
+                <p class="max-w-2xl mx-auto text-md text-gray-400 mt-2">LEO (Low Earth Orbit) satellites are a key driver of UMT's growth. This section provides an overview of their function, importance, and market growth drivers.</p>
+            </div>
+            <div class="max-w-4xl mx-auto text-gray-400 leading-relaxed space-y-4">
+                <p>LEO satellites are part of constellation networks that operate at a relatively low altitude, between 160 km and 2,000 km above Earth. This proximity to the planet gives them very low latency, making them ideal for high-speed, real-time data transmission. While a single LEO satellite has a small coverage area, a constellation of thousands can provide continuous global coverage, which is a major advantage over traditional ground-based networks. The LEO satellite market is expected to grow exponentially, driven by several key factors.</p>
+                <p>One of the primary drivers is the ability of LEO satellites to provide broadband internet access to remote and underserved areas where traditional infrastructure is too costly or difficult to deploy. As a result, the market is expanding significantly. Furthermore, satellite communication is becoming an integrated part of next-generation networks like 5G and 6G. LEO satellites will work in conjunction with ground-based networks to provide uninterrupted, seamless coverage. Beyond consumer internet, LEO satellites are crucial for emerging technologies like autonomous driving (Robotaxi), in-flight and maritime connectivity, and real-time data for AR/VR/XR applications. These new use cases are expanding the total addressable market significantly. Finally, innovations in reusable rockets and standardized modular designs have drastically reduced the cost of launching and deploying new constellations, which is a major catalyst for rapid market growth.</p>
+            </div>
+        </section>
+
+        <section id="market" class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white">Market & Ecosystem Analysis</h2>
+                <p class="max-w-2xl mx-auto text-md text-gray-400 mt-2">The LEO satellite market is poised for explosive growth, creating a powerful tailwind for UMT. While the companies below operate in the same ecosystem, they are not direct competitors. Instead, they are partners in the supply chain, demonstrating UMT's specialized and indispensable role.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-black p-4 sm:p-6 rounded-xl shadow-lg border border-gray-700">
+                    <h3 class="text-xl font-semibold text-center mb-4 text-gray-200">Global LEO Satellite Market Growth (USD Billion)</h3>
+                    <div class="chart-container" style="height: 350px; max-height: 400px;">
+                        <canvas id="marketChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-black p-4 sm:p-6 rounded-xl shadow-lg border border-gray-700">
+                    <h3 class="text-xl font-semibold text-center mb-4 text-gray-200">Ecosystem Snapshot</h3>
+                    <p class="text-sm text-gray-500 text-center mb-4">(Click row to highlight)</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-400">
+                            <thead class="text-xs text-gray-200 uppercase bg-gray-800">
+                                <tr>
+                                    <th scope="col" class="px-4 py-3">Company</th>
+                                    <th scope="col" class="px-4 py-3 text-right">P/E (2025E)</th>
+                                    <th scope="col" class="px-4 py-3 text-right">NI YoY (2025/26 avg.)</th>
+                                    <th scope="col" class="px-4 py-3 text-right">OPM (2025/26 avg.)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="competitor-table">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 max-w-4xl mx-auto text-center">
+                <h3 class="text-xl font-semibold text-white mb-2">Customer Insights</h3>
+                <p class="text-gray-400 leading-relaxed">
+                    It is reported that UMT is a major supplier for two of the global leading LEO satellite operators, **Starlink** and **Amazon (Project Kuiper)**. This concentration of customers, while a potential risk, also serves as a strong validation of UMT's specialized technology and product reliability in the industry. As the LEO satellite business continues to ramp up, UMT is also strategically expanding its customer base to include smaller operators, which helps to mitigate customer concentration risk and provides additional avenues for growth.
+                </p>
+            </div>
+        </section>
+
+        <section id="innovation" class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white">Innovation & Competitive Moat</h2>
+                <p class="max-w-2xl mx-auto text-md text-gray-400 mt-2">UMT's competitive moat is built on decades of specialized expertise, strategic R&D, and a growing portfolio of intellectual property, securing its position in the advanced LEO component market. This moat is the core of our positive investment thesis.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                <div>
+                    <h3 class="text-xl font-semibold mb-6 text-gray-200">Key R&D and Innovation Timeline</h3>
+                    <div class="relative border-l-2 border-purple-800">
+                        <div class="mb-8 ml-6">
+                            <span class="absolute flex items-center justify-center w-6 h-6 bg-purple-900 rounded-full -left-3 ring-8 ring-[#1A1A1A]"></span>
+                            <h4 class="flex items-center mb-1 text-lg font-semibold text-white">2023 - Advanced LEO Payload R&D</h4>
+                            <time class="block mb-2 text-sm font-normal leading-none text-gray-500">Project Funded by Ministry of Economic Affairs</time>
+                            <p class="text-base font-normal text-gray-400">Initiated a project to develop a new-type LEO satellite communication payload, specifically focusing on a Millimeter-Wave Dual-Band Dual-Polarization Subsystem to meet next-gen satellite requirements.</p>
+                        </div>
+                        <div class="mb-8 ml-6">
+                            <span class="absolute flex items-center justify-center w-6 h-6 bg-purple-900 rounded-full -left-3 ring-8 ring-[#1A1A1A]"></span>
+                            <h4 class="flex items-center mb-1 text-lg font-semibold text-white">2021 - Foundational LEO Capability</h4>
+                            <p class="text-base font-normal text-gray-400">Completed development of its "LEO satellite passive subsystem," a critical step in establishing its position in the market, and received government subsidies for the ground communication equipment program.</p>
+                        </div>
+                        <div class="mb-8 ml-6">
+                            <span class="absolute flex items-center justify-center w-6 h-6 bg-purple-900 rounded-full -left-3 ring-8 ring-[#1A1A1A]"></span>
+                            <h4 class="flex items-center mb-1 text-lg font-semibold text-white">2017 - mmWave Testing Facility</h4>
+                            <p class="text-base font-normal text-gray-400">Constructed Taiwan's first mmWave Antenna Chamber, which established advanced in-house validation capabilities and laid the foundation for its future high-frequency mmWave product portfolio.</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-6 text-gray-200">Core Pillars of UMT's Moat</h3>
+                    <p class="mb-4 text-gray-400">UMT's specialized business model creates a defensible position. Its moat is a combination of technical expertise, customer relationships, and operational excellence, which are difficult for new entrants to replicate.</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0"><span class="text-purple-500 text-2xl mr-3">✓</span></div>
+                            <div><strong class="font-semibold text-white">Niche Leadership:</strong> UMT is a global leader in the highly specialized and difficult-to-master field of microwave/mmWave passive components, essential for LEO satellites.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0"><span class="text-purple-500 text-2xl mr-3">✓</span></div>
+                            <div><strong class="font-semibold text-white">High Barriers to Entry:</strong> Unlike consumer electronics, satellite components require space-grade qualification, high-precision processing, and extensive R&D, which creates a significant barrier for new players.</div>
+                        </li>
+                        <li class="flex items-start">
+                             <div class="flex-shrink-0"><span class="text-purple-500 text-2xl mr-3">✓</span></div>
+                            <div><strong class="font-semibold text-white">Customer Trust:</strong> Validated by long-term purchase agreements with major international LEO clients like Starlink and Amazon, providing stable revenue streams and proof of quality.</div>
+                        </li>
+                        <li class="flex items-start">
+                             <div class="flex-shrink-0"><span class="text-purple-500 text-2xl mr-3">✓</span></div>
+                            <div><strong class="font-semibold text-white">Manufacturing Diversification:</strong> Production in Taiwan and Vietnam, with plans for Thailand, mitigating geopolitical and supply chain risks for its global customers.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="recommendation" class="bg-black p-8 rounded-xl shadow-lg border border-gray-700">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white">Analysis & Investment Recommendation</h2>
+                <p class="max-w-2xl mx-auto text-md text-gray-400 mt-2">A balanced view of the risks and opportunities culminates in a positive outlook, driven by strong market tailwinds and UMT's solid fundamentals.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 text-green-500">Opportunities (Strengths)</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-400">
+                        <li>**Explosive market growth:** The LEO satellite market is projected to grow at a 20% CAGR from 2024 to 2035E, creating a powerful secular growth tailwind for UMT.</li>
+                        <li>**Niche leadership:** UMT's specialization in high-margin passive components for LEO satellites is driving its overall revenue and profitability.</li>
+                        <li>**Durable moat:** The combination of space-grade expertise, proprietary technology, and established customer relationships makes UMT a difficult company to displace.</li>
+                        <li>**Strong financials:** UMT maintains high margins and a low net debt position, providing the company with the financial stability to invest in future growth.</li>
+                        <li>**Operational resilience:** Diversified manufacturing sites in Taiwan, Vietnam, and Thailand are a strategic advantage that mitigates geopolitical and supply chain risks.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 text-red-500">Risks (Weaknesses)</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-400">
+                        <li>**Customer concentration:** A significant portion of UMT’s satellite revenue is from its top two clients, creating a risk if procurement patterns change.</li>
+                        <li>**Intense competition:** Although UMT has a niche, larger, more diversified players could enter the market or invest heavily in R&D to become viable competitors.</li>
+                        <li>**Technological disruption:** The rapid pace of innovation could bring new technologies or integrated solutions that challenge UMT's current offerings.</li>
+                        <li>**Geopolitical risk:** The company's operations are heavily influenced by the geopolitical landscape of the region, which could impact global supply chains.</li>
+                        <li>**Deployment slowdowns:** Slower-than-expected LEO satellite deployment, due to regulatory hurdles or other factors, could negatively impact UMT’s revenue growth.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-8">
+                <h3 class="text-2xl font-bold text-center mb-4 text-white">Investment Rationale: BUY</h3>
+                <p class="text-gray-400 leading-relaxed">The **BUY** recommendation for UMT is a logical conclusion derived from the combination of its favorable market position and its intrinsic strengths. The LEO satellite market is in the midst of a massive infrastructure build-out, and UMT is a prime beneficiary. If an investor believes in the long-term growth story of LEO satellites, then UMT, with its strong innovation moat, robust financials, and diversified manufacturing, represents one of the very best options. The company's long-standing expertise in microwave/mmWave technology and its space-grade manufacturing capabilities give it a powerful innovation moat that differentiates it from other players. As the charts show, the increasing contribution of high-margin LEO satellite components is expected to fuel significant revenue and profit growth for years to come. While risks exist, they are balanced by UMT's strong fundamentals and its strategic focus on a market with high growth visibility. Our target price of NT$510, based on a discounted P/E methodology, reflects our confidence in the company's ability to capitalize on this opportunity and deliver substantial long-term value to investors.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-black mt-20">
+        <div class="container mx-auto px-6 py-4 text-center text-gray-500 text-sm">
+            <p>&copy; 2025 Financial Analysis. Data sourced from provided reports and financial files. For informational purposes only.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const financialsData = {
+                labels: ['FY2024 (Annual)', '2025E (New)'],
+                revenue: [2335.0, 2863.1],
+                ebitda: [711.4, 924.7],
+                netIncome: [547, 682]
+            };
+            const epsData = {
+                labels: ['2022', '2023', '2024', '2025E', '2026E', '2027E', '2028E', '2029E', '2030E'],
+                eps: [4.34, 3.12, 8.27, 9.96, 15.78, 21.17, 29.63, 36.90, 45.03]
+            };
+            const peData = {
+                labels: ['2022', '2023', '2024', '2025E', '2026E', '2027E', '2028E', '2029E', '2030E'],
+                pe: [117, 164, 62, 51, 32, 24, 17, 14, 11]
+            };
+            const revenueMixData = {
+                labels: ['2024', '2025E', '2026E', '2027E', '2028E'],
+                telecom: [1200, 1400, 1800, 2000, 2100],
+                leoSatellitePayload: [900, 1000, 1200, 1500, 2000],
+                leoSatelliteGateway: [200, 300, 500, 800, 1000],
+                leoSatelliteUT: [35, 163, 147, 129, 136]
+            };
+            const marketData = {
+                labels: ['2024', '2025E', '2030E', '2035E'],
+                marketSize: [15, 23, 67, 108]
+            };
+            const competitorData = [
+                { name: 'UMT (3491.TWO)', pe: '34.6', niYoY: '58%', opm: '32%'},
+                { name: 'WNC (6285.TW)', pe: '21', niYoY: '50%', opm: '3%'},
+                { name: 'Compeq (2313.TW)', pe: '15', niYoY: '23%', opm: '9%'},
+                { name: 'Hon Hai (2317.TW)', pe: '12', niYoY: '33%', opm: '3%'},
+                { name: 'Maxscend (300782.SZ)', pe: 'N/A', niYoY: '27%', opm: '10%'}
+            ];
+
+            function formatLabel(str) {
+                if (str.length > 16) {
+                    const words = str.split(' ');
+                    let lines = [''];
+                    let currentLine = 0;
+                    words.forEach(word => {
+                        if ((lines[currentLine] + word).length > 16) {
+                            currentLine++;
+                            lines[currentLine] = '';
+                        }
+                        lines[currentLine] += word + ' ';
+                    });
+                    return lines.map(l => l.trim());
+                }
+                return str;
+            }
+            
+            const financialsCtx = document.getElementById('financialsChart').getContext('2d');
+            new Chart(financialsCtx, {
+                type: 'bar',
+                data: {
+                    labels: financialsData.labels,
+                    datasets: [
+                        {
+                            label: 'Revenue (NT$ mn)',
+                            data: financialsData.revenue,
+                            backgroundColor: 'rgba(168, 85, 247, 0.6)',
+                            borderColor: 'rgba(168, 85, 247, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'EBITDA (NT$ mn)',
+                            data: financialsData.ebitda,
+                            backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Net Income (NT$ mn)',
+                            data: financialsData.netIncome,
+                            backgroundColor: 'rgba(236, 72, 153, 0.6)',
+                            borderColor: 'rgba(236, 72, 153, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'NT$ (Millions)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: NT$${context.formattedValue}M`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            const epsCtx = document.getElementById('epsChart').getContext('2d');
+            new Chart(epsCtx, {
+                type: 'line',
+                data: {
+                    labels: epsData.labels,
+                    datasets: [{
+                        label: 'EPS (NT$)',
+                        data: epsData.eps,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            title: {
+                                display: true,
+                                text: 'NT$'
+                            }
+                        }
+                    }
+                }
+            });
+            const peCtx = document.getElementById('peChart').getContext('2d');
+            new Chart(peCtx, {
+                type: 'line',
+                data: {
+                    labels: peData.labels,
+                    datasets: [{
+                        label: 'P/E (x)',
+                        data: peData.pe,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            title: {
+                                display: true,
+                                text: 'P/E Multiple'
+                            }
+                        }
+                    }
+                }
+            });
+            const revenueMixCtx = document.getElementById('revenueMixChart').getContext('2d');
+            new Chart(revenueMixCtx, {
+                type: 'bar',
+                data: {
+                    labels: revenueMixData.labels,
+                    datasets: [
+                        {
+                            label: 'Telecom',
+                            data: revenueMixData.telecom,
+                            backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                        },
+                        {
+                            label: 'LEO Satellite - Payload',
+                            data: revenueMixData.leoSatellitePayload,
+                            backgroundColor: 'rgba(168, 85, 247, 0.8)',
+                        },
+                        {
+                            label: 'LEO Satellite - Gateway',
+                            data: revenueMixData.leoSatelliteGateway,
+                            backgroundColor: 'rgba(236, 72, 153, 0.8)',
+                        },
+                        {
+                            label: 'LEO Satellite - UT',
+                            data: revenueMixData.leoSatelliteUT,
+                            backgroundColor: 'rgba(34, 197, 94, 0.8)',
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                            title: {
+                                display: true,
+                                text: 'Year'
+                            }
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'NT$ (Millions)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: NT$${context.formattedValue}M`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const marketCtx = document.getElementById('marketChart').getContext('2d');
+            new Chart(marketCtx, {
+                type: 'bar',
+                data: {
+                    labels: marketData.labels,
+                    datasets: [{
+                        label: 'Market Size (USD Billion)',
+                        data: marketData.marketSize,
+                        backgroundColor: 'rgba(139, 92, 246, 0.7)',
+                        borderColor: 'rgba(139, 92, 246, 1)',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'USD (Billions)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Market Size: $${context.formattedValue}B`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const competitorTable = document.getElementById('competitor-table');
+            competitorData.forEach(comp => {
+                const row = document.createElement('tr');
+                row.className = 'bg-gray-800 border-b border-gray-700 competitor-row cursor-pointer';
+                row.innerHTML = `
+                    <td class="px-4 py-3 font-medium text-gray-200 whitespace-nowrap">${comp.name}</td>
+                    <td class="px-4 py-3 text-right">${comp.pe}x</td>
+                    <td class="px-4 py-3 text-right">${comp.niYoY}</td>
+                    <td class="px-4 py-3 text-right">${comp.opm}</td>
+                `;
+                row.addEventListener('click', () => {
+                    document.querySelectorAll('.competitor-row').forEach(r => r.classList.remove('highlight'));
+                    row.classList.add('highlight');
+                });
+                competitorTable.appendChild(row);
+            });
+            
+            const navLinks = document.querySelectorAll('a.nav-link');
+            const sections = document.querySelectorAll('section');
+            
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 60) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+            
+            const mobileNav = document.getElementById('mobile-nav');
+            mobileNav.addEventListener('change', (e) => {
+                window.location.hash = e.target.value;
+            });
+        });
+    </script>
+</body>
+</html>
